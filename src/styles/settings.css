@@ -1,3 +1,8 @@
+.minimal-layout .settings-area,
+.mobile-settings-toggle {
+  display: none;
+}
+
 .settings {
   min-width: 0;
   min-height: 521px;

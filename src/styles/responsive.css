@@ -17,77 +17,163 @@
 
 @media (max-width: 760px) {
   .topbar-inner {
-    flex-wrap: wrap;
-    min-height: 58px;
-    padding: 10px 18px 0;
-    gap: 5px 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 0;
+    padding: 5px clamp(10px, 3.8vw, 18px) 0;
+    gap: 4px 8px;
   }
   .wordmark {
-    min-height: 34px;
+    min-height: 44px;
+    justify-self: start;
+    gap: 7px;
+    font-size: clamp(0.88rem, 4vw, 1.05rem);
+  }
+  .wordmark img {
+    width: 30px;
+    height: 30px;
+  }
+  .sound-control {
+    grid-area: 1 / 2;
+  }
+  .mobile-audio-settings .sound-error {
+    display: none;
+  }
+  .sound-shortcut,
+  .sound-menu-toggle {
+    min-height: 44px;
+  }
+  .sound-menu-toggle {
+    width: 44px;
   }
   .main-nav {
-    order: 3;
-    width: 100%;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .main-nav button {
-    flex: 1;
-    padding: 0 3px;
-    font-size: 0.81rem;
-    gap: 4px;
+    flex-direction: column;
+    min-height: 46px;
+    padding: 4px 2px;
+    font-size: clamp(0.69rem, 2.9vw, 0.81rem);
+    gap: 3px;
   }
   .main-nav button svg {
-    flex: none;
-    width: 14px;
+    width: 15px;
+    height: 15px;
   }
   .main-nav button[aria-current] {
     border-radius: 7px 7px 0 0;
   }
-  .sound-shortcut,
-  .sound-menu-toggle {
-    min-height: 35px;
-  }
   .main-wrap {
-    width: calc(100% - 32px);
+    width: min(640px, calc(100% - clamp(20px, 7.6vw, 36px)));
   }
   .intro-block {
-    padding: 25px 0 21px;
+    padding: 18px 0 15px;
   }
   .intro-block h1 {
-    font-size: 2.77rem;
+    font-size: clamp(1.95rem, 8vw, 2.77rem);
   }
   .intro-block p {
-    margin-top: 8px;
-    font-size: 0.98rem;
+    margin-top: 6px;
+    font-size: 0.93rem;
+    line-height: 1.5;
+  }
+  .breathing-session .intro-block {
+    @apply sr-only;
+  }
+  .breathing-session .workbench {
+    margin-top: 12px;
   }
   .workbench {
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
   }
   .player {
-    min-height: 459px;
+    min-height: 0;
   }
   .player-top {
-    height: 55px;
-    margin-inline: 16px;
+    height: 49px;
+    margin-inline: 14px;
+  }
+  .expand-button {
+    display: none;
+  }
+  .session-timer {
+    margin-right: 0;
+  }
+  .breath-copy {
+    min-height: 5rem;
+    padding: 10px 12px 0;
+  }
+  .orb-area {
+    padding-block: 14px 16px;
+  }
+  .breath-orb {
+    width: clamp(140px, 45vw, 206px);
   }
   .player-bottom {
-    margin-inline: 16px;
+    min-height: 49px;
+    padding-block: 0;
+    margin-inline: 12px;
+    gap: 0 8px;
+    font-size: 0.78rem;
+  }
+  .player-bottom button {
+    min-height: 44px;
   }
   .player-actions {
-    margin-block: 17px;
+    display: grid;
+    width: min(290px, calc(100% - 28px));
+    align-self: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0 0 12px;
+  }
+  .player-actions .on-dark-button {
+    border: 1px solid #cdb6ee4d;
+  }
+  .minimal-layout .settings-area {
+    display: block;
+  }
+  .mobile-settings-toggle {
+    display: flex;
+    width: 100%;
+    min-height: 48px;
+    align-items: center;
+    gap: 9px;
+    padding-inline: 14px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    font-weight: 750;
+  }
+  .settings-chevron {
+    margin-left: auto;
+  }
+  .mobile-settings-toggle[aria-expanded='true'] .settings-chevron {
+    rotate: 180deg;
   }
   .settings {
+    display: none;
     min-height: auto;
     padding: 17px;
   }
+  .settings.settings-open-on-mobile {
+    display: block;
+    margin-top: 8px;
+  }
   .prompt-content {
-    margin-top: 29px;
+    margin: 22px clamp(12px, 4vw, 24px) 0;
   }
   .prompt-content h2 {
-    font-size: 2.37rem;
+    font-size: clamp(1.9rem, 7vw, 2.37rem);
   }
   .examples {
     margin-top: 19px;
+  }
+  .prompt-actions {
+    margin-inline: clamp(12px, 4vw, 24px);
+    padding-block: 18px 14px;
   }
 }
 
@@ -95,13 +181,12 @@
   .main-nav {
     gap: 2px;
   }
-  .main-nav button svg {
-    display: none;
-  }
-  .intro-block h1 {
-    font-size: 2.45rem;
-  }
   .grounding-count {
     padding-inline: 8px;
+  }
+}
+@media (min-width: 761px) {
+  .desktop-audio-settings .sound-error {
+    display: none;
   }
 }
