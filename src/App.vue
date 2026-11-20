@@ -28,6 +28,7 @@ const guide = ref(preferences.ground)
 const attentionIndex = ref(0)
 const settingsTab = ref<'session' | 'audio'>('session')
 const minimal = ref(false)
+const mobileSettingsOpen = ref(false)
 const player = ref<HTMLElement | null>(null)
 const current = computed(
   () => exerciseViews.find((item) => item.id === view.value) ?? exerciseViews[0],
@@ -133,12 +134,20 @@ function previewVoice() {
 </script>
 
 <template>
-  <div class="site-shell" :class="{ 'minimal-layout': minimal }">
+  <div
+    class="site-shell"
+    :class="{
+      'minimal-layout': minimal,
+      'breathing-session': isBreathing,
+      'desktop-audio-settings': !minimal && settingsTab === 'audio',
+      'mobile-audio-settings': mobileSettingsOpen && settingsTab === 'audio',
+    }"
+  >
     <AppHeader
       :view="view"
       :active-sound="playing ? preferences.sound : 'off'"
       :playing="playing"
-      :audio-message="minimal || settingsTab !== 'audio' ? audioMessage : ''"
+      :audio-message="audioMessage"
       @home="view === 'reset' ? returnToStart() : selectView('reset')"
       @navigate="selectView"
       @toggle-sound="toggleSound"
@@ -176,6 +185,7 @@ function previewVoice() {
                 :title="minimal ? 'Show settings panel' : 'Hide settings panel'"
                 :aria-label="minimal ? 'Show settings panel' : 'Hide settings panel'"
                 :aria-expanded="!minimal"
+                aria-controls="session-settings"
                 @click="minimal = !minimal"
               >
                 <AppIcon :name="minimal ? 'shrink' : 'expand'" :size="19" />
@@ -189,7 +199,7 @@ function previewVoice() {
             :breath-state="breathState"
             :phase="phase"
             :motion-enabled="motionEnabled"
-          :offer-animated-start="offerAnimatedStart"
+            :offer-animated-start="offerAnimatedStart"
             :countdown="preferences.countdown"
             @start="startBreathing"
             @pause="breath.pause"
@@ -240,22 +250,36 @@ function previewVoice() {
             </div>
           </template>
         </section>
-        <SessionSettings
-          v-show="!minimal"
-          v-model:tab="settingsTab"
-          :model-value="preferences"
-          :is-breathing="isBreathing"
-          :is-grounding="isGrounding"
-          :is-guided="isGuided"
-          :playing="playing"
-          :audio-message="audioMessage"
-          :voice-message="voiceMessage"
-          :voice-supported="voiceSupported"
-          @update:model-value="updatePreferences"
-          @pick-sound="pickSound"
-          @reset="resetSettings"
-          @preview-voice="previewVoice"
-        />
+        <div class="settings-area">
+          <button
+            type="button"
+            class="mobile-settings-toggle"
+            :aria-expanded="mobileSettingsOpen"
+            aria-controls="session-settings"
+            @click="mobileSettingsOpen = !mobileSettingsOpen"
+          >
+            <AppIcon name="tune" :size="20" />
+            Session settings
+            <AppIcon class="settings-chevron" name="chevron" :size="17" />
+          </button>
+          <SessionSettings
+            id="session-settings"
+            v-model:tab="settingsTab"
+            :class="{ 'settings-open-on-mobile': mobileSettingsOpen }"
+            :model-value="preferences"
+            :is-breathing="isBreathing"
+            :is-grounding="isGrounding"
+            :is-guided="isGuided"
+            :playing="playing"
+            :audio-message="audioMessage"
+            :voice-message="voiceMessage"
+            :voice-supported="voiceSupported"
+            @update:model-value="updatePreferences"
+            @pick-sound="pickSound"
+            @reset="resetSettings"
+            @preview-voice="previewVoice"
+          />
+        </div>
       </div>
       <footer class="site-footer flex items-start">
         <AppIcon name="info" :size="19" />

@@ -51,7 +51,6 @@ function activateCircle() {
   else if (props.breathState === 'paused') emit('resume')
   else emit('pause')
 }
-
 </script>
 
 <template>
@@ -68,7 +67,10 @@ function activateCircle() {
     <button
       type="button"
       class="breath-orb"
-      :class="{ 'breath-orb-ready': !isBreathing, 'breath-orb-preparing': phase?.name === 'prepare' }"
+      :class="{
+        'breath-orb-ready': !isBreathing,
+        'breath-orb-preparing': phase?.name === 'prepare',
+      }"
       :style="{ '--expansion': phase?.expansion ?? 0 }"
       :aria-label="orbLabel"
       @click="activateCircle"

@@ -1,45 +1,71 @@
 # Quiet Moment
 
-A Vue 3 app for guided breathing, sensory grounding and quiet background audio.
+Guided breathing, sensory grounding, and simple distractions for anxious moments. Start by tapping the circle, or choose an exercise from the top of the page.
 
-## Development
+> [!IMPORTANT]
+> **For general self-help only.** Quiet Moment offers guided exercises. Its scope excludes medical diagnosis, treatment, and medical-device functions. For medical advice or care, speak with a qualified healthcare professional.
+>
+> **If you need emergency help in Ireland, call 112 or 999.** If you’re elsewhere, call your local emergency number. [HSE guidance on urgent mental health help](https://www2.hse.ie/mental-health/services-support/get-urgent-help/)
 
-Use Node 24 and pnpm 12.16.1, then run:
+## Find professional support
+
+- **Talk to a GP or find counselling.** The HSE explains how to access counselling and psychotherapy, including free and low-cost options. [HSE guide to getting talk therapy](https://www2.hse.ie/mental-health/services-support/talk-therapy/get/)
+- **Find mental health services in Ireland.** The HSE’s Your Mental Health information line can explain what services are available and how to access them. [Your Mental Health information line](https://www2.hse.ie/mental-health/services-support/your-mental-health-information-line/)
+- **Read about panic attacks and when to seek care.** [HSE guidance on panic attacks](https://www2.hse.ie/mental-health/issues/how-to-deal-with-panic-attacks/)
+
+## Start a quick reset
+
+1. Choose **Quick reset** and tap **Start** in the centre of the circle. With the default settings, there’s a short preparation countdown followed by about a minute of guided breathing.
+2. Follow the **Breathe in** and **Breathe out** cues at a pace that feels comfortable. Tap the circle or **Pause** to take a break. Tap again to resume, or choose **Reset** to go back to the start.
+3. When breathing ends, the app opens a grounding exercise. You can also choose **Skip to grounding** during the session.
+
+![Desktop Quick reset with Start in the centre of the circle and session settings alongside](docs/screenshots/desktop-quick-reset.jpg)
+
+## Choose an exercise
+
+### Breathing
+
+Choose **Breathing** for a session on its own. The cue shows when to breathe in through your nose and out through your mouth. The centre grows and shrinks with the breath while the guide rings stay still. Adjust the pace and duration in **Session settings**.
+
+![Desktop Breathing mode showing an inhale cue, a countdown in the circle, and Pause and Reset](docs/screenshots/desktop-breathing.jpg)
+
+### Grounding
+
+Work through the senses one at a time. Tap a number to record how many things you’ve noticed. Tapping **3**, for example, marks the first three and shows **3 / 5 noticed**. Choose **Next prompt** when you’re ready or **Skip prompt** to move on earlier.
+
+![Desktop Grounding mode showing the first sensory prompt and three of five items marked](docs/screenshots/desktop-grounding.jpg)
+
+### Distraction
+
+Try a small task, such as finding round objects nearby. Each prompt includes examples, and **Another prompt** lets you move on at your own pace.
+
+![Desktop Distraction mode showing a prompt to find round objects and three examples](docs/screenshots/desktop-distraction.jpg)
+
+## Use Quiet Moment on a phone
+
+The page adapts to the screen width automatically. On a phone, the exercise fills a single column and **Session settings** opens below the player. During breathing, the layout brings the cue, circle, **Pause**, and **Reset** closer together.
+
+<img src="docs/screenshots/mobile-breathing.jpg" alt="Phone layout showing a breathing cue, countdown, large Pause and Reset buttons, and collapsed Session settings" width="390" />
+
+## Set up your session
+
+- **Sound.** Tap **Sound off** in the header to play Soft lo-fi on first use. The chevron opens the sound choices, including rain, slow tide, and **Breathing lo-fi**. Breathing lo-fi follows your rhythm and pauses and resumes with the countdown.
+- **Spoken cues.** Open **Sound & voice** in Session settings to enable spoken instructions in supported browsers.
+- **Animation and countdowns.** Use **Display & countdown** to change the preparation countdown, hide timers, or keep the circle still. Animation follows your system preference until you choose a setting in the app.
+
+## Open it locally or offline
+
+If you have a copy of `Quiet-Moment.html`, open it in your browser. It includes the exercises and audio and can run offline. Your session preferences are stored in your browser.
+
+If you have the source code, use Node 24 and pnpm 12.16.1 from the project folder.
 
 ```sh
 pnpm install --frozen-lockfile
 pnpm run dev
 ```
 
-## Quality checks
+Open [localhost:5173](http://localhost:5173/). To make your own offline copy, run `pnpm run build:offline` and open `dist/Quiet-Moment.html`.
 
-```sh
-pnpm run check
-```
+### For contributors
 
-This runs ESLint, Prettier checks and the production build. Use `pnpm run lint:fix` and `pnpm run format` to apply fixes. Commit `pnpm-lock.yaml` whenever dependencies change.
-
-## Vercel
-
-Import `SteveWalsh1989/quiet-moment` using the Vite preset and Node 24. Build settings are in `vercel.json`: install with `pnpm install --frozen-lockfile`, run `pnpm run check`, and serve `dist`. Use `main` as the production branch. No application environment variables are required.
-
-The production app includes Vercel Web Analytics. In the Vercel project, open Analytics and enable Web Analytics before deployment. After deploying, visit the live site and confirm page views appear in Analytics. URL query parameters and fragments are removed before analytics events are sent. Exercise settings stay in browser storage.
-
-## Project status
-
-ESLint, Prettier, and the production build pass with the available dependencies. The pnpm lockfile has been regenerated offline. A clean install needs registry access because some package tarballs are not cached. GitHub publication, production deployment, and dashboard analytics activation remain pending until their remote steps complete.
-
-The connected GitHub integration authenticates as `SteveWalsh1989`. This workspace cannot resolve GitHub or npm registry hosts from its terminal, and GPG cannot access the existing keybox to sign the initial commit. The files are staged, signing remains enabled, and no initial commit or push has completed. Vercel project creation returned HTTP 403, so no Vercel project was created here.
-
-## GitHub publication
-
-From a terminal with GitHub access, verify authentication and publish the private repository:
-
-```sh
-gh auth status
-git add .
-git commit -m "Prepare Quiet Moment for private GitHub and Vercel"
-gh repo create SteveWalsh1989/quiet-moment --private --source=. --remote=origin --push
-```
-
-Git uses your existing commit-signing configuration; do not disable signing to work around an unavailable signing agent. If an initial commit already exists, skip the commit command. Verify the repository is private with `gh repo view SteveWalsh1989/quiet-moment --json visibility,url`.
+Quiet Moment uses Vue 3, TypeScript, Vite, and Tailwind CSS. Run `pnpm run check` for linting, formatting, type checks, tests, and a production build. The [contributor guide](AGENTS.md) maps the code and documents the behavior that tests and changes should preserve.
