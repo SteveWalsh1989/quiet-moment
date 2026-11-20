@@ -60,7 +60,7 @@
   border-bottom: 1px solid var(--line);
 }
 
-.settings-row > label,
+.settings-select-label,
 .sound-list legend,
 .extra-input,
 .volume-label {
@@ -68,21 +68,6 @@
   color: #3f3456;
   font-size: 0.89rem;
   font-weight: 800;
-}
-
-.select-wrap {
-  position: relative;
-  display: block;
-  margin-top: 7px;
-}
-
-.select-wrap > svg {
-  position: absolute;
-  right: 11px;
-  top: 50%;
-  translate: 0 -50%;
-  color: var(--muted);
-  pointer-events: none;
 }
 
 .control {
@@ -95,6 +80,53 @@
   background: #fffaff;
   color: var(--ink);
   font-size: 0.92rem;
+}
+
+.settings-select-trigger {
+  min-height: 44px;
+  padding-right: 11px;
+}
+
+.settings-select-trigger svg {
+  flex: none;
+  color: var(--muted);
+}
+
+.settings-select-trigger[aria-expanded='true'] {
+  border-color: #8465a7;
+}
+
+.settings-select-trigger[aria-expanded='true'] svg {
+  rotate: 180deg;
+}
+
+.settings-select-popup {
+  inset: calc(100% + 6px) 0 auto;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.settings-select-popup-above {
+  inset: auto 0 calc(100% + 6px);
+}
+
+.settings-select-option {
+  cursor: pointer;
+}
+
+.settings-select-option svg {
+  flex: none;
+}
+
+.settings-select-option-active {
+  outline: 2px solid #8465a7;
+  outline-offset: -2px;
+}
+
+@media (forced-colors: active) {
+  .settings-select-option-active {
+    outline-color: Highlight;
+  }
 }
 
 input.control {

@@ -141,11 +141,6 @@
   line-height: 1.2;
 }
 
-.orb-start small {
-  font-size: 0.7rem;
-  font-weight: 750;
-}
-
 .breath-orb-ready .orb-body,
 .breath-orb-ready .orb-core {
   scale: 0.9;

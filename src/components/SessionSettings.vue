@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
+import SettingsSelect from './SettingsSelect.vue'
 import {
   formatTime,
   getPaceRhythm,
@@ -48,16 +49,38 @@ const voice = preferenceModel('voice')
 const voiceVolume = preferenceModel('voiceVolume')
 const rhythm = computed(() => getPaceRhythm(preferences.value))
 const selectedPace = computed(() => paces.find(({ id }) => id === pace.value))
-const paceOptions = paces.map((item) => {
-  if (!('timing' in item)) return { id: item.id, label: item.title }
-  const counts = getRhythm(item.timing)
-    .steps.map(({ duration }) => duration)
-    .join('–')
-  return {
-    id: item.id,
-    label: item.title.includes(counts) ? item.title : `${item.title} · ${counts}`,
-  }
-})
+const paceOptions = paces.map((item) => ({
+  id: item.id,
+  label: item.title,
+  detail:
+    'timing' in item
+      ? getRhythm(item.timing)
+          .steps.map((step) => `${step.label} ${step.duration}s`)
+          .join(' · ')
+      : item.detail,
+}))
+const groundingOptions = Object.entries(grounding).map(([id, item]) => ({
+  id: id as Preferences['ground'],
+  label: item.label,
+}))
+const motionOptions = [
+  { id: 'system', label: 'Follow system setting' },
+  { id: 'on', label: 'Always animate' },
+  { id: 'off', label: 'Keep circle still' },
+] as const
+const prepOptions = [
+  { id: 0, label: 'Start immediately' },
+  { id: 3, label: '3 seconds' },
+  { id: 5, label: '5 seconds' },
+  { id: 10, label: '10 seconds' },
+]
+const durationOptions = [
+  { id: 30, label: '30 seconds' },
+  { id: 60, label: '1 minute', detail: 'Quick reset' },
+  { id: 120, label: '2 minutes' },
+  { id: 300, label: '5 minutes' },
+  { id: 'custom', label: 'Custom duration' },
+] as const
 const customTimingFields = [
   { id: 'inhale', label: 'Inhale' },
   { id: 'hold', label: 'Hold after inhale' },
@@ -68,18 +91,17 @@ const practiceTime = computed(() =>
   roundSessionDuration(preferences.value.duration, rhythm.value.cycleDuration),
 )
 const settingsLocked = computed(() => props.isBreathing || props.isGrounding)
-const presetDurations = [30, 60, 120, 300]
-const storedDuration = computed(() =>
-  preferences.value.customDuration || !presetDurations.includes(preferences.value.duration)
-    ? 'custom'
-    : preferences.value.duration,
-)
-
-function setDuration(event: Event) {
-  if (!(event.target instanceof HTMLSelectElement)) return
-  if (event.target.value === 'custom') updatePreferences({ customDuration: true })
-  else updatePreferences({ duration: Number(event.target.value), customDuration: false })
-}
+const storedDuration = computed({
+  get: () =>
+    preferences.value.customDuration ||
+    !durationOptions.some(({ id }) => id === preferences.value.duration)
+      ? 'custom'
+      : preferences.value.duration,
+  set: (value: number | 'custom') => {
+    if (value === 'custom') updatePreferences({ customDuration: true })
+    else updatePreferences({ duration: value, customDuration: false })
+  },
+})
 
 function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'duration', event: Event) {
   if (!(event.target instanceof HTMLInputElement)) return
@@ -114,21 +136,13 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
 
     <div v-if="settingsTab === 'session'" class="settings-body">
       <div class="settings-row">
-        <label for="pace">Breathing pace</label>
-        <div class="select-wrap">
-          <select
-            id="pace"
-            v-model="pace"
-            class="control"
-            :disabled="isBreathing"
-            aria-describedby="pace-detail"
-          >
-            <option v-for="item in paceOptions" :key="item.id" :value="item.id">
-              {{ item.label }}
-            </option>
-          </select>
-          <AppIcon name="chevron" :size="16" />
-        </div>
+        <SettingsSelect
+          v-model="pace"
+          label="Breathing pace"
+          :options="paceOptions"
+          :disabled="isBreathing"
+          description-id="pace-detail"
+        />
         <p id="pace-detail" class="field-note">{{ selectedPace?.detail }}</p>
         <div v-if="preferences.pace === 'custom'" class="timing-fields">
           <label v-for="field in customTimingFields" :key="field.id">
@@ -155,23 +169,12 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </p>
       </div>
       <div class="settings-row">
-        <label for="duration">Breathing duration</label>
-        <div class="select-wrap">
-          <select
-            id="duration"
-            :value="storedDuration"
-            class="control"
-            :disabled="isBreathing"
-            @change="setDuration"
-          >
-            <option :value="30">30 seconds</option>
-            <option :value="60">1 minute · Quick reset</option>
-            <option :value="120">2 minutes</option>
-            <option :value="300">5 minutes</option>
-            <option value="custom">Custom duration</option>
-          </select>
-          <AppIcon name="chevron" :size="16" />
-        </div>
+        <SettingsSelect
+          v-model="storedDuration"
+          label="Breathing duration"
+          :options="durationOptions"
+          :disabled="isBreathing"
+        />
         <label v-if="storedDuration === 'custom'" class="extra-input"
           >Seconds (15–600)<input
             class="control"
@@ -188,15 +191,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </p>
       </div>
       <div class="settings-row">
-        <label for="ground">Grounding exercise</label>
-        <div class="select-wrap">
-          <select id="ground" v-model="ground" class="control">
-            <option v-for="(item, id) in grounding" :key="id" :value="id">
-              {{ item.label }}
-            </option>
-          </select>
-          <AppIcon name="chevron" :size="16" />
-        </div>
+        <SettingsSelect v-model="ground" label="Grounding exercise" :options="groundingOptions" />
         <p v-if="isGuided && isGrounding" class="field-note">Changes apply to your next reset.</p>
       </div>
       <details class="more-settings">
@@ -206,28 +201,19 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         <label class="switch-row"
           ><span>Show countdowns</span><input v-model="countdown" type="checkbox"
         /></label>
-        <label class="extra-input" for="motion">
-          Breathing animation
-          <span class="select-wrap">
-            <select id="motion" v-model="motion" class="control">
-              <option value="system">Follow system setting</option>
-              <option value="on">Always animate</option>
-              <option value="off">Keep circle still</option>
-            </select>
-            <AppIcon name="chevron" :size="16" />
-          </span>
-        </label>
-        <label class="extra-input" for="prep"
-          >Preparation countdown
-          <span class="select-wrap"
-            ><select id="prep" v-model.number="prep" class="control" :disabled="isBreathing">
-              <option :value="0">Start immediately</option>
-              <option :value="3">3 seconds</option>
-              <option :value="5">5 seconds</option>
-              <option :value="10">10 seconds</option></select
-            ><AppIcon name="chevron" :size="16"
-          /></span>
-        </label>
+        <SettingsSelect
+          v-model="motion"
+          class="extra-input"
+          label="Breathing animation"
+          :options="motionOptions"
+        />
+        <SettingsSelect
+          v-model="prep"
+          class="extra-input"
+          label="Preparation countdown"
+          :options="prepOptions"
+          :disabled="isBreathing"
+        />
         <button type="button" class="text-button" :disabled="settingsLocked" @click="emit('reset')">
           Restore recommended settings
         </button>

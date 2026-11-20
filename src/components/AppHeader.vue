@@ -96,7 +96,7 @@ onUnmounted(() => document.removeEventListener('click', closeSoundMenuOutside))
         <div
           v-show="soundMenuOpen"
           id="header-sound-options"
-          class="sound-menu"
+          class="sound-menu option-popup"
           role="group"
           aria-label="Background sound"
         >
@@ -104,7 +104,7 @@ onUnmounted(() => document.removeEventListener('click', closeSoundMenuOutside))
             v-for="sound in soundTracks"
             :key="sound.id"
             type="button"
-            class="sound-menu-option flex w-full items-center justify-between text-left"
+            class="popup-option flex w-full items-center justify-between text-left"
             :aria-pressed="activeSound === sound.id"
             @click="pickHeaderSound(sound.id)"
           >

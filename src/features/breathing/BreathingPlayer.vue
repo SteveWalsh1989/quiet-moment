@@ -12,7 +12,6 @@ const props = defineProps<{
   phase: BreathingPhase | null
   rhythm: BreathingRhythm
   motionEnabled: boolean
-  offerAnimatedStart: boolean
   countdown: boolean
 }>()
 const emit = defineEmits<{
@@ -43,7 +42,6 @@ const orbLabel = computed(() => {
   if (props.isBreathing) {
     return props.breathState === 'paused' ? 'Resume breathing' : 'Pause breathing'
   }
-  if (props.offerAnimatedStart) return 'Start with animation'
   return props.isGuided ? 'Start quick reset' : 'Start breathing'
 })
 
@@ -128,7 +126,6 @@ function activateCircle() {
       <span v-if="!isBreathing" class="orb-start" aria-hidden="true">
         <AppIcon name="play" :size="20" />
         <span>Start</span>
-        <small v-if="offerAnimatedStart">With animation</small>
       </span>
       <span v-else-if="breathState === 'paused'" class="orb-start" aria-hidden="true">
         <AppIcon name="play" :size="20" />

@@ -66,3 +66,19 @@ button:disabled {
 h2[tabindex]:focus {
   outline: none;
 }
+
+.skip-link {
+  @apply sr-only focus:not-sr-only;
+}
+
+.skip-link:focus {
+  position: absolute;
+  z-index: 10;
+  top: 8px;
+  left: 12px;
+  padding: 10px 14px;
+  border-radius: 7px;
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 750;
+}

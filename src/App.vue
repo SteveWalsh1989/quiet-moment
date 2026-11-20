@@ -37,7 +37,6 @@ const isGuided = computed(() => view.value === 'reset')
 const isBreathing = computed(() => stage.value === 'breathe')
 const isGrounding = computed(() => stage.value === 'ground')
 const motionEnabled = useMotionPreference(preferences)
-const offerAnimatedStart = computed(() => preferences.motion === 'system' && !motionEnabled.value)
 
 let lastSound = preferences.sound === 'off' ? 'lofi' : preferences.sound
 const audio = useBackgroundAudio(preferences)
@@ -75,7 +74,6 @@ function selectView(id: ExerciseView) {
 }
 
 function startBreathing() {
-  if (offerAnimatedStart.value) preferences.motion = 'on'
   stage.value = 'breathe'
   if (preferences.sound !== 'off' && !playing.value) void audio.playSound()
   breath.start()
@@ -143,6 +141,7 @@ function previewVoice() {
       'mobile-audio-settings': mobileSettingsOpen && settingsTab === 'audio',
     }"
   >
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <AppHeader
       :view="view"
       :active-sound="playing ? preferences.sound : 'off'"
@@ -153,7 +152,7 @@ function previewVoice() {
       @toggle-sound="toggleSound"
       @pick-sound="pickSound"
     />
-    <main class="main-wrap">
+    <main id="main-content" class="main-wrap" tabindex="-1">
       <div class="intro-block">
         <h1>{{ current.title }}</h1>
         <p>{{ current.intro }}</p>
@@ -200,7 +199,6 @@ function previewVoice() {
             :phase="phase"
             :rhythm="rhythm"
             :motion-enabled="motionEnabled"
-            :offer-animated-start="offerAnimatedStart"
             :countdown="preferences.countdown"
             @start="startBreathing"
             @pause="breath.pause"
