@@ -1,10 +1,12 @@
 <script setup lang="ts" generic="T extends string | number">
 import { computed, nextTick, onMounted, onUnmounted, ref, useId, watch } from 'vue'
 import AppIcon from './AppIcon.vue'
+import type { IconName } from './iconPaths'
 
 const props = defineProps<{
   label: string
-  options: readonly { id: T; label: string; detail?: string }[]
+  options: readonly { id: T; label: string; detail?: string; icon?: IconName }[]
+  iconOnly?: boolean
   descriptionId?: string
   disabled?: boolean
 }>()
@@ -137,15 +139,22 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
 </script>
 
 <template>
-  <div ref="root" class="settings-select">
-    <label :id="`${id}-label`" :for="id" class="settings-select-label">{{ label }}</label>
-    <div class="relative mt-[7px]">
+  <div ref="root" class="select-menu">
+    <label :id="`${id}-label`" :for="id" :class="iconOnly ? 'sr-only' : 'settings-select-label'">
+      {{ label }}
+    </label>
+    <div class="relative" :class="{ 'mt-[7px]': !iconOnly }">
       <button
         :id="id"
         ref="trigger"
         type="button"
         role="combobox"
-        class="control settings-select-trigger flex items-center justify-between gap-3 text-left"
+        :class="
+          iconOnly
+            ? 'theme-trigger'
+            : 'control settings-select-trigger flex items-center justify-between gap-3 text-left'
+        "
+        :title="iconOnly ? `${label} · ${options[selected]?.label}` : undefined"
         :disabled="disabled"
         :aria-labelledby="`${id}-label`"
         :aria-describedby="descriptionId"
@@ -156,16 +165,19 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
         @blur="close"
         @keydown="handleKey"
       >
-        <span>{{ options[selected]?.label }}</span>
-        <AppIcon name="chevron" :size="16" />
+        <span :class="{ 'sr-only': iconOnly }">{{ options[selected]?.label }}</span>
+        <AppIcon
+          :name="iconOnly ? (options[selected]?.icon ?? 'monitor') : 'chevron'"
+          :size="iconOnly ? 19 : 16"
+        />
       </button>
       <div
         v-show="isOpen"
         :id="listId"
         ref="list"
         role="listbox"
-        class="option-popup settings-select-popup"
-        :class="{ 'settings-select-popup-above': opensAbove }"
+        class="option-popup select-menu-popup"
+        :class="{ 'select-menu-popup-above': opensAbove, 'theme-popup': iconOnly }"
         :style="{ maxHeight: `${maxHeight}px` }"
         :aria-labelledby="`${id}-label`"
       >
@@ -174,13 +186,14 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
           :id="optionId(index)"
           :key="option.id"
           role="option"
-          class="popup-option settings-select-option flex items-center justify-between text-left"
-          :class="{ 'settings-select-option-active': active === index }"
+          class="popup-option select-menu-option flex items-center text-left"
+          :class="{ 'select-menu-option-active': active === index }"
           :aria-selected="index === selected"
           @mousedown.prevent
           @click="choose(index)"
         >
-          <span>
+          <AppIcon v-if="option.icon" :name="option.icon" :size="17" />
+          <span class="flex-1">
             <strong>{{ option.label }}</strong>
             <small v-if="option.detail">{{ option.detail }}</small>
           </span>

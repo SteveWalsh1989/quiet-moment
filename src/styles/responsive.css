@@ -33,7 +33,7 @@
     width: 30px;
     height: 30px;
   }
-  .sound-control {
+  .topbar-actions {
     grid-area: 1 / 2;
   }
   .mobile-audio-settings .sound-error {
@@ -178,6 +178,12 @@
 }
 
 @media (max-width: 390px) {
+  .sound-shortcut span {
+    @apply sr-only;
+  }
+  .sound-shortcut {
+    min-width: 44px;
+  }
   .main-nav {
     gap: 2px;
   }

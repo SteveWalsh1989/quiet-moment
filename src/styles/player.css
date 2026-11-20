@@ -7,7 +7,12 @@
   align-items: stretch;
   border-radius: 15px;
   color: var(--on-player);
-  background: radial-gradient(ellipse at 50% 37%, #3d335b 0%, #302945 45%, #242039 100%);
+  background: radial-gradient(
+    ellipse at 50% 37%,
+    var(--player-glow) 0%,
+    var(--player-mid) 45%,
+    var(--player-edge) 100%
+  );
 }
 
 .player-top {

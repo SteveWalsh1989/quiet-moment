@@ -1,6 +1,6 @@
 .topbar {
-  border-bottom: 1px solid #e1dce9;
-  background: #f9f7ff;
+  border-bottom: 1px solid var(--line);
+  background: var(--topbar);
 }
 
 .topbar-inner {
@@ -29,7 +29,8 @@
 
 .main-nav button,
 .sound-shortcut,
-.sound-menu-toggle {
+.sound-menu-toggle,
+.theme-trigger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -46,14 +47,16 @@
 .main-nav button:hover,
 .sound-shortcut:hover,
 .sound-menu-toggle:hover,
-.sound-menu-toggle[aria-expanded='true'] {
-  background: #eeebf6;
+.sound-menu-toggle[aria-expanded='true'],
+.theme-trigger:hover,
+.theme-trigger[aria-expanded='true'] {
+  background: var(--hover);
   color: var(--ink);
 }
 
 .main-nav button[aria-current] {
-  background: #e9e3f4;
-  color: #4d3a72;
+  background: var(--selected);
+  color: var(--accent-ink);
 }
 
 .sound-shortcut {
@@ -68,6 +71,21 @@
   border-radius: 0 8px 8px 0;
 }
 
+.topbar-actions {
+  gap: 8px;
+}
+
+.theme-trigger {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+}
+
+.theme-popup {
+  left: auto;
+  width: min(208px, calc(100vw - 28px));
+}
+
 .option-popup,
 .sound-error {
   position: absolute;
@@ -76,7 +94,7 @@
   border: 1px solid var(--line);
   border-radius: 11px;
   background: var(--panel);
-  box-shadow: 0 10px 28px #31214623;
+  box-shadow: 0 10px 28px var(--popup-shadow);
 }
 
 .sound-menu,
@@ -96,8 +114,8 @@
 .popup-option:hover,
 .popup-option[aria-pressed='true'],
 .popup-option[aria-selected='true'] {
-  background: #eee8f6;
-  color: #4d3a72;
+  background: var(--selected);
+  color: var(--accent-ink);
 }
 
 .popup-option strong,
@@ -176,7 +194,7 @@
 }
 
 .site-footer a {
-  color: #6a478d;
+  color: var(--accent-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
 }

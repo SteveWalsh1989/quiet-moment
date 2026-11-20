@@ -69,3 +69,7 @@ Open [localhost:5173](http://localhost:5173/). To make your own offline copy, ru
 ### For contributors
 
 Quiet Moment uses Vue 3, TypeScript, Vite, and Tailwind CSS. Run `pnpm run check` for linting, formatting, type checks, tests, and a production build. The [contributor guide](AGENTS.md) maps the code and documents the behavior that tests and changes should preserve.
+
+## Appearance
+
+Use the appearance icon in the header to choose System, Light, or Dark. System follows your device. Your choice is remembered in the browser.

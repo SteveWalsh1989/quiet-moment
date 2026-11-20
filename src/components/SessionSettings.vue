@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
-import SettingsSelect from './SettingsSelect.vue'
+import SelectMenu from './SelectMenu.vue'
 import {
   formatTime,
   getPaceRhythm,
@@ -136,7 +136,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
 
     <div v-if="settingsTab === 'session'" class="settings-body">
       <div class="settings-row">
-        <SettingsSelect
+        <SelectMenu
           v-model="pace"
           label="Breathing pace"
           :options="paceOptions"
@@ -169,7 +169,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </p>
       </div>
       <div class="settings-row">
-        <SettingsSelect
+        <SelectMenu
           v-model="storedDuration"
           label="Breathing duration"
           :options="durationOptions"
@@ -191,7 +191,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </p>
       </div>
       <div class="settings-row">
-        <SettingsSelect v-model="ground" label="Grounding exercise" :options="groundingOptions" />
+        <SelectMenu v-model="ground" label="Grounding exercise" :options="groundingOptions" />
         <p v-if="isGuided && isGrounding" class="field-note">Changes apply to your next reset.</p>
       </div>
       <details class="more-settings">
@@ -201,13 +201,13 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         <label class="switch-row"
           ><span>Show countdowns</span><input v-model="countdown" type="checkbox"
         /></label>
-        <SettingsSelect
+        <SelectMenu
           v-model="motion"
           class="extra-input"
           label="Breathing animation"
           :options="motionOptions"
         />
-        <SettingsSelect
+        <SelectMenu
           v-model="prep"
           class="extra-input"
           label="Preparation countdown"

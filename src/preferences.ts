@@ -6,6 +6,7 @@ import { soundTracks } from './features/audio/soundTracks.ts'
 import type { SoundId } from './features/audio/soundTracks.ts'
 
 export type MotionPreference = 'system' | 'on' | 'off'
+export type ThemePreference = 'system' | 'light' | 'dark'
 
 export interface Preferences {
   pace: PaceId
@@ -22,6 +23,7 @@ export interface Preferences {
   sound: SoundId
   volume: number
   motion: MotionPreference
+  theme: ThemePreference
   countdown: boolean
 }
 
@@ -40,6 +42,7 @@ export const defaultPreferences: Readonly<Preferences> = {
   sound: 'off',
   volume: 30,
   motion: 'system',
+  theme: 'system',
   countdown: true,
 }
 
@@ -101,6 +104,8 @@ export function normalizePreferences(input: unknown): Preferences {
     sound: sound ?? defaultPreferences.sound,
     volume: boundedNumber(saved.volume, defaultPreferences.volume, preferenceLimits.volume),
     motion,
+    theme:
+      saved.theme === 'light' || saved.theme === 'dark' ? saved.theme : defaultPreferences.theme,
     countdown:
       typeof saved.countdown === 'boolean' ? saved.countdown : defaultPreferences.countdown,
   }

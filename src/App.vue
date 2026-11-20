@@ -16,11 +16,13 @@ import { useBackgroundAudio } from './features/audio/useBackgroundAudio'
 import { useSpokenCues } from './features/audio/useSpokenCues'
 import { defaultPreferences, loadPreferences, savePreferences } from './preferences'
 import type { Preferences } from './preferences'
+import { useThemePreference } from './useThemePreference'
 
 type ExerciseStage = 'ready' | 'breathe' | 'ground' | 'focus' | 'done'
 
 const preferences = reactive(loadPreferences())
 watch(preferences, () => savePreferences(preferences))
+useThemePreference(preferences)
 
 const view = ref<ExerciseView>('reset')
 const stage = ref<ExerciseStage>('ready')
@@ -121,7 +123,7 @@ function updatePreferences(next: Preferences) {
 }
 
 function resetSettings() {
-  Object.assign(preferences, defaultPreferences)
+  Object.assign(preferences, { ...defaultPreferences, theme: preferences.theme })
   lastSound = 'lofi'
   void audio.playSound('off')
 }
@@ -143,6 +145,7 @@ function previewVoice() {
   >
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <AppHeader
+      v-model:theme="preferences.theme"
       :view="view"
       :active-sound="playing ? preferences.sound : 'off'"
       :playing="playing"

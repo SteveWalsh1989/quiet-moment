@@ -13,17 +13,51 @@
 :root {
   color-scheme: light;
   font-family: Manrope, sans-serif;
-  color: #28243d;
-  background: #f3f2fa;
+  color: var(--ink);
+  background: var(--paper);
   --paper: #f3f2fa;
+  --topbar: #f9f7ff;
+  --panel: #faf9ff;
+  --control: #fffaff;
   --ink: #28243d;
   --muted: #615b77;
   --line: #dcd7e8;
-  --panel: #faf9ff;
-  --player: #28223f;
+  --field-line: #9386a7;
+  --hover: #eeebf6;
+  --selected: #e9e3f4;
+  --selection: #e6d7f5;
+  --accent-ink: #604386;
+  --accent: #7953a0;
+  --focus: #7b5ea4;
+  --popup-shadow: #31214623;
+  --player-glow: #3d335b;
+  --player-mid: #302945;
+  --player-edge: #242039;
   --on-player: #f5f0ff;
   --player-muted: #cdc5e1;
   --action: #e8c5ea;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --paper: #171422;
+  --topbar: #1c182a;
+  --panel: #231e32;
+  --control: #2b243d;
+  --ink: #f4eefb;
+  --muted: #ccc0da;
+  --line: #483d59;
+  --field-line: #887898;
+  --hover: #342b46;
+  --selected: #413357;
+  --selection: #523d6f;
+  --accent-ink: #e3caef;
+  --accent: #bf9ce9;
+  --focus: #cfb4f8;
+  --popup-shadow: #0b071a99;
+  --player-glow: #392f55;
+  --player-mid: #2d253f;
+  --player-edge: #221b34;
 }
 
 * {
@@ -50,12 +84,12 @@ button:disabled {
 }
 
 ::selection {
-  background: #e6d7f5;
-  color: #28243d;
+  background: var(--selection);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid #7b5ea4;
+  outline: 2px solid var(--focus);
   outline-offset: 3px;
 }
 

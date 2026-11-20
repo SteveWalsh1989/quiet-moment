@@ -17,7 +17,7 @@
 }
 
 .settings-title svg {
-  color: #796591;
+  color: var(--accent);
 }
 
 .settings-title h2 {
@@ -43,12 +43,12 @@
 }
 
 .settings-tabs button:hover {
-  color: #5b3e80;
+  color: var(--accent-ink);
 }
 
 .settings-tabs button[aria-pressed='true'] {
-  border-bottom-color: #7953a0;
-  color: #5b3e80;
+  border-bottom-color: var(--accent);
+  color: var(--accent-ink);
 }
 
 .settings-body {
@@ -65,7 +65,7 @@
 .extra-input,
 .volume-label {
   display: block;
-  color: #3f3456;
+  color: var(--ink);
   font-size: 0.89rem;
   font-weight: 800;
 }
@@ -75,9 +75,9 @@
   width: 100%;
   min-height: 42px;
   padding: 7px 34px 7px 10px;
-  border: 1px solid #d4cce2;
+  border: 1px solid var(--field-line);
   border-radius: 7px;
-  background: #fffaff;
+  background: var(--control);
   color: var(--ink);
   font-size: 0.92rem;
 }
@@ -93,38 +93,42 @@
 }
 
 .settings-select-trigger[aria-expanded='true'] {
-  border-color: #8465a7;
+  border-color: var(--focus);
 }
 
 .settings-select-trigger[aria-expanded='true'] svg {
   rotate: 180deg;
 }
 
-.settings-select-popup {
+.select-menu-popup {
   inset: calc(100% + 6px) 0 auto;
   overflow: auto;
   overscroll-behavior: contain;
 }
 
-.settings-select-popup-above {
+.select-menu-popup-above {
   inset: auto 0 calc(100% + 6px);
 }
 
-.settings-select-option {
+.select-menu-popup.theme-popup {
+  left: auto;
+}
+
+.select-menu-option {
   cursor: pointer;
 }
 
-.settings-select-option svg {
+.select-menu-option svg {
   flex: none;
 }
 
-.settings-select-option-active {
-  outline: 2px solid #8465a7;
+.select-menu-option-active {
+  outline: 2px solid var(--focus);
   outline-offset: -2px;
 }
 
 @media (forced-colors: active) {
-  .settings-select-option-active {
+  .select-menu-option-active {
     outline-color: Highlight;
   }
 }
@@ -137,7 +141,7 @@ input.control {
 }
 
 .control:hover:not(:disabled) {
-  border-color: #9983b4;
+  border-color: var(--accent);
 }
 
 .control:disabled {
@@ -219,7 +223,7 @@ input.control {
 input[type='checkbox'],
 input[type='range'],
 input[type='radio'] {
-  accent-color: #8d63ae;
+  accent-color: var(--accent);
 }
 
 input[type='checkbox'],
@@ -237,7 +241,7 @@ input[type='range'] {
 
 .text-button {
   min-height: 30px;
-  color: #6a478d;
+  color: var(--accent-ink);
   font-size: 0.84rem;
   font-weight: 800;
   text-decoration: underline;
@@ -267,7 +271,7 @@ input[type='range'] {
 }
 
 .sound-option:hover {
-  background: #f1eafa;
+  background: var(--hover);
 }
 
 .sound-option > span {

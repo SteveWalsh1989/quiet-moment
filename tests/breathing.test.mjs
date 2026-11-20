@@ -96,6 +96,10 @@ test('saved preferences keep legacy motion choices and reject invalid timing', (
   assert.equal(normalizePreferences({ motion: true }).motion, 'system')
   assert.equal(normalizePreferences({ motion: false }).motion, 'off')
   assert.equal(normalizePreferences({ motion: 'on' }).motion, 'on')
+  assert.equal(normalizePreferences({}).theme, 'system')
+  assert.equal(normalizePreferences({ theme: 'light' }).theme, 'light')
+  assert.equal(normalizePreferences({ theme: 'dark' }).theme, 'dark')
+  assert.equal(normalizePreferences({ theme: 'unknown' }).theme, 'system')
   const saved = normalizePreferences({
     pace: 'unknown',
     inhale: 0,
