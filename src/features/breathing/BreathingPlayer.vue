@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import AppIcon from '../../components/AppIcon.vue'
 import { breathingCues } from './breathingTiming'
-import type { BreathingPhase } from './breathingTiming'
+import type { BreathingPhase, BreathingRhythm } from './breathingTiming'
 import type { BreathingState } from './useBreathingSession'
 
 const props = defineProps<{
@@ -10,6 +10,7 @@ const props = defineProps<{
   isGuided: boolean
   breathState: BreathingState
   phase: BreathingPhase | null
+  rhythm: BreathingRhythm
   motionEnabled: boolean
   offerAnimatedStart: boolean
   countdown: boolean
@@ -46,6 +47,26 @@ const orbLabel = computed(() => {
   return props.isGuided ? 'Start quick reset' : 'Start breathing'
 })
 
+const ringSegments = computed(() =>
+  props.rhythm.steps.map((step) => {
+    const gap = 1.4
+    const start = (100 * step.start) / props.rhythm.cycleDuration
+
+    return {
+      ...step,
+      rotation: start * 3.6 - 90 + gap * 1.8,
+      length: (100 * step.duration) / props.rhythm.cycleDuration - gap,
+    }
+  }),
+)
+const ringProgress = computed(() => {
+  const position = props.phase?.position ?? 0
+  return ringSegments.value.map((segment) => {
+    const fraction = Math.min(1, Math.max(0, (position - segment.start) / segment.duration))
+    return segment.length * fraction
+  })
+})
+
 function activateCircle() {
   if (!props.isBreathing) emit('start')
   else if (props.breathState === 'paused') emit('resume')
@@ -75,7 +96,32 @@ function activateCircle() {
       :aria-label="orbLabel"
       @click="activateCircle"
     >
-      <span class="guide-ring guide-ring-outer" aria-hidden="true"></span>
+      <svg class="breath-ring" viewBox="0 0 208 208" aria-hidden="true">
+        <g
+          v-for="(segment, index) in ringSegments"
+          :key="segment.name"
+          :class="`breath-ring-${segment.name}`"
+          :transform="`rotate(${segment.rotation} 104 104)`"
+        >
+          <circle
+            class="breath-ring-track"
+            cx="104"
+            cy="104"
+            r="100"
+            pathLength="100"
+            :stroke-dasharray="`${segment.length} 100`"
+          />
+          <circle
+            v-if="motionEnabled && phase && phase.name !== 'prepare'"
+            class="breath-ring-fill"
+            cx="104"
+            cy="104"
+            r="100"
+            pathLength="100"
+            :stroke-dasharray="`${ringProgress[index]} 100`"
+          />
+        </g>
+      </svg>
       <span class="guide-ring guide-ring-inner" aria-hidden="true"></span>
       <span class="orb-body" aria-hidden="true"></span>
       <span class="orb-core" aria-hidden="true"></span>

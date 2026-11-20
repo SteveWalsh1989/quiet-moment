@@ -119,6 +119,27 @@ input.control {
   line-height: 1.52;
 }
 
+.pace-steps {
+  gap: 4px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pace-steps li {
+  padding: 3px 7px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.pace-steps span {
+  color: var(--ink);
+  font-weight: 750;
+}
+
 .timing-fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

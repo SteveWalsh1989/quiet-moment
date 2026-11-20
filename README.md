@@ -25,7 +25,7 @@ Guided breathing, sensory grounding, and simple distractions for anxious moments
 
 ### Breathing
 
-Choose **Breathing** for a session on its own. The cue shows when to breathe in through your nose and out through your mouth. The centre grows and shrinks with the breath while the guide rings stay still. Adjust the pace and duration in **Session settings**.
+Choose **Breathing** for a session on its own. The cue shows when to breathe in through your nose and out through your mouth. The centre grows and shrinks with the breath. The outer ring fills clockwise once per cycle, with a notch at each cue change. In **Session settings**, choose a pace to see its inhale, exhale, and hold times, or set your own. Set either custom hold to zero to skip it.
 
 ![Desktop Breathing mode showing an inhale cue, a countdown in the circle, and Pause and Reset](docs/screenshots/desktop-breathing.jpg)
 

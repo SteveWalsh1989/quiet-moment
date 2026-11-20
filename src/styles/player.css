@@ -78,8 +78,31 @@
   pointer-events: none;
 }
 
-.guide-ring-outer {
-  border: 1px solid #b4b9ea3d;
+.breath-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4;
+  pointer-events: none;
+}
+
+.breath-ring-inhale {
+  color: #f1c6f7;
+}
+
+.breath-ring-exhale {
+  color: #b7caff;
+}
+
+.breath-ring-hold,
+.breath-ring-rest {
+  color: #d9c5fb;
+}
+
+.breath-ring-track {
+  opacity: 0.32;
 }
 
 .guide-ring-inner {

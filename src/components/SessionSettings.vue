@@ -3,7 +3,8 @@ import { computed } from 'vue'
 import AppIcon from './AppIcon.vue'
 import {
   formatTime,
-  getTiming,
+  getPaceRhythm,
+  getRhythm,
   paces,
   roundSessionDuration,
 } from '../features/breathing/breathingTiming'
@@ -45,9 +46,26 @@ const prep = preferenceModel('prep')
 const volume = preferenceModel('volume')
 const voice = preferenceModel('voice')
 const voiceVolume = preferenceModel('voiceVolume')
-const rhythm = computed(() => getTiming(preferences.value))
+const rhythm = computed(() => getPaceRhythm(preferences.value))
+const selectedPace = computed(() => paces.find(({ id }) => id === pace.value))
+const paceOptions = paces.map((item) => {
+  if (!('timing' in item)) return { id: item.id, label: item.title }
+  const counts = getRhythm(item.timing)
+    .steps.map(({ duration }) => duration)
+    .join('–')
+  return {
+    id: item.id,
+    label: item.title.includes(counts) ? item.title : `${item.title} · ${counts}`,
+  }
+})
+const customTimingFields = [
+  { id: 'inhale', label: 'Inhale' },
+  { id: 'hold', label: 'Hold after inhale' },
+  { id: 'exhale', label: 'Exhale' },
+  { id: 'rest', label: 'Hold after exhale' },
+] as const
 const practiceTime = computed(() =>
-  roundSessionDuration(preferences.value.duration, ...rhythm.value),
+  roundSessionDuration(preferences.value.duration, rhythm.value.cycleDuration),
 )
 const settingsLocked = computed(() => props.isBreathing || props.isGrounding)
 const presetDurations = [30, 60, 120, 300]
@@ -63,7 +81,7 @@ function setDuration(event: Event) {
   else updatePreferences({ duration: Number(event.target.value), customDuration: false })
 }
 
-function updateNumber(field: 'inhale' | 'exhale' | 'duration', event: Event) {
+function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'duration', event: Event) {
   if (!(event.target instanceof HTMLInputElement)) return
   const value = boundedNumber(
     event.target.valueAsNumber,
@@ -98,40 +116,43 @@ function updateNumber(field: 'inhale' | 'exhale' | 'duration', event: Event) {
       <div class="settings-row">
         <label for="pace">Breathing pace</label>
         <div class="select-wrap">
-          <select id="pace" v-model="pace" class="control" :disabled="isBreathing">
-            <option v-for="item in paces" :key="item.id" :value="item.id">
-              {{ item.title }}{{ item.id === 'gentle' ? ' · Recommended' : '' }}
+          <select
+            id="pace"
+            v-model="pace"
+            class="control"
+            :disabled="isBreathing"
+            aria-describedby="pace-detail"
+          >
+            <option v-for="item in paceOptions" :key="item.id" :value="item.id">
+              {{ item.label }}
             </option>
           </select>
           <AppIcon name="chevron" :size="16" />
         </div>
-        <p v-if="preferences.pace !== 'custom'" class="field-note">
-          {{ rhythm[0] }} seconds in, {{ rhythm[1] }} seconds out. No breath holds.
-        </p>
-        <div v-else class="timing-fields">
-          <label
-            >Inhale (seconds)<input
+        <p id="pace-detail" class="field-note">{{ selectedPace?.detail }}</p>
+        <div v-if="preferences.pace === 'custom'" class="timing-fields">
+          <label v-for="field in customTimingFields" :key="field.id">
+            {{ field.label }} (seconds)
+            <input
               class="control"
               type="number"
-              :value="preferences.inhale"
-              :min="preferenceLimits.inhale.min"
-              :max="preferenceLimits.inhale.max"
+              :value="preferences[field.id]"
+              :min="preferenceLimits[field.id].min"
+              :max="preferenceLimits[field.id].max"
               step="1"
               :disabled="isBreathing"
-              @change="updateNumber('inhale', $event)"
-          /></label>
-          <label
-            >Exhale (seconds)<input
-              class="control"
-              type="number"
-              :value="preferences.exhale"
-              :min="preferenceLimits.exhale.min"
-              :max="preferenceLimits.exhale.max"
-              step="1"
-              :disabled="isBreathing"
-              @change="updateNumber('exhale', $event)"
-          /></label>
+              @change="updateNumber(field.id, $event)"
+            />
+          </label>
         </div>
+        <ol class="pace-steps flex flex-wrap" role="list" aria-label="One breath cycle">
+          <li v-for="step in rhythm.steps" :key="step.name">
+            <span>{{ step.label }}</span> {{ step.duration }}s
+          </li>
+        </ol>
+        <p v-if="rhythm.steps.length > 2" class="field-note">
+          Keep holds comfortable. You can pause the session at any time.
+        </p>
       </div>
       <div class="settings-row">
         <label for="duration">Breathing duration</label>
@@ -163,7 +184,7 @@ function updateNumber(field: 'inhale' | 'exhale' | 'duration', event: Event) {
             @change="updateNumber('duration', $event)"
         /></label>
         <p v-if="practiceTime !== preferences.duration" class="field-note">
-          Ends after a full breath at {{ formatTime(practiceTime) }}.
+          Ends after a full cycle at {{ formatTime(practiceTime) }}.
         </p>
       </div>
       <div class="settings-row">

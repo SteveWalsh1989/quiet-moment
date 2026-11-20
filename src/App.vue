@@ -45,7 +45,7 @@ const { playing, audioMessage } = audio
 const voice = useSpokenCues(preferences)
 const { voiceMessage, voiceSupported } = voice
 const breath = useBreathingSession(preferences, finishBreathing, voice.cuePhase, voice.stopVoice)
-const { state: breathState, phase, remaining } = breath
+const { state: breathState, phase, rhythm, remaining } = breath
 
 watch(
   () =>
@@ -198,6 +198,7 @@ function previewVoice() {
             :is-guided="isGuided"
             :breath-state="breathState"
             :phase="phase"
+            :rhythm="rhythm"
             :motion-enabled="motionEnabled"
             :offer-animated-start="offerAnimatedStart"
             :countdown="preferences.countdown"

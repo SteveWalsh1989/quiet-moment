@@ -10,7 +10,9 @@ export type MotionPreference = 'system' | 'on' | 'off'
 export interface Preferences {
   pace: PaceId
   inhale: number
+  hold: number
   exhale: number
+  rest: number
   duration: number
   customDuration: boolean
   prep: number
@@ -26,7 +28,9 @@ export interface Preferences {
 export const defaultPreferences: Readonly<Preferences> = {
   pace: 'gentle',
   inhale: 4,
+  hold: 0,
   exhale: 6,
+  rest: 0,
   duration: 60,
   customDuration: false,
   prep: 3,
@@ -41,7 +45,9 @@ export const defaultPreferences: Readonly<Preferences> = {
 
 export const preferenceLimits = {
   inhale: { min: 2, max: 10 },
+  hold: { min: 0, max: 10 },
   exhale: { min: 2, max: 12 },
+  rest: { min: 0, max: 10 },
   duration: { min: 15, max: 600 },
   volume: { min: 0, max: 100 },
   voiceVolume: { min: 0, max: 100 },
@@ -79,7 +85,9 @@ export function normalizePreferences(input: unknown): Preferences {
   return {
     pace: pace ?? defaultPreferences.pace,
     inhale: boundedNumber(saved.inhale, defaultPreferences.inhale, preferenceLimits.inhale),
+    hold: boundedNumber(saved.hold, defaultPreferences.hold, preferenceLimits.hold),
     exhale: boundedNumber(saved.exhale, defaultPreferences.exhale, preferenceLimits.exhale),
+    rest: boundedNumber(saved.rest, defaultPreferences.rest, preferenceLimits.rest),
     duration: boundedNumber(saved.duration, defaultPreferences.duration, preferenceLimits.duration),
     customDuration: saved.customDuration === true,
     prep: prep ?? defaultPreferences.prep,

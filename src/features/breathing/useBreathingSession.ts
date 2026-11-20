@@ -1,6 +1,6 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import type { Preferences } from '../../preferences'
-import { getPhase, getTiming, roundSessionDuration } from './breathingTiming'
+import { getPaceRhythm, getPhase, roundSessionDuration } from './breathingTiming'
 import type { BreathingPhaseName, BreathingPlan } from './breathingTiming'
 
 export type BreathingState = 'ready' | 'running' | 'paused' | 'complete'
@@ -14,6 +14,7 @@ export function useBreathingSession(
   const state = ref<BreathingState>('ready')
   const elapsed = ref(0)
   const plan = ref<(BreathingPlan & { total: number }) | null>(null)
+  const rhythm = computed(() => plan.value ?? getPaceRhythm(preferences))
   const phase = computed(() => plan.value && getPhase(elapsed.value, plan.value))
   const remaining = computed(() =>
     plan.value ? Math.max(0, Math.ceil(plan.value.total - elapsed.value)) : preferences.duration,
@@ -33,7 +34,8 @@ export function useBreathingSession(
       return
     }
 
-    const currentPhase = getPhase(elapsed.value, activePlan)
+    const currentPhase = phase.value
+    if (!currentPhase) return
     const nextCue = `${currentPhase.cycle}-${currentPhase.name}`
     if (nextCue !== lastCue) {
       lastCue = nextCue
@@ -43,12 +45,12 @@ export function useBreathingSession(
   }
 
   function start() {
-    const [inhale, exhale] = getTiming(preferences)
+    const activeRhythm = getPaceRhythm(preferences)
     plan.value = {
-      inhale,
-      exhale,
+      ...activeRhythm,
       prep: preferences.prep,
-      total: preferences.prep + roundSessionDuration(preferences.duration, inhale, exhale),
+      total:
+        preferences.prep + roundSessionDuration(preferences.duration, activeRhythm.cycleDuration),
     }
     cancelAnimationFrame(frame)
     onQuiet()
@@ -92,5 +94,5 @@ export function useBreathingSession(
     document.removeEventListener('visibilitychange', pauseWhenHidden)
   })
 
-  return { state, phase, remaining, start, pause, resume, stop }
+  return { state, phase, rhythm, remaining, start, pause, resume, stop }
 }
