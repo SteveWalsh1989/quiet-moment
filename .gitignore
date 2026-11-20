@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+dist/
+.DS_Store
+.vercel/
+.env*
+!.env.example
+*.local
+.openai/

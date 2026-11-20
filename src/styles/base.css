@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: Manrope;
+  src: url('../assets/manrope.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+  font-family: Manrope, sans-serif;
+  color: #28243d;
+  background: #f3f2fa;
+  --paper: #f3f2fa;
+  --ink: #28243d;
+  --muted: #615b77;
+  --line: #dcd7e8;
+  --panel: #faf9ff;
+  --player: #28223f;
+  --on-player: #f5f0ff;
+  --player-muted: #cdc5e1;
+  --action: #e8c5ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 280px;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: default;
+}
+
+::selection {
+  background: #e6d7f5;
+  color: #28243d;
+}
+
+:focus-visible {
+  outline: 2px solid #7b5ea4;
+  outline-offset: 3px;
+}
+
+.player :focus-visible {
+  outline-color: var(--action);
+}
+
+h2[tabindex]:focus {
+  outline: none;
+}

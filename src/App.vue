@@ -1,0 +1,275 @@
+<script setup lang="ts">
+import { computed, nextTick, reactive, ref, watch } from 'vue'
+import AppHeader from './components/AppHeader.vue'
+import AppIcon from './components/AppIcon.vue'
+import SessionSettings from './components/SessionSettings.vue'
+import { exerciseViews } from './exerciseViews'
+import type { ExerciseView } from './exerciseViews'
+import BreathingPlayer from './features/breathing/BreathingPlayer.vue'
+import { formatTime } from './features/breathing/breathingTiming'
+import { useBreathingSession } from './features/breathing/useBreathingSession'
+import { useMotionPreference } from './features/breathing/useMotionPreference'
+import GroundingPlayer from './features/grounding/GroundingPlayer.vue'
+import DistractionPlayer from './features/distraction/DistractionPlayer.vue'
+import type { SoundId } from './features/audio/soundTracks'
+import { useBackgroundAudio } from './features/audio/useBackgroundAudio'
+import { useSpokenCues } from './features/audio/useSpokenCues'
+import { defaultPreferences, loadPreferences, savePreferences } from './preferences'
+import type { Preferences } from './preferences'
+
+type ExerciseStage = 'ready' | 'breathe' | 'ground' | 'focus' | 'done'
+
+const preferences = reactive(loadPreferences())
+watch(preferences, () => savePreferences(preferences))
+
+const view = ref<ExerciseView>('reset')
+const stage = ref<ExerciseStage>('ready')
+const guide = ref(preferences.ground)
+const attentionIndex = ref(0)
+const settingsTab = ref<'session' | 'audio'>('session')
+const minimal = ref(false)
+const player = ref<HTMLElement | null>(null)
+const current = computed(
+  () => exerciseViews.find((item) => item.id === view.value) ?? exerciseViews[0],
+)
+const isGuided = computed(() => view.value === 'reset')
+const isBreathing = computed(() => stage.value === 'breathe')
+const isGrounding = computed(() => stage.value === 'ground')
+const motionEnabled = useMotionPreference(preferences)
+const offerAnimatedStart = computed(() => preferences.motion === 'system' && !motionEnabled.value)
+
+let lastSound = preferences.sound === 'off' ? 'lofi' : preferences.sound
+const audio = useBackgroundAudio(preferences)
+const { playing, audioMessage } = audio
+const voice = useSpokenCues(preferences)
+const { voiceMessage, voiceSupported } = voice
+const breath = useBreathingSession(preferences, finishBreathing, voice.cuePhase, voice.stopVoice)
+const { state: breathState, phase, remaining } = breath
+
+watch(
+  () =>
+    (breathState.value === 'running' || breathState.value === 'paused') &&
+    phase.value?.name !== 'prepare'
+      ? (phase.value?.expansion ?? null)
+      : null,
+  audio.setBreathExpansion,
+)
+watch(() => breathState.value === 'paused', audio.setBreathingPaused, { flush: 'sync' })
+
+function focusExercise() {
+  void nextTick(() =>
+    player.value?.querySelector<HTMLElement>('h2[tabindex="-1"]')?.focus({ preventScroll: true }),
+  )
+}
+
+function selectView(id: ExerciseView) {
+  if (view.value === id) return
+  view.value = id
+  if (id === 'ground') startGrounding()
+  else {
+    breath.stop()
+    stage.value = id === 'focus' ? 'focus' : 'ready'
+    focusExercise()
+  }
+}
+
+function startBreathing() {
+  if (offerAnimatedStart.value) preferences.motion = 'on'
+  stage.value = 'breathe'
+  if (preferences.sound !== 'off' && !playing.value) void audio.playSound()
+  breath.start()
+  focusExercise()
+}
+
+function finishBreathing() {
+  if (isGuided.value) startGrounding()
+  else finishExercise()
+}
+
+function startGrounding() {
+  breath.stop()
+  guide.value = preferences.ground
+  stage.value = 'ground'
+  focusExercise()
+}
+
+function finishExercise() {
+  stage.value = 'done'
+  focusExercise()
+}
+
+function returnToStart() {
+  breath.stop()
+  stage.value = 'ready'
+  focusExercise()
+}
+
+function pickSound(id: SoundId) {
+  preferences.sound = id
+  if (id !== 'off') lastSound = id
+  void audio.playSound(id)
+}
+
+function toggleSound() {
+  if (playing.value) pickSound('off')
+  else pickSound(preferences.sound === 'off' ? lastSound : preferences.sound)
+}
+
+function updatePreferences(next: Preferences) {
+  const groundChanged = next.ground !== preferences.ground
+  Object.assign(preferences, next)
+  if (groundChanged && view.value === 'ground' && isGrounding.value) startGrounding()
+}
+
+function resetSettings() {
+  Object.assign(preferences, defaultPreferences)
+  lastSound = 'lofi'
+  void audio.playSound('off')
+}
+
+function previewVoice() {
+  voice.speak('Breathe in through your nose. Breathe out through your mouth.')
+}
+</script>
+
+<template>
+  <div class="site-shell" :class="{ 'minimal-layout': minimal }">
+    <AppHeader
+      :view="view"
+      :active-sound="playing ? preferences.sound : 'off'"
+      :playing="playing"
+      :audio-message="minimal || settingsTab !== 'audio' ? audioMessage : ''"
+      @home="view === 'reset' ? returnToStart() : selectView('reset')"
+      @navigate="selectView"
+      @toggle-sound="toggleSound"
+      @pick-sound="pickSound"
+    />
+    <main class="main-wrap">
+      <div class="intro-block">
+        <h1>{{ current.title }}</h1>
+        <p>{{ current.intro }}</p>
+      </div>
+
+      <div class="workbench">
+        <section
+          ref="player"
+          class="player"
+          :class="{ 'no-motion': !motionEnabled }"
+          :aria-label="current.label"
+        >
+          <div class="player-top flex items-center justify-between">
+            <div class="player-label inline-flex items-center">
+              <AppIcon :name="current.icon" :size="19" />
+              <span>{{ isGuided ? 'Guided reset' : current.label }}</span>
+            </div>
+            <div class="flex items-center">
+              <span
+                v-if="isBreathing && preferences.countdown"
+                class="session-timer inline-flex items-center"
+                aria-label="Time remaining"
+              >
+                <AppIcon name="timer" :size="16" /> {{ formatTime(remaining) }}
+              </span>
+              <button
+                class="expand-button"
+                type="button"
+                :title="minimal ? 'Show settings panel' : 'Hide settings panel'"
+                :aria-label="minimal ? 'Show settings panel' : 'Hide settings panel'"
+                :aria-expanded="!minimal"
+                @click="minimal = !minimal"
+              >
+                <AppIcon :name="minimal ? 'shrink' : 'expand'" :size="19" />
+              </button>
+            </div>
+          </div>
+          <BreathingPlayer
+            v-if="stage === 'ready' || isBreathing"
+            :is-breathing="isBreathing"
+            :is-guided="isGuided"
+            :breath-state="breathState"
+            :phase="phase"
+            :motion-enabled="motionEnabled"
+          :offer-animated-start="offerAnimatedStart"
+            :countdown="preferences.countdown"
+            @start="startBreathing"
+            @pause="breath.pause"
+            @resume="breath.resume"
+            @stop="returnToStart"
+            @ground="startGrounding"
+            @toggle-animation="preferences.motion = motionEnabled ? 'off' : 'on'"
+          />
+          <GroundingPlayer
+            v-else-if="isGrounding"
+            :key="guide"
+            :guide="guide"
+            :is-guided="isGuided"
+            @complete="finishExercise"
+          />
+          <DistractionPlayer v-else-if="stage === 'focus'" v-model:index="attentionIndex" />
+          <template v-else>
+            <div class="prompt-content completion">
+              <div class="step-line flex items-center">
+                <AppIcon name="check" :size="20" /><span>Session complete</span>
+              </div>
+              <h2 tabindex="-1">Take your time.</h2>
+              <p>Stay here for another moment, or choose another exercise whenever you’re ready.</p>
+            </div>
+            <div class="prompt-actions flex flex-wrap items-center">
+              <button
+                v-if="view === 'ground'"
+                class="primary-button"
+                type="button"
+                @click="startGrounding"
+              >
+                Ground again
+              </button>
+              <button v-else class="primary-button" type="button" @click="returnToStart">
+                Back to start
+              </button>
+              <button
+                v-if="view === 'breathe'"
+                class="on-dark-button"
+                type="button"
+                @click="selectView('ground')"
+              >
+                Try grounding
+              </button>
+              <button v-else class="on-dark-button" type="button" @click="selectView('focus')">
+                Try a distraction
+              </button>
+            </div>
+          </template>
+        </section>
+        <SessionSettings
+          v-show="!minimal"
+          v-model:tab="settingsTab"
+          :model-value="preferences"
+          :is-breathing="isBreathing"
+          :is-grounding="isGrounding"
+          :is-guided="isGuided"
+          :playing="playing"
+          :audio-message="audioMessage"
+          :voice-message="voiceMessage"
+          :voice-supported="voiceSupported"
+          @update:model-value="updatePreferences"
+          @pick-sound="pickSound"
+          @reset="resetSettings"
+          @preview-voice="previewVoice"
+        />
+      </div>
+      <footer class="site-footer flex items-start">
+        <AppIcon name="info" :size="19" />
+        <p>
+          Quiet Moment is a self-help tool for moments of anxiety. It’s not a medical device or a
+          substitute for professional care.
+          <a
+            href="https://www2.hse.ie/mental-health/issues/how-to-deal-with-panic-attacks/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >HSE guidance on panic attacks</a
+          >
+        </p>
+      </footer>
+    </main>
+  </div>
+</template>
