@@ -2,7 +2,7 @@
 
 Guided breathing, sensory grounding, and simple distractions for anxious moments. Start by tapping the circle, or choose an exercise from the top of the page.
 
-Try it out on https://quiet-moment-lovat.vercel.app/ 
+Try it out on https://quiet-moment-lovat.vercel.app/
 
 > [!IMPORTANT]
 > **For general self-help only.** Quiet Moment offers guided exercises. Its scope excludes medical diagnosis, treatment, and medical-device functions. For medical advice or care, speak with a qualified healthcare professional.
