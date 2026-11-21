@@ -54,6 +54,11 @@
   font-variant-numeric: tabular-nums;
 }
 
+.breathing-stage {
+  display: flex;
+  flex-direction: column;
+}
+
 .orb-area {
   display: grid;
   place-items: center;

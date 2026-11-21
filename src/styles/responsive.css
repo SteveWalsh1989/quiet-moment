@@ -196,3 +196,132 @@
     display: none;
   }
 }
+
+@media (min-width: 1280px) {
+  .site-shell {
+    --page-width: 112rem;
+    --page-gutter: clamp(36px, 4.25vw, 84px);
+  }
+
+  .topbar-inner,
+  .main-wrap {
+    width: min(var(--page-width), calc(100% - 2 * var(--page-gutter)));
+  }
+
+  .topbar-inner {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .workbench {
+    grid-template-columns: minmax(0, 1fr) clamp(345px, 21vw, 440px);
+    gap: clamp(22px, 1.6vw, 32px);
+  }
+
+  .intro-block h1 {
+    font-size: clamp(4.05rem, 3.75vw, 5.75rem);
+  }
+
+  .settings {
+    padding: clamp(21px, 1.45vw, 30px);
+  }
+
+  .player-top,
+  .player-bottom {
+    margin-inline: clamp(24px, 2vw, 40px);
+  }
+}
+
+@media (min-width: 1280px) and (min-height: 800px) {
+  .site-shell {
+    display: flex;
+    min-height: 100svh;
+    flex-direction: column;
+  }
+
+  .main-wrap {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .workbench {
+    flex: 1;
+    align-items: stretch;
+  }
+
+  .settings-area {
+    align-self: start;
+  }
+
+  .breathing-stage {
+    display: grid;
+    flex: 1;
+    grid-template-rows: auto auto minmax(5.5rem, auto);
+    align-content: center;
+  }
+
+  .orb-area {
+    padding-top: clamp(20px, 1.8svh, 30px);
+  }
+
+  .breath-orb {
+    width: clamp(13rem, min(27vw, 52svh - 13rem), 33rem);
+  }
+
+  .orb-counter {
+    font-size: clamp(1.75rem, 3vw, 3.75rem);
+  }
+
+  .orb-start {
+    gap: 7px;
+    font-size: clamp(1.1rem, 1.3vw, 1.55rem);
+  }
+
+  .orb-start svg,
+  .orb-mark {
+    width: clamp(22px, 1.65vw, 36px);
+    height: auto;
+  }
+
+  .breath-copy h2 {
+    font-size: clamp(2.15rem, 2.35vw, 3.25rem);
+  }
+
+  .breath-copy-active h2 {
+    font-size: clamp(3.75rem, 3.7vw, 5rem);
+  }
+
+  .breath-copy p,
+  .prompt-content p {
+    font-size: clamp(1.05rem, 1.25vw, 1.4rem);
+  }
+
+  .breath-copy-active p {
+    font-size: clamp(1.38rem, 1.6vw, 1.7rem);
+  }
+
+  .player-actions {
+    margin-block: clamp(21px, 2.3svh, 36px) 16px;
+  }
+
+  .player-actions button,
+  .prompt-actions button {
+    min-height: 50px;
+    font-size: 1rem;
+  }
+
+  .prompt-content {
+    margin-block-start: auto;
+    padding-block-start: 32px;
+  }
+
+  .prompt-content h2 {
+    font-size: clamp(3.05rem, 3.8vw, 4.65rem);
+  }
+
+  .prompt-actions {
+    margin-block: 0 auto;
+    padding-block-end: 32px;
+  }
+}
