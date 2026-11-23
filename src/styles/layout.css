@@ -1,178 +1,123 @@
 .topbar {
-  border-bottom: 1px solid var(--line);
-  background: var(--topbar);
+  @apply border-b border-solid border-b-line bg-topbar;
 }
 
 .topbar-inner {
-  max-width: 1312px;
-  min-height: 70px;
-  margin: 0 auto;
-  gap: 22px;
-  padding: 0 36px;
+  @apply max-w-[1312px] min-h-[70px] m-[0_auto] gap-[22px] p-[0_36px];
 }
 
 .wordmark {
-  gap: 11px;
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: -0.035em;
-  white-space: nowrap;
+  @apply gap-[11px] text-[length:1.05rem] font-extrabold tracking-[-0.035em] whitespace-nowrap;
 }
 
 .wordmark img {
-  flex: none;
+  @apply flex-none;
 }
 
 .main-nav {
-  gap: 4px;
+  @apply gap-[4px];
 }
 
 .main-nav button,
 .sound-shortcut,
 .theme-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 42px;
-  padding: 0 12px;
-  border-radius: 8px;
-  color: var(--muted);
-  white-space: nowrap;
-  font-size: 0.875rem;
-  font-weight: 750;
+  @apply inline-flex items-center justify-center gap-[7px] min-h-[42px] p-[0_12px] rounded-lg text-muted;
+  @apply whitespace-nowrap text-[length:0.875rem] font-[750];
 }
 
 .main-nav button:hover,
 .sound-shortcut:hover,
 .theme-trigger:hover,
 .theme-trigger[aria-expanded='true'] {
-  background: var(--hover);
-  color: var(--ink);
+  @apply bg-hover text-ink;
 }
 
 .main-nav button[aria-current] {
-  background: var(--selected);
-  color: var(--accent-ink);
+  @apply bg-selected text-accent-ink;
 }
 
 .sound-shortcut {
-  min-height: 44px;
-  padding-inline: 8px;
+  @apply min-h-[44px] px-[8px];
 }
 
 .topbar-actions {
-  gap: 8px;
+  @apply gap-[8px];
 }
 
 .theme-trigger {
-  width: 44px;
-  min-height: 44px;
-  padding: 0;
+  @apply w-[44px] min-h-[44px] p-0;
 }
 
 .theme-popup {
-  left: auto;
-  width: min(208px, calc(100vw - 28px));
+  @apply left-auto w-[min(208px,_calc(100vw_-_28px))];
 }
 
 .option-popup,
 .sound-error {
-  position: absolute;
-  z-index: 5;
-  padding: 5px;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  background: var(--panel);
-  box-shadow: 0 10px 28px var(--popup-shadow);
+  @apply absolute z-[5] p-[5px] border border-solid border-line rounded-[11px] bg-panel;
+  @apply shadow-[0_10px_28px_var(--popup-shadow)];
 }
 
 .sound-error {
-  top: calc(100% + 7px);
-  right: 0;
-  width: min(252px, calc(100vw - 36px));
+  @apply top-[calc(100%_+_7px)] right-0 w-[min(252px,_calc(100vw_-_36px))];
 }
 
 .popup-option {
-  min-height: 46px;
-  gap: 8px;
-  padding: 6px 10px;
-  border-radius: 7px;
+  @apply min-h-[46px] gap-[8px] p-[6px_10px] rounded-[7px];
 }
 
 .popup-option:hover,
 .popup-option[aria-pressed='true'],
 .popup-option[aria-selected='true'] {
-  background: var(--selected);
-  color: var(--accent-ink);
+  @apply bg-selected text-accent-ink;
 }
 
 .popup-option strong,
 .popup-option small {
-  display: block;
+  @apply block;
 }
 
 .popup-option strong {
-  font-size: 0.88rem;
-  font-weight: 800;
+  @apply text-[length:0.88rem] font-extrabold;
 }
 
 .popup-option small,
 .sound-error {
-  color: var(--muted);
-  font-size: 0.78rem;
+  @apply text-muted text-[length:0.78rem];
 }
 
 .sound-error {
-  z-index: 4;
-  padding: 10px;
+  @apply z-[4] p-[10px];
 }
 
 .main-wrap {
-  width: min(1176px, calc(100% - 72px));
-  margin: 0 auto;
+  @apply w-[min(1176px,_calc(100%_-_72px))] m-[0_auto];
 }
 
 .intro-block {
-  padding: 36px 0 29px;
+  @apply p-[36px_0_29px];
 }
 
 .intro-block h1 {
-  margin: 0;
-  font-family: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
-  font-weight: 500;
-  font-size: 4.05rem;
-  line-height: 1.08;
-  letter-spacing: -0.038em;
-  text-wrap: balance;
+  @apply m-0 font-display font-medium text-[length:4.05rem] leading-[1.08] tracking-[-0.038em] text-balance;
 }
 
 .intro-block p {
-  margin: 11px 0 0;
-  color: var(--muted);
-  font-size: 1.02rem;
-  line-height: 1.65;
+  @apply m-[11px_0_0] text-muted text-[length:1.02rem] leading-[1.65];
 }
 
 .site-footer {
-  gap: 9px;
-  margin: 20px 0 24px;
-  color: var(--muted);
-  font-size: 0.86rem;
-  line-height: 1.6;
+  @apply gap-[9px] m-[20px_0_24px] text-muted text-[length:0.86rem] leading-[1.6];
 }
 
 .site-footer > svg {
-  flex: none;
-  margin-top: 2px;
+  @apply flex-none mt-[2px];
 }
 
 .site-footer p {
-  margin: 0;
+  @apply m-0;
 }
 
 .site-footer a {
-  color: var(--accent-ink);
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  @apply text-accent-ink underline underline-offset-[3px];
 }

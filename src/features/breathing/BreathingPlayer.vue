@@ -87,7 +87,7 @@ function activateCircle() {
     <div class="orb-area">
       <button
         type="button"
-        class="breath-orb"
+        class="breath-orb [container-type:inline-size]"
         :class="{
           'breath-orb-ready': !isBreathing,
           'breath-orb-preparing': phase?.name === 'prepare',
@@ -133,13 +133,8 @@ function activateCircle() {
           <AppIcon name="play" :size="20" />
           <span>Resume</span>
         </span>
-        <span
-          v-else
-          class="orb-cue"
-          :class="{ 'orb-cue-with-count': countdown }"
-          aria-hidden="true"
-        >
-          <span class="orb-cue-label">{{ orbCue }}</span>
+        <span v-else class="orb-cue" aria-hidden="true">
+          <span class="text-[length:clamp(1.875rem,21cqi,5rem)] font-extrabold">{{ orbCue }}</span>
           <span v-if="countdown" class="orb-counter">{{ phase?.seconds }}</span>
         </span>
       </button>

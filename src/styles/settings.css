@@ -1,332 +1,242 @@
 .settings-popover {
-  position: fixed;
-  inset: var(--settings-top, auto) var(--settings-right, 12px) var(--settings-bottom, auto) auto;
-  width: min(25rem, calc(100% - var(--settings-right, 12px) - 12px));
-  max-width: none;
-  max-height: min(42rem, var(--settings-height, 75dvh));
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  color: var(--ink);
-  border: 1px solid var(--line);
-  border-radius: 15px;
-  background: var(--panel);
-  box-shadow: 0 18px 50px var(--popup-shadow);
+  @apply fixed inset-[var(--settings-top,_auto)_var(--settings-right,_12px)_var(--settings-bottom,_auto)_auto];
+  @apply w-[min(25rem,_calc(100%_-_var(--settings-right,_12px)_-_12px))] max-w-none;
+  @apply max-h-[min(42rem,_var(--settings-height,_75dvh))] m-0 p-0 overflow-hidden text-ink border border-solid;
+  @apply border-line rounded-[15px] bg-panel shadow-[0_18px_50px_var(--popup-shadow)];
 }
 
 .settings-popover:is([open], :popover-open) {
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-col;
 }
 
 .settings-popover::backdrop {
-  background: #1612213d;
+  @apply bg-[#1612213d];
 }
 
 .settings-popover-header {
-  flex: none;
-  gap: 12px;
-  padding: 8px 10px 8px 18px;
-  border-bottom: 1px solid var(--line);
+  @apply flex-none gap-[12px] p-[8px_10px_8px_18px] border-b border-solid border-b-line;
 }
 
 .settings-popover-header h2 {
-  font-size: 1.1rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  @apply text-[length:1.1rem] font-extrabold tracking-[-0.02em];
 }
 
 .settings-close {
-  color: var(--muted);
+  @apply text-muted;
 }
 
 .settings-close:hover {
-  color: var(--ink);
-  background: var(--hover);
+  @apply text-ink bg-hover;
 }
 
 .player .settings-popover :focus-visible {
-  outline-color: var(--focus);
+  @apply outline-focus;
 }
 
 .settings-popover-content {
-  min-height: 0;
-  padding: 0 16px 10px;
-  overflow: auto;
-  overscroll-behavior: contain;
+  @apply min-h-0 p-[0_16px_10px] overflow-auto overscroll-contain;
 }
 
 .settings-tabs {
-  flex-wrap: wrap;
-  gap: 0 12px;
-  border-bottom: 1px solid var(--line);
+  @apply flex-wrap gap-[0_12px] border-b border-solid border-b-line;
 }
 
 .settings-tabs button {
-  min-height: 44px;
-  padding-inline: 4px;
-  border-bottom: 2px solid transparent;
-  color: var(--muted);
-  font-size: 0.875rem;
-  font-weight: 750;
+  @apply min-h-[44px] px-[4px] border-b-2 border-solid border-b-transparent text-muted text-[length:0.875rem];
+  @apply font-[750];
 }
 
 .settings-tabs button:hover {
-  color: var(--accent-ink);
+  @apply text-accent-ink;
 }
 
 .settings-tabs button[aria-pressed='true'] {
-  border-bottom-color: var(--accent);
-  color: var(--accent-ink);
+  @apply border-b-accent text-accent-ink;
 }
 
 .settings-body {
-  padding-top: 4px;
+  @apply pt-[4px];
 }
 
 .settings-row {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
+  @apply p-[14px_0] border-b border-solid border-b-line;
 }
 
 .settings-select-label,
 .sound-list legend,
 .extra-input,
 .volume-label {
-  display: block;
-  color: var(--ink);
-  font-size: 0.89rem;
-  font-weight: 800;
+  @apply block text-ink text-[length:0.89rem] font-extrabold;
 }
 
 .control {
-  appearance: none;
-  width: 100%;
-  min-height: 42px;
-  padding: 7px 34px 7px 10px;
-  border: 1px solid var(--field-line);
-  border-radius: 7px;
-  background: var(--control);
-  color: var(--ink);
-  font-size: 0.92rem;
+  @apply appearance-none w-full min-h-[42px] p-[7px_34px_7px_10px] border border-solid border-field-line;
+  @apply rounded-[7px] bg-control text-ink text-[length:0.92rem];
 }
 
 .settings-select-trigger {
-  min-height: 44px;
-  padding-right: 11px;
+  @apply min-h-[44px] pr-[11px];
 }
 
 .settings-select-trigger svg {
-  flex: none;
-  color: var(--muted);
+  @apply flex-none text-muted;
 }
 
 .settings-select-trigger[aria-expanded='true'] {
-  border-color: var(--focus);
+  @apply border-focus;
 }
 
 .settings-select-trigger[aria-expanded='true'] svg {
-  rotate: 180deg;
+  @apply rotate-180;
 }
 
 .select-menu-popup {
-  inset: calc(100% + 6px) 0 auto;
-  overflow: auto;
-  overscroll-behavior: contain;
+  @apply inset-[calc(100%_+_6px)_0_auto] overflow-auto overscroll-contain;
 }
 
 .select-menu-inline {
-  position: static;
-  max-height: 13rem;
-  margin-top: 4px;
-  box-shadow: none;
+  @apply static max-h-[13rem] mt-[4px] shadow-none;
 }
 
 .select-menu-popup-above {
-  inset: auto 0 calc(100% + 6px);
+  @apply inset-[auto_0_calc(100%_+_6px)];
 }
 
 .select-menu-popup.theme-popup {
-  left: auto;
+  @apply left-auto;
 }
 
 .select-menu-option {
-  cursor: pointer;
+  @apply cursor-pointer;
 }
 
 .select-menu-option svg {
-  flex: none;
+  @apply flex-none;
 }
 
 .select-menu-option-active {
-  outline: 2px solid var(--focus);
-  outline-offset: -2px;
+  @apply outline outline-2 outline-focus outline-offset-[-2px];
 }
 
 @media (forced-colors: active) {
   .select-menu-option-active {
-    outline-color: Highlight;
+    @apply outline-[Highlight];
   }
 }
 
 input.control {
-  display: block;
-  margin-top: 4px;
-  padding-right: 8px;
-  appearance: auto;
+  @apply block mt-[4px] pr-[8px] appearance-auto;
 }
 
 .control:hover:not(:disabled) {
-  border-color: var(--accent);
+  @apply border-accent;
 }
 
 .control:disabled {
-  opacity: 0.65;
+  @apply opacity-[0.65];
 }
 
 .field-note {
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.52;
+  @apply m-[6px_0_0] text-muted text-[length:0.82rem] leading-[1.52];
 }
 
 .pace-steps {
-  gap: 4px;
-  margin: 8px 0 0;
-  padding: 0;
-  list-style: none;
+  @apply gap-[4px] m-[8px_0_0] p-0 list-none;
 }
 
 .pace-steps li {
-  padding: 3px 7px;
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  color: var(--muted);
-  font-size: 0.76rem;
-  white-space: nowrap;
+  @apply p-[3px_7px] border border-solid border-line rounded-[5px] text-muted text-[length:0.76rem];
+  @apply whitespace-nowrap;
 }
 
 .pace-steps span {
-  color: var(--ink);
-  font-weight: 750;
+  @apply text-ink font-[750];
 }
 
 .timing-fields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 9px;
-  margin-top: 9px;
-  font-size: 0.78rem;
-  font-weight: 720;
+  @apply grid grid-cols-2 gap-[9px] mt-[9px] text-[length:0.78rem] font-[720];
 }
 
 .extra-input {
-  margin-top: 10px;
+  @apply mt-[10px];
 }
 
 .settings-footer {
-  padding-top: 8px;
+  @apply pt-[8px];
 }
 
 .switch-row {
-  display: flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 0.88rem;
-  font-weight: 720;
+  @apply flex min-h-[44px] items-center justify-between gap-[10px] text-[length:0.88rem] font-[720];
 }
 
 input[type='checkbox'],
 input[type='range'],
 input[type='radio'] {
-  accent-color: var(--accent);
+  @apply accent-accent;
 }
 
 input[type='checkbox'],
 input[type='radio'] {
-  width: 17px;
-  height: 17px;
-  flex: none;
-  cursor: pointer;
+  @apply w-[17px] h-[17px] flex-none cursor-pointer;
 }
 
 input[type='range'] {
-  width: 100%;
-  min-height: 25px;
+  @apply w-full min-h-[25px];
 }
 
 .text-button {
-  min-height: 44px;
-  color: var(--accent-ink);
-  font-size: 0.84rem;
-  font-weight: 800;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+  @apply min-h-[44px] text-accent-ink text-[length:0.84rem] font-extrabold underline underline-offset-[3px];
 }
 
 .text-button:disabled {
-  opacity: 0.58;
+  @apply opacity-[0.58];
 }
 
 .sound-list {
-  padding: 0;
-  margin: 13px 0 0;
-  border: 0;
+  @apply p-0 m-[13px_0_0] border-0;
 }
 
 .sound-list legend {
-  margin-bottom: 6px;
+  @apply mb-[6px];
 }
 
 .sound-option {
-  gap: 9px;
-  min-height: 50px;
-  padding: 5px 3px;
-  border-bottom: 1px solid var(--line);
-  cursor: pointer;
+  @apply gap-[9px] min-h-[50px] p-[5px_3px] border-b border-solid border-b-line cursor-pointer;
 }
 
 .sound-option:hover {
-  background: var(--hover);
+  @apply bg-hover;
 }
 
 .sound-option > span {
-  flex: 1;
+  @apply flex-1;
 }
 
 .sound-option strong,
 .sound-option small {
-  display: block;
+  @apply block;
 }
 
 .sound-option strong {
-  font-size: 0.89rem;
-  font-weight: 780;
+  @apply text-[length:0.89rem] font-[780];
 }
 
 .sound-option small {
-  font-size: 0.78rem;
-  color: var(--muted);
+  @apply text-[length:0.78rem] text-muted;
 }
 
 .volume-label {
-  margin-top: 11px;
+  @apply mt-[11px];
 }
 
 .volume-label span span {
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
+  @apply text-muted tabular-nums;
 }
 
 .voice-settings {
-  margin-top: 7px;
-  padding-top: 8px;
-  border-top: 1px solid var(--line);
+  @apply mt-[7px] pt-[8px] border-t border-solid border-t-line;
 }
 
 .voice-settings .field-note {
-  margin-top: 1px;
+  @apply mt-[1px];
 }

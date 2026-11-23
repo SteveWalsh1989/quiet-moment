@@ -1,125 +1,96 @@
 @media (max-width: 1000px) {
   .topbar-inner {
-    padding-inline: 25px;
-    gap: 12px;
+    @apply px-[25px] gap-[12px];
   }
   .main-wrap {
-    width: calc(100% - 50px);
+    @apply w-[calc(100%_-_50px)];
   }
   .main-nav button {
-    padding-inline: 7px;
+    @apply px-[7px];
   }
 }
 
 @media (max-width: 760px) {
   .topbar-inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    min-height: 0;
-    padding: 5px clamp(10px, 3.8vw, 18px) 0;
-    gap: 4px 8px;
+    @apply grid grid-cols-[minmax(0,_1fr)_auto] min-h-0 p-[5px_clamp(10px,_3.8vw,_18px)_0] gap-[4px_8px];
   }
   .wordmark {
-    min-height: 44px;
-    justify-self: start;
-    gap: 7px;
-    font-size: clamp(0.88rem, 4vw, 1.05rem);
+    @apply min-h-[44px] justify-self-start gap-[7px] text-[length:clamp(0.88rem,_4vw,_1.05rem)];
   }
   .wordmark img {
-    width: 30px;
-    height: 30px;
+    @apply w-[30px] h-[30px];
   }
   .topbar-actions {
-    grid-area: 1 / 2;
+    @apply [grid-area:1_/_2];
   }
   .main-nav {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    @apply grid col-span-full grid-cols-4;
   }
   .main-nav button {
-    flex-direction: column;
-    min-height: 46px;
-    padding: 4px 2px;
-    font-size: clamp(0.69rem, 2.9vw, 0.81rem);
-    gap: 3px;
+    @apply flex-col min-h-[46px] p-[4px_2px] text-[length:clamp(0.69rem,_2.9vw,_0.81rem)] gap-[3px];
   }
   .main-nav button svg {
-    width: 15px;
-    height: 15px;
+    @apply w-[15px] h-[15px];
   }
   .main-nav button[aria-current] {
-    border-radius: 7px 7px 0 0;
+    @apply rounded-[7px_7px_0_0];
   }
   .main-wrap {
-    width: min(640px, calc(100% - clamp(20px, 7.6vw, 36px)));
+    @apply w-[min(640px,_calc(100%_-_clamp(20px,_7.6vw,_36px)))];
   }
   .intro-block {
-    padding: 18px 0 15px;
+    @apply p-[18px_0_15px];
   }
   .intro-block h1 {
-    font-size: clamp(1.95rem, 8vw, 2.77rem);
+    @apply text-[length:clamp(1.95rem,_8vw,_2.77rem)];
   }
   .intro-block p {
-    margin-top: 6px;
-    font-size: 0.93rem;
-    line-height: 1.5;
+    @apply mt-[6px] text-[length:0.93rem] leading-normal;
   }
   .breathing-session .intro-block {
     @apply sr-only;
   }
   .breathing-session .workbench {
-    margin-top: 12px;
+    @apply mt-[12px];
   }
   .player {
-    min-height: 0;
+    @apply min-h-0;
   }
   .player-top {
-    height: 49px;
-    margin-inline: 14px;
+    @apply h-[49px] mx-[14px];
   }
   .breath-copy {
-    min-height: 5rem;
-    padding: 10px 12px 0;
+    @apply min-h-[5rem] p-[10px_12px_0];
   }
   .orb-area {
-    padding-block: 14px 16px;
+    @apply [padding-block:14px_16px];
   }
   .breath-orb {
-    width: clamp(140px, 45vw, 206px);
+    @apply w-[clamp(140px,_45vw,_206px)];
   }
   .player-bottom {
-    min-height: 49px;
-    padding-block: 0;
-    margin-inline: 12px;
-    gap: 0 8px;
-    font-size: 0.78rem;
+    @apply min-h-[49px] [padding-block:0] mx-[12px] gap-[0_8px] text-[length:0.78rem];
   }
   .player-bottom button {
-    min-height: 44px;
+    @apply min-h-[44px];
   }
   .player-actions {
-    display: grid;
-    width: min(290px, calc(100% - 28px));
-    align-self: center;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: 0 0 12px;
+    @apply grid w-[min(290px,_calc(100%_-_28px))] self-center grid-cols-2 m-[0_0_12px];
   }
   .player-actions .on-dark-button {
-    border: 1px solid #cdb6ee4d;
+    @apply border border-solid border-[#cdb6ee4d];
   }
   .prompt-content {
-    margin: 22px clamp(12px, 4vw, 24px) 0;
+    @apply m-[22px_clamp(12px,_4vw,_24px)_0];
   }
   .prompt-content h2 {
-    font-size: clamp(1.9rem, 7vw, 2.37rem);
+    @apply text-[length:clamp(1.9rem,_7vw,_2.37rem)];
   }
   .examples {
-    margin-top: 19px;
+    @apply mt-[19px];
   }
   .prompt-actions {
-    margin-inline: clamp(12px, 4vw, 24px);
-    padding-block: 18px 14px;
+    @apply [margin-inline:clamp(12px,_4vw,_24px)] [padding-block:18px_14px];
   }
 }
 
@@ -128,13 +99,13 @@
     @apply sr-only;
   }
   .sound-shortcut {
-    min-width: 44px;
+    @apply min-w-[44px];
   }
   .main-nav {
-    gap: 2px;
+    @apply gap-[2px];
   }
   .grounding-count {
-    padding-inline: 8px;
+    @apply px-[8px];
   }
 }
 @media (min-width: 1280px) {
@@ -145,105 +116,91 @@
 
   .topbar-inner,
   .main-wrap {
-    width: min(var(--page-width), calc(100% - 2 * var(--page-gutter)));
+    @apply w-[min(var(--page-width),_calc(100%_-_2_*_var(--page-gutter)))];
   }
 
   .topbar-inner {
-    max-width: none;
-    padding-inline: 0;
+    @apply max-w-none [padding-inline:0];
   }
 
   .intro-block h1 {
-    font-size: clamp(4.05rem, 3.75vw, 5.75rem);
+    @apply text-[length:clamp(4.05rem,_3.75vw,_5.75rem)];
   }
 
   .player-top,
   .player-bottom {
-    margin-inline: clamp(24px, 2vw, 40px);
+    @apply [margin-inline:clamp(24px,_2vw,_40px)];
   }
 }
 
 @media (min-width: 1280px) and (min-height: 800px) {
   .site-shell {
-    display: flex;
-    min-height: 100svh;
-    flex-direction: column;
+    @apply flex min-h-[100svh] flex-col;
   }
 
   .main-wrap {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+    @apply flex flex-1 flex-col;
   }
 
   .workbench {
-    display: flex;
-    flex: 1;
+    @apply flex flex-1;
   }
 
   .player {
-    flex: 1;
+    @apply flex-1;
   }
 
   .breathing-stage {
-    display: grid;
-    flex: 1;
-    grid-template-rows: auto auto minmax(5.5rem, auto);
-    align-content: center;
+    @apply grid flex-1 grid-rows-[auto_auto_minmax(5.5rem,_auto)] content-center;
   }
 
   .orb-area {
-    padding-top: clamp(20px, 1.8svh, 30px);
+    @apply pt-[clamp(20px,_1.8svh,_30px)];
   }
 
   .breath-orb {
-    width: clamp(13rem, min(27vw, 52svh - 13rem), 33rem);
+    @apply w-[clamp(13rem,_min(27vw,_52svh_-_13rem),_33rem)];
   }
 
   .orb-counter {
-    font-size: clamp(1.75rem, 3vw, 3.75rem);
+    @apply text-[length:clamp(1.75rem,_3vw,_3.75rem)];
   }
 
   .orb-start {
-    gap: 7px;
-    font-size: clamp(1.1rem, 1.3vw, 1.55rem);
+    @apply gap-[7px] text-[length:clamp(1.1rem,_1.3vw,_1.55rem)];
   }
 
   .orb-start svg {
-    width: clamp(22px, 1.65vw, 36px);
-    height: auto;
+    @apply w-[clamp(22px,_1.65vw,_36px)] h-auto;
   }
 
   .breath-copy h2 {
-    font-size: clamp(2.15rem, 2.35vw, 3.25rem);
+    @apply text-[length:clamp(2.15rem,_2.35vw,_3.25rem)];
   }
 
   .breath-copy p,
   .prompt-content p {
-    font-size: clamp(1.05rem, 1.25vw, 1.4rem);
+    @apply text-[length:clamp(1.05rem,_1.25vw,_1.4rem)];
   }
 
   .player-actions {
-    margin-block: clamp(21px, 2.3svh, 36px) 16px;
+    @apply [margin-block:clamp(21px,_2.3svh,_36px)_16px];
   }
 
   .player-actions button,
   .prompt-actions button {
-    min-height: 50px;
-    font-size: 1rem;
+    @apply min-h-[50px] text-[length:1rem];
   }
 
   .prompt-content {
-    margin-block-start: auto;
-    padding-block-start: 32px;
+    @apply [margin-block-start:auto] [padding-block-start:32px];
   }
 
   .prompt-content h2 {
-    font-size: clamp(3.05rem, 3.8vw, 4.65rem);
+    @apply text-[length:clamp(3.05rem,_3.8vw,_4.65rem)];
   }
 
   .prompt-actions {
-    margin-block: 0 auto;
-    padding-block-end: 32px;
+    @apply [margin-block:0_auto] [padding-block-end:32px];
   }
 }

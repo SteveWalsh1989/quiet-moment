@@ -1,6 +1,6 @@
 # Working on Quiet Moment
 
-Use Vue 3 Composition API with `<script setup lang="ts">` and the existing Tailwind utilities. Use one owner for each piece of state and typed props and events between views. Use the existing styles in `src/styles/` for changes to the player, settings, or shell.
+Use Vue 3 Composition API with `<script setup lang="ts">` and the existing Tailwind utilities. Use one owner for each piece of state and typed props and events between views. Use Tailwind utilities for UI styling. Keep shared component classes in `src/styles/` and compose them from Tailwind utilities.
 
 | If you are changing                                | Start here                                                               |
 | -------------------------------------------------- | ------------------------------------------------------------------------ |

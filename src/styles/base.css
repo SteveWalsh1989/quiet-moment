@@ -12,9 +12,7 @@
 
 :root {
   color-scheme: light;
-  font-family: Manrope, sans-serif;
-  color: var(--ink);
-  background: var(--paper);
+  @apply font-body text-ink bg-paper;
   --paper: #f3f2fa;
   --topbar: #f9f7ff;
   --panel: #faf9ff;
@@ -61,12 +59,11 @@
 }
 
 * {
-  box-sizing: border-box;
+  @apply box-border;
 }
 
 body {
-  margin: 0;
-  min-width: 280px;
+  @apply m-0 min-w-[280px];
 }
 
 button,
@@ -76,29 +73,27 @@ select {
 }
 
 button {
-  cursor: pointer;
+  @apply cursor-pointer;
 }
 
 button:disabled {
-  cursor: default;
+  @apply cursor-default;
 }
 
 ::selection {
-  background: var(--selection);
-  color: var(--ink);
+  @apply bg-selection text-ink;
 }
 
 :focus-visible {
-  outline: 2px solid var(--focus);
-  outline-offset: 3px;
+  @apply outline outline-2 outline-focus outline-offset-[3px];
 }
 
 .player :focus-visible {
-  outline-color: var(--action);
+  @apply outline-action;
 }
 
 h2[tabindex]:focus {
-  outline: none;
+  @apply [outline:none];
 }
 
 .skip-link {
@@ -106,13 +101,5 @@ h2[tabindex]:focus {
 }
 
 .skip-link:focus {
-  position: absolute;
-  z-index: 10;
-  top: 8px;
-  left: 12px;
-  padding: 10px 14px;
-  border-radius: 7px;
-  background: var(--panel);
-  color: var(--ink);
-  font-weight: 750;
+  @apply absolute z-[10] top-[8px] left-[12px] p-[10px_14px] rounded-[7px] bg-panel text-ink font-[750];
 }
