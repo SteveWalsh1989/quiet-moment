@@ -18,7 +18,7 @@ Try it out on https://quiet-moment-lovat.vercel.app/
 ## Start a quick reset
 
 1. Choose **Quick reset** and tap **Start** in the centre of the circle. With the default settings, there’s a short preparation countdown followed by about a minute of guided breathing.
-2. Follow the **Breathe in** and **Breathe out** cues at a pace that feels comfortable. Tap the circle or **Pause** to take a break. Tap again to resume, or choose **Reset** to go back to the start.
+2. Follow the **In**, **Out**, and **Hold** cues in the circle at a pace that feels comfortable. Tap the circle or **Pause** to take a break. Tap again to resume, or choose **Reset** to go back to the start.
 3. When breathing ends, the app opens a grounding exercise. You can also choose **Skip to grounding** during the session.
 
 ![Desktop Quick reset with Start in the centre of the circle and session settings alongside](docs/screenshots/desktop-quick-reset.jpg)
@@ -27,7 +27,7 @@ Try it out on https://quiet-moment-lovat.vercel.app/
 
 ### Breathing
 
-Choose **Breathing** for a session on its own. The cue shows when to breathe in through your nose and out through your mouth. The centre grows and shrinks with the breath. The outer ring fills clockwise once per cycle, with a notch at each cue change. In **Session settings**, choose a pace to see its inhale, exhale, and hold times, or set your own. Set either custom hold to zero to skip it.
+Choose **Breathing** for a session on its own. The cue shows when to breathe in through your nose and out through your mouth. The centre grows and shrinks with the breath. The outer ring fills clockwise once per cycle, with a notch at each cue change. Open the gear button in the player and choose a pace under **Timing** to see its inhale, exhale, and hold times, or set your own. Set either custom hold to zero to skip it.
 
 ![Desktop Breathing mode showing an inhale cue, a countdown in the circle, and Pause and Reset](docs/screenshots/desktop-breathing.jpg)
 
@@ -45,15 +45,15 @@ Try a small task, such as finding round objects nearby. Each prompt includes exa
 
 ## Use Quiet Moment on a phone
 
-The page adapts to the screen width automatically. On a phone, the exercise fills a single column and **Session settings** opens below the player. During breathing, the layout brings the cue, circle, **Pause**, and **Reset** closer together.
+The page adapts to the screen width automatically. On a phone, the exercise fills a single column. The gear opens **Session settings** without changing the player width.
 
-<img src="docs/screenshots/mobile-breathing.jpg" alt="Phone layout showing a breathing cue, countdown, large Pause and Reset buttons, and collapsed Session settings" width="390" />
+<img src="docs/screenshots/mobile-breathing.jpg" alt="Phone layout showing a breathing cue, countdown, large Pause and Reset buttons, and session controls" width="390" />
 
 ## Set up your session
 
 - **Sound.** Tap **Sound off** in the header to play Soft lo-fi on first use. The chevron opens the sound choices, including rain, slow tide, and **Breathing lo-fi**. Breathing lo-fi follows your rhythm and pauses and resumes with the countdown.
 - **Spoken cues.** Open **Sound & voice** in Session settings to enable spoken instructions in supported browsers.
-- **Animation and countdowns.** Use **Display & countdown** to change the preparation countdown, hide timers, or keep the circle still. Animation follows your system preference until you choose a setting in the app.
+- **Animation and countdowns.** Open **Timing** to change the preparation countdown. **Display** has the countdown and animation controls. The circle still shows the breath cue if you hide the numbers. Animation follows your system preference until you choose a setting in the app.
 
 ## Open it locally or offline
 

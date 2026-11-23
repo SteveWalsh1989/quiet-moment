@@ -63,11 +63,15 @@ export const paces = [
 ] as const
 
 export const breathingCues = {
-  prepare: { title: 'Get comfortable', instruction: 'Breathe normally until the first cue.' },
-  inhale: { title: 'Breathe in', instruction: 'Through your nose' },
-  hold: { title: 'Hold gently', instruction: 'Pause after breathing in' },
-  exhale: { title: 'Breathe out', instruction: 'Through your mouth' },
-  rest: { title: 'Pause gently', instruction: 'Wait before the next inhale' },
+  prepare: {
+    title: 'Get comfortable',
+    instruction: 'Breathe normally until the first cue.',
+    shortLabel: 'Ready',
+  },
+  inhale: { title: 'Breathe in', instruction: 'Through your nose', shortLabel: 'In' },
+  hold: { title: 'Hold gently', instruction: 'Pause after breathing in', shortLabel: 'Hold' },
+  exhale: { title: 'Breathe out', instruction: 'Through your mouth', shortLabel: 'Out' },
+  rest: { title: 'Pause gently', instruction: 'Wait before the next inhale', shortLabel: 'Hold' },
 } as const
 
 const breathingSteps = [

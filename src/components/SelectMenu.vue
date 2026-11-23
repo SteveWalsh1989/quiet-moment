@@ -7,6 +7,7 @@ const props = defineProps<{
   label: string
   options: readonly { id: T; label: string; detail?: string; icon?: IconName }[]
   iconOnly?: boolean
+  inlineOptions?: boolean
   descriptionId?: string
   disabled?: boolean
 }>()
@@ -39,11 +40,13 @@ function highlight(index: number) {
 function open(index = selected.value) {
   const rect = trigger.value?.getBoundingClientRect()
   if (!rect || props.disabled || !props.options.length) return
-  const above = rect.top
-  const below = window.innerHeight - rect.bottom
-  const preferred = Math.min(328, props.options.length * 55 + 12)
-  opensAbove.value = below < preferred && above > below
-  maxHeight.value = Math.min(preferred, Math.max(104, (opensAbove.value ? above : below) - 16))
+  if (!props.inlineOptions) {
+    const above = rect.top
+    const below = window.innerHeight - rect.bottom
+    const preferred = Math.min(328, props.options.length * 55 + 12)
+    opensAbove.value = below < preferred && above > below
+    maxHeight.value = Math.min(preferred, Math.max(104, (opensAbove.value ? above : below) - 16))
+  }
   isOpen.value = true
   highlight(index)
 }
@@ -177,8 +180,12 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
         ref="list"
         role="listbox"
         class="option-popup select-menu-popup"
-        :class="{ 'select-menu-popup-above': opensAbove, 'theme-popup': iconOnly }"
-        :style="{ maxHeight: `${maxHeight}px` }"
+        :class="{
+          'select-menu-popup-above': opensAbove,
+          'select-menu-inline': inlineOptions,
+          'theme-popup': iconOnly,
+        }"
+        :style="inlineOptions ? undefined : { maxHeight: `${maxHeight}px` }"
         :aria-labelledby="`${id}-label`"
       >
         <div

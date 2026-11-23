@@ -20,7 +20,6 @@ const emit = defineEmits<{
   resume: []
   stop: []
   ground: []
-  toggleAnimation: []
 }>()
 
 const breathCue = computed(() => {
@@ -44,6 +43,8 @@ const orbLabel = computed(() => {
   }
   return props.isGuided ? 'Start quick reset' : 'Start breathing'
 })
+
+const orbCue = computed(() => breathingCues[props.phase?.name ?? 'prepare'].shortLabel)
 
 const ringSegments = computed(() =>
   props.rhythm.steps.map((step) => {
@@ -132,10 +133,15 @@ function activateCircle() {
           <AppIcon name="play" :size="20" />
           <span>Resume</span>
         </span>
-        <span v-else-if="countdown" class="orb-counter" aria-hidden="true">{{
-          phase?.seconds
-        }}</span>
-        <AppIcon v-else class="orb-mark" name="breathe" :size="30" />
+        <span
+          v-else
+          class="orb-cue"
+          :class="{ 'orb-cue-with-count': countdown }"
+          aria-hidden="true"
+        >
+          <span class="orb-cue-label">{{ orbCue }}</span>
+          <span v-if="countdown" class="orb-counter">{{ phase?.seconds }}</span>
+        </span>
       </button>
     </div>
     <div v-if="isBreathing" class="player-actions flex flex-wrap items-center justify-center">
@@ -162,15 +168,5 @@ function activateCircle() {
       </button>
     </template>
     <span v-else>Let the timing be a guide. Breathe at your own pace.</span>
-    <button
-      type="button"
-      class="flow-position flow-link"
-      aria-label="Breathing animation"
-      :aria-pressed="motionEnabled"
-      :title="motionEnabled ? 'Turn breathing animation off' : 'Turn breathing animation on'"
-      @click="emit('toggleAnimation')"
-    >
-      Animation {{ motionEnabled ? 'on' : 'off' }}
-    </button>
   </div>
 </template>

@@ -1,44 +1,73 @@
-.minimal-layout .settings-area,
-.mobile-settings-toggle {
-  display: none;
-}
-
-.settings {
-  min-width: 0;
-  min-height: 521px;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--panel);
-  padding: 21px;
-}
-
-.settings-title {
-  gap: 9px;
-}
-
-.settings-title svg {
-  color: var(--accent);
-}
-
-.settings-title h2 {
+.settings-popover {
+  position: fixed;
+  inset: var(--settings-top, auto) var(--settings-right, 12px) var(--settings-bottom, auto) auto;
+  width: min(25rem, calc(100% - var(--settings-right, 12px) - 12px));
+  max-width: none;
+  max-height: min(42rem, var(--settings-height, 75dvh));
   margin: 0;
-  font-size: 1.18rem;
+  padding: 0;
+  overflow: hidden;
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--panel);
+  box-shadow: 0 18px 50px var(--popup-shadow);
+}
+
+.settings-popover:is([open], :popover-open) {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-popover::backdrop {
+  background: #1612213d;
+}
+
+.settings-popover-header {
+  flex: none;
+  gap: 12px;
+  padding: 8px 10px 8px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.settings-popover-header h2 {
+  font-size: 1.1rem;
   font-weight: 800;
-  letter-spacing: -0.026em;
+  letter-spacing: -0.02em;
+}
+
+.settings-close {
+  color: var(--muted);
+}
+
+.settings-close:hover {
+  color: var(--ink);
+  background: var(--hover);
+}
+
+.player .settings-popover :focus-visible {
+  outline-color: var(--focus);
+}
+
+.settings-popover-content {
+  min-height: 0;
+  padding: 0 16px 10px;
+  overflow: auto;
+  overscroll-behavior: contain;
 }
 
 .settings-tabs {
-  gap: 13px;
-  margin-top: 13px;
+  flex-wrap: wrap;
+  gap: 0 12px;
   border-bottom: 1px solid var(--line);
 }
 
 .settings-tabs button {
-  min-height: 43px;
+  min-height: 44px;
   padding-inline: 4px;
   border-bottom: 2px solid transparent;
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.875rem;
   font-weight: 750;
 }
 
@@ -104,6 +133,13 @@
   inset: calc(100% + 6px) 0 auto;
   overflow: auto;
   overscroll-behavior: contain;
+}
+
+.select-menu-inline {
+  position: static;
+  max-height: 13rem;
+  margin-top: 4px;
+  box-shadow: none;
 }
 
 .select-menu-popup-above {
@@ -189,30 +225,13 @@ input.control {
   margin-top: 10px;
 }
 
-.more-settings {
-  margin-top: 10px;
-}
-
-.more-settings summary {
-  min-height: 36px;
-  cursor: pointer;
-  color: var(--ink);
-  font-size: 0.88rem;
-  font-weight: 780;
-  list-style: none;
-}
-
-.more-settings summary::-webkit-details-marker {
-  display: none;
-}
-
-.more-settings[open] summary svg {
-  rotate: 180deg;
+.settings-footer {
+  padding-top: 8px;
 }
 
 .switch-row {
   display: flex;
-  min-height: 35px;
+  min-height: 44px;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
@@ -240,7 +259,7 @@ input[type='range'] {
 }
 
 .text-button {
-  min-height: 30px;
+  min-height: 44px;
   color: var(--accent-ink);
   font-size: 0.84rem;
   font-weight: 800;

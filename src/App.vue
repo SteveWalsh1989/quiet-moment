@@ -3,6 +3,7 @@ import { computed, nextTick, reactive, ref, watch } from 'vue'
 import AppHeader from './components/AppHeader.vue'
 import AppIcon from './components/AppIcon.vue'
 import SessionSettings from './components/SessionSettings.vue'
+import SettingsPopover from './components/SettingsPopover.vue'
 import { exerciseViews } from './exerciseViews'
 import type { ExerciseView } from './exerciseViews'
 import BreathingPlayer from './features/breathing/BreathingPlayer.vue'
@@ -28,9 +29,7 @@ const view = ref<ExerciseView>('reset')
 const stage = ref<ExerciseStage>('ready')
 const guide = ref(preferences.ground)
 const attentionIndex = ref(0)
-const settingsTab = ref<'session' | 'audio'>('session')
-const minimal = ref(false)
-const mobileSettingsOpen = ref(false)
+const settingsOpen = ref(false)
 const player = ref<HTMLElement | null>(null)
 const current = computed(
   () => exerciseViews.find((item) => item.id === view.value) ?? exerciseViews[0],
@@ -59,9 +58,10 @@ watch(
 watch(() => breathState.value === 'paused', audio.setBreathingPaused, { flush: 'sync' })
 
 function focusExercise() {
-  void nextTick(() =>
-    player.value?.querySelector<HTMLElement>('h2[tabindex="-1"]')?.focus({ preventScroll: true }),
-  )
+  void nextTick(() => {
+    if (settingsOpen.value) return
+    player.value?.querySelector<HTMLElement>('h2[tabindex="-1"]')?.focus({ preventScroll: true })
+  })
 }
 
 function selectView(id: ExerciseView) {
@@ -134,26 +134,16 @@ function previewVoice() {
 </script>
 
 <template>
-  <div
-    class="site-shell"
-    :class="{
-      'minimal-layout': minimal,
-      'breathing-session': isBreathing,
-      'desktop-audio-settings': !minimal && settingsTab === 'audio',
-      'mobile-audio-settings': mobileSettingsOpen && settingsTab === 'audio',
-    }"
-  >
+  <div class="site-shell" :class="{ 'breathing-session': isBreathing }">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <AppHeader
       v-model:theme="preferences.theme"
       :view="view"
-      :active-sound="playing ? preferences.sound : 'off'"
       :playing="playing"
-      :audio-message="audioMessage"
+      :audio-message="settingsOpen ? '' : audioMessage"
       @home="view === 'reset' ? returnToStart() : selectView('reset')"
       @navigate="selectView"
       @toggle-sound="toggleSound"
-      @pick-sound="pickSound"
     />
     <main id="main-content" class="main-wrap" tabindex="-1">
       <div class="intro-block">
@@ -181,17 +171,22 @@ function previewVoice() {
               >
                 <AppIcon name="timer" :size="16" /> {{ formatTime(remaining) }}
               </span>
-              <button
-                class="expand-button"
-                type="button"
-                :title="minimal ? 'Show settings panel' : 'Hide settings panel'"
-                :aria-label="minimal ? 'Show settings panel' : 'Hide settings panel'"
-                :aria-expanded="!minimal"
-                aria-controls="session-settings"
-                @click="minimal = !minimal"
-              >
-                <AppIcon :name="minimal ? 'shrink' : 'expand'" :size="19" />
-              </button>
+              <SettingsPopover v-model:open="settingsOpen">
+                <SessionSettings
+                  :model-value="preferences"
+                  :is-breathing="isBreathing"
+                  :is-grounding="isGrounding"
+                  :is-guided="isGuided"
+                  :playing="playing"
+                  :audio-message="audioMessage"
+                  :voice-message="voiceMessage"
+                  :voice-supported="voiceSupported"
+                  @update:model-value="updatePreferences"
+                  @pick-sound="pickSound"
+                  @reset="resetSettings"
+                  @preview-voice="previewVoice"
+                />
+              </SettingsPopover>
             </div>
           </div>
           <BreathingPlayer
@@ -208,7 +203,6 @@ function previewVoice() {
             @resume="breath.resume"
             @stop="returnToStart"
             @ground="startGrounding"
-            @toggle-animation="preferences.motion = motionEnabled ? 'off' : 'on'"
           />
           <GroundingPlayer
             v-else-if="isGrounding"
@@ -252,36 +246,6 @@ function previewVoice() {
             </div>
           </template>
         </section>
-        <div class="settings-area">
-          <button
-            type="button"
-            class="mobile-settings-toggle"
-            :aria-expanded="mobileSettingsOpen"
-            aria-controls="session-settings"
-            @click="mobileSettingsOpen = !mobileSettingsOpen"
-          >
-            <AppIcon name="tune" :size="20" />
-            Session settings
-            <AppIcon class="settings-chevron" name="chevron" :size="17" />
-          </button>
-          <SessionSettings
-            id="session-settings"
-            v-model:tab="settingsTab"
-            :class="{ 'settings-open-on-mobile': mobileSettingsOpen }"
-            :model-value="preferences"
-            :is-breathing="isBreathing"
-            :is-grounding="isGrounding"
-            :is-guided="isGuided"
-            :playing="playing"
-            :audio-message="audioMessage"
-            :voice-message="voiceMessage"
-            :voice-supported="voiceSupported"
-            @update:model-value="updatePreferences"
-            @pick-sound="pickSound"
-            @reset="resetSettings"
-            @preview-voice="previewVoice"
-          />
-        </div>
       </div>
       <footer class="site-footer flex items-start">
         <AppIcon name="info" :size="19" />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import AppIcon from './AppIcon.vue'
 import SelectMenu from './SelectMenu.vue'
 import {
@@ -26,7 +26,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ pickSound: [id: SoundId]; reset: []; previewVoice: [] }>()
 const preferences = defineModel<Preferences>({ required: true })
-const settingsTab = defineModel<'session' | 'audio'>('tab', { required: true })
+const settingsTab = ref<'timing' | 'display' | 'audio'>('timing')
 
 function updatePreferences(update: Partial<Preferences>) {
   preferences.value = { ...preferences.value, ...update }
@@ -116,25 +116,29 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
 </script>
 
 <template>
-  <aside class="settings" aria-labelledby="settings-heading">
-    <div class="settings-title flex items-center">
-      <AppIcon name="tune" :size="22" />
-      <h2 id="settings-heading">Your session</h2>
-    </div>
-    <div class="settings-tabs flex" aria-label="Settings sections">
+  <div class="settings">
+    <div class="settings-tabs flex" role="group" aria-label="Settings sections">
       <button
         type="button"
-        :aria-pressed="settingsTab === 'session'"
-        @click="settingsTab = 'session'"
+        :aria-pressed="settingsTab === 'timing'"
+        @click="settingsTab = 'timing'"
       >
         Timing
+      </button>
+      <button
+        type="button"
+        :aria-pressed="settingsTab === 'display'"
+        @click="settingsTab = 'display'"
+      >
+        Display
       </button>
       <button type="button" :aria-pressed="settingsTab === 'audio'" @click="settingsTab = 'audio'">
         Sound & voice
       </button>
     </div>
 
-    <div v-if="settingsTab === 'session'" class="settings-body">
+    <div v-if="settingsTab === 'timing'" class="settings-body">
+      <p v-if="isBreathing" class="field-note">Timing changes are available after the session.</p>
       <div class="settings-row">
         <SelectMenu
           v-model="pace"
@@ -142,6 +146,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           :options="paceOptions"
           :disabled="isBreathing"
           description-id="pace-detail"
+          inline-options
         />
         <p id="pace-detail" class="field-note">{{ selectedPace?.detail }}</p>
         <div v-if="preferences.pace === 'custom'" class="timing-fields">
@@ -174,6 +179,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           label="Breathing duration"
           :options="durationOptions"
           :disabled="isBreathing"
+          inline-options
         />
         <label v-if="storedDuration === 'custom'" class="extra-input"
           >Seconds (15–600)<input
@@ -191,33 +197,43 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </p>
       </div>
       <div class="settings-row">
-        <SelectMenu v-model="ground" label="Grounding exercise" :options="groundingOptions" />
-        <p v-if="isGuided && isGrounding" class="field-note">Changes apply to your next reset.</p>
-      </div>
-      <details class="more-settings">
-        <summary class="flex items-center justify-between">
-          Display & countdown<AppIcon name="chevron" :size="16" />
-        </summary>
-        <label class="switch-row"
-          ><span>Show countdowns</span><input v-model="countdown" type="checkbox"
-        /></label>
-        <SelectMenu
-          v-model="motion"
-          class="extra-input"
-          label="Breathing animation"
-          :options="motionOptions"
-        />
         <SelectMenu
           v-model="prep"
-          class="extra-input"
           label="Preparation countdown"
           :options="prepOptions"
           :disabled="isBreathing"
+          inline-options
         />
-        <button type="button" class="text-button" :disabled="settingsLocked" @click="emit('reset')">
-          Restore recommended settings
-        </button>
-      </details>
+      </div>
+      <div class="settings-row">
+        <SelectMenu
+          v-model="ground"
+          label="Grounding exercise"
+          :options="groundingOptions"
+          inline-options
+        />
+        <p v-if="isGuided && isGrounding" class="field-note">Changes apply to your next reset.</p>
+      </div>
+    </div>
+
+    <div v-else-if="settingsTab === 'display'" class="settings-body">
+      <div class="settings-row">
+        <label class="switch-row">
+          <span>Show countdowns</span>
+          <input v-model="countdown" type="checkbox" aria-describedby="countdown-detail" />
+        </label>
+        <p id="countdown-detail" class="field-note">
+          Show seconds in the circle and time remaining at the top of the player.
+        </p>
+      </div>
+      <div class="settings-row">
+        <SelectMenu
+          v-model="motion"
+          label="Breathing animation"
+          :options="motionOptions"
+          inline-options
+        />
+      </div>
     </div>
 
     <div v-else class="settings-body">
@@ -277,5 +293,10 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </p>
       </div>
     </div>
-  </aside>
+    <div class="settings-footer">
+      <button type="button" class="text-button" :disabled="settingsLocked" @click="emit('reset')">
+        Restore session defaults
+      </button>
+    </div>
+  </div>
 </template>

@@ -32,23 +32,28 @@
   color: #d8b8ef;
 }
 
-.expand-button {
+.settings-trigger,
+.settings-close {
   display: grid;
+  width: 44px;
+  height: 44px;
   place-items: center;
-  border-radius: 7px;
-  width: 39px;
-  height: 39px;
+  border-radius: 9px;
+}
+
+.settings-trigger {
   color: var(--player-muted);
 }
 
-.expand-button:hover {
+.settings-trigger:hover,
+.settings-trigger[aria-expanded='true'] {
   color: #fff;
-  background: #ffffff13;
+  background: #ffffff19;
 }
 
 .session-timer {
   gap: 7px;
-  margin-right: 14px;
+  margin-right: 7px;
   color: #e5dbf1;
   font-size: 0.88rem;
   font-variant-numeric: tabular-nums;
@@ -136,8 +141,7 @@
   background: radial-gradient(circle at 39% 32%, #efd2ee65, transparent 67%);
 }
 
-.orb-mark,
-.orb-counter,
+.orb-cue,
 .orb-start {
   position: relative;
   color: #fff0fc;
@@ -165,6 +169,22 @@
 .breath-orb-ready:focus-visible .orb-body {
   border-color: #e9c2edd9;
   box-shadow: 0 5px 36px #a796df65;
+}
+
+.orb-cue {
+  display: grid;
+  gap: 4px;
+  justify-items: center;
+  line-height: 1;
+}
+
+.orb-cue-label {
+  font-size: clamp(1.25rem, 2.2vw, 2.15rem);
+  font-weight: 800;
+}
+
+.orb-cue-with-count .orb-cue-label {
+  font-size: clamp(0.9rem, 1.5vw, 1.45rem);
 }
 
 .orb-counter {
@@ -204,15 +224,13 @@
 }
 
 .breath-copy-active h2 {
-  color: #fff;
-  font-size: clamp(2.25rem, 8vw, 3.75rem);
-  letter-spacing: -0.045em;
+  @apply sr-only;
 }
 
 .breath-copy-active p {
   color: #f3dbf7;
-  font-size: clamp(1.12rem, 4vw, 1.38rem);
-  font-weight: 750;
+  grid-row: 2;
+  font-weight: 700;
   line-height: 1.3;
 }
 

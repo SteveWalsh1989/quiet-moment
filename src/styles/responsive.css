@@ -6,10 +6,6 @@
   .main-wrap {
     width: calc(100% - 50px);
   }
-  .workbench {
-    grid-template-columns: minmax(0, 1fr) 302px;
-    gap: 15px;
-  }
   .main-nav button {
     padding-inline: 7px;
   }
@@ -35,16 +31,6 @@
   }
   .topbar-actions {
     grid-area: 1 / 2;
-  }
-  .mobile-audio-settings .sound-error {
-    display: none;
-  }
-  .sound-shortcut,
-  .sound-menu-toggle {
-    min-height: 44px;
-  }
-  .sound-menu-toggle {
-    width: 44px;
   }
   .main-nav {
     display: grid;
@@ -85,22 +71,12 @@
   .breathing-session .workbench {
     margin-top: 12px;
   }
-  .workbench {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
-  }
   .player {
     min-height: 0;
   }
   .player-top {
     height: 49px;
     margin-inline: 14px;
-  }
-  .expand-button {
-    display: none;
-  }
-  .session-timer {
-    margin-right: 0;
   }
   .breath-copy {
     min-height: 5rem;
@@ -132,36 +108,6 @@
   .player-actions .on-dark-button {
     border: 1px solid #cdb6ee4d;
   }
-  .minimal-layout .settings-area {
-    display: block;
-  }
-  .mobile-settings-toggle {
-    display: flex;
-    width: 100%;
-    min-height: 48px;
-    align-items: center;
-    gap: 9px;
-    padding-inline: 14px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: var(--panel);
-    font-weight: 750;
-  }
-  .settings-chevron {
-    margin-left: auto;
-  }
-  .mobile-settings-toggle[aria-expanded='true'] .settings-chevron {
-    rotate: 180deg;
-  }
-  .settings {
-    display: none;
-    min-height: auto;
-    padding: 17px;
-  }
-  .settings.settings-open-on-mobile {
-    display: block;
-    margin-top: 8px;
-  }
   .prompt-content {
     margin: 22px clamp(12px, 4vw, 24px) 0;
   }
@@ -191,12 +137,6 @@
     padding-inline: 8px;
   }
 }
-@media (min-width: 761px) {
-  .desktop-audio-settings .sound-error {
-    display: none;
-  }
-}
-
 @media (min-width: 1280px) {
   .site-shell {
     --page-width: 112rem;
@@ -213,17 +153,8 @@
     padding-inline: 0;
   }
 
-  .workbench {
-    grid-template-columns: minmax(0, 1fr) clamp(345px, 21vw, 440px);
-    gap: clamp(22px, 1.6vw, 32px);
-  }
-
   .intro-block h1 {
     font-size: clamp(4.05rem, 3.75vw, 5.75rem);
-  }
-
-  .settings {
-    padding: clamp(21px, 1.45vw, 30px);
   }
 
   .player-top,
@@ -246,12 +177,12 @@
   }
 
   .workbench {
+    display: flex;
     flex: 1;
-    align-items: stretch;
   }
 
-  .settings-area {
-    align-self: start;
+  .player {
+    flex: 1;
   }
 
   .breathing-stage {
@@ -278,8 +209,7 @@
     font-size: clamp(1.1rem, 1.3vw, 1.55rem);
   }
 
-  .orb-start svg,
-  .orb-mark {
+  .orb-start svg {
     width: clamp(22px, 1.65vw, 36px);
     height: auto;
   }
@@ -288,17 +218,9 @@
     font-size: clamp(2.15rem, 2.35vw, 3.25rem);
   }
 
-  .breath-copy-active h2 {
-    font-size: clamp(3.75rem, 3.7vw, 5rem);
-  }
-
   .breath-copy p,
   .prompt-content p {
     font-size: clamp(1.05rem, 1.25vw, 1.4rem);
-  }
-
-  .breath-copy-active p {
-    font-size: clamp(1.38rem, 1.6vw, 1.7rem);
   }
 
   .player-actions {
