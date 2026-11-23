@@ -8,12 +8,12 @@ import { getRhythm } from '../src/features/breathing/breathingTiming.ts'
 import { useBreathingSession } from '../src/features/breathing/useBreathingSession.ts'
 import { defaultPreferences } from '../src/preferences.ts'
 
-test('synced arrangements follow Quiet, with Warm Keys enabled by default', () => {
+test('Velvet Tape is the default synced arrangement', () => {
   assert.deepEqual(
     soundTracks.slice(0, 4).map(({ id }) => id),
-    ['off', 'breath-lofi', 'breath-tape', 'breath-afterglow'],
+    ['off', 'breath-tape', 'breath-lofi', 'breath-afterglow'],
   )
-  assert.equal(defaultPreferences.sound, 'breath-lofi')
+  assert.equal(defaultPreferences.sound, 'breath-tape')
   assert.equal(defaultPreferences.soundEnabled, true)
 })
 
@@ -207,7 +207,7 @@ test('the breathing clock follows the music and resumes at the same offset', asy
   assert.equal(breath.phase.value.name, 'inhale')
   assert.equal(breath.phase.value.cycle, 1)
 
-  await audio.playSound('breath-tape')
+  await audio.playSound('breath-lofi')
   assert.deepEqual(sources.at(-1).started, { when: 42.5, offset: 0 })
   assert.notEqual(sources.at(-1).buffer, sources[1].buffer)
 

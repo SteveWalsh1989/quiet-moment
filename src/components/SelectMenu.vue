@@ -8,6 +8,7 @@ const props = defineProps<{
   options: readonly { id: T; label: string; detail?: string; icon?: IconName }[]
   descriptionId?: string
   disabled?: boolean
+  compact?: boolean
 }>()
 const value = defineModel<T>({ required: true })
 const id = useId()
@@ -110,7 +111,7 @@ function handleKey(event: KeyboardEvent) {
       close()
       break
     case 'Tab':
-      if (isOpen.value) choose(active.value)
+      if (isOpen.value && !props.compact) choose(active.value)
       break
     default:
       if (key.length !== 1 || event.altKey) return
@@ -130,18 +131,23 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
 </script>
 
 <template>
-  <div ref="root" class="select-menu">
-    <label :id="`${id}-label`" :for="id" class="settings-select-label">
+  <div ref="root" class="select-menu" :class="{ contents: compact }">
+    <label :id="`${id}-label`" :for="id" :class="compact ? 'sr-only' : 'settings-select-label'">
       {{ label }}
     </label>
-    <div class="mt-[7px]">
+    <div :class="compact ? 'contents' : 'mt-[7px]'">
       <button
         :id="id"
         ref="trigger"
         type="button"
         role="combobox"
-        class="control settings-select-trigger flex items-center justify-between gap-3 text-left"
+        :class="
+          compact
+            ? 'select-menu-compact-trigger'
+            : 'control settings-select-trigger flex items-center justify-between gap-3 text-left'
+        "
         :disabled="disabled"
+        :title="compact ? label : undefined"
         :aria-labelledby="`${id}-label`"
         :aria-describedby="descriptionId"
         :aria-expanded="isOpen"
@@ -151,8 +157,8 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
         @blur="close"
         @keydown="handleKey"
       >
-        <span>{{ options[selected]?.label }}</span>
-        <AppIcon name="chevron" :size="16" />
+        <span v-if="!compact">{{ options[selected]?.label }}</span>
+        <AppIcon name="chevron" :size="compact ? 18 : 16" />
       </button>
       <div
         v-show="isOpen"
@@ -160,6 +166,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
         ref="list"
         role="listbox"
         class="select-menu-popup"
+        :class="{ 'col-span-full mb-2': compact }"
         :aria-labelledby="`${id}-label`"
       >
         <div

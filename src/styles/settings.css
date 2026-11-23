@@ -81,6 +81,19 @@
   @apply rotate-180;
 }
 
+.select-menu-compact-trigger {
+  @apply grid h-11 w-11 place-items-center rounded-md text-muted;
+}
+
+.select-menu-compact-trigger:hover,
+.select-menu-compact-trigger[aria-expanded='true'] {
+  @apply bg-hover text-ink;
+}
+
+.select-menu-compact-trigger[aria-expanded='true'] svg {
+  @apply rotate-180;
+}
+
 .select-menu-popup {
   @apply mt-1 max-h-52 overflow-auto overscroll-contain rounded-[11px] border border-line bg-panel p-[5px];
 }
@@ -179,8 +192,12 @@ input[type='range'] {
   @apply mb-[6px];
 }
 
+.sound-row {
+  @apply grid grid-cols-[minmax(0,1fr)_auto] items-center border-b border-solid border-b-line;
+}
+
 .sound-option {
-  @apply gap-[9px] min-h-[50px] p-[5px_3px] border-b border-solid border-b-line cursor-pointer;
+  @apply gap-[9px] min-h-[50px] p-[5px_3px] cursor-pointer;
 }
 
 .sound-option:hover {

@@ -2,7 +2,7 @@ import { onUnmounted, ref, watch } from 'vue'
 import type { Preferences } from '../../preferences'
 import { createBreathingMusic } from './breathingMusic.ts'
 import type { MusicSession } from './breathingMusic'
-import { breathingArrangements } from './soundTracks.ts'
+import { breathingArrangements, isBreathingSound } from './soundTracks.ts'
 import type { SoundId } from './soundTracks'
 
 export function useBackgroundAudio(preferences: Readonly<Preferences>) {
@@ -60,12 +60,7 @@ export function useBackgroundAudio(preferences: Readonly<Preferences>) {
   function setBreathingSession(session: MusicSession | null) {
     music?.stop()
     breathingSession = session
-    if (
-      session &&
-      context &&
-      playing.value &&
-      breathingArrangements.some(({ id }) => id === activeSound)
-    ) {
+    if (session && context && playing.value && isBreathingSound(activeSound)) {
       void resumeMusic(context)
     }
   }
@@ -85,7 +80,7 @@ export function useBackgroundAudio(preferences: Readonly<Preferences>) {
 
     const request = ++playbackRequest
     try {
-      if (breathingArrangements.some((arrangement) => id === arrangement.id)) {
+      if (isBreathingSound(id)) {
         if (!context) {
           context = new window.AudioContext()
           context.addEventListener('statechange', handleContextState)

@@ -16,21 +16,8 @@ export interface BreathingArrangement {
 
 export const breathingArrangements = [
   {
-    id: 'breath-lofi',
-    title: 'Breathing lo-fi · Warm Keys',
-    detail: 'Felt piano, rounded bass and a gentle count',
-    style: 'felt',
-    voicings: {
-      prepare: { chord: [48, 55, 64], bass: [36], melody: [64, 60, 55] },
-      inhale: { chord: [53, 60, 69], bass: [41], melody: [60, 65, 69, 65] },
-      hold: { chord: [57, 64, 72], bass: [45], melody: [69, 64, 60, 64] },
-      exhale: { chord: [48, 55, 64], bass: [36], melody: [67, 64, 60, 55, 60, 64] },
-      rest: { chord: [50, 57, 65], bass: [38], melody: [65, 62, 57, 60] },
-    },
-  },
-  {
     id: 'breath-tape',
-    title: 'Breathing lo-fi · Velvet Tape',
+    title: 'Velvet Tape',
     detail: 'Mellow keys, a moving bass line and a brushed beat',
     style: 'tape',
     voicings: {
@@ -42,8 +29,21 @@ export const breathingArrangements = [
     },
   },
   {
+    id: 'breath-lofi',
+    title: 'Warm Keys',
+    detail: 'Felt piano, rounded bass and a gentle count',
+    style: 'felt',
+    voicings: {
+      prepare: { chord: [48, 55, 64], bass: [36], melody: [64, 60, 55] },
+      inhale: { chord: [53, 60, 69], bass: [41], melody: [60, 65, 69, 65] },
+      hold: { chord: [57, 64, 72], bass: [45], melody: [69, 64, 60, 64] },
+      exhale: { chord: [48, 55, 64], bass: [36], melody: [67, 64, 60, 55, 60, 64] },
+      rest: { chord: [50, 57, 65], bass: [38], melody: [65, 62, 57, 60] },
+    },
+  },
+  {
     id: 'breath-afterglow',
-    title: 'Breathing lo-fi · Afterglow',
+    title: 'Afterglow',
     detail: 'Soft plucked notes over a slow, airy pad',
     style: 'pluck',
     voicings: {
@@ -56,14 +56,20 @@ export const breathingArrangements = [
   },
 ] as const satisfies readonly BreathingArrangement[]
 
-export const defaultSound = breathingArrangements[0].id
+export type BreathingSoundId = (typeof breathingArrangements)[number]['id']
+export const defaultSound = 'breath-tape' satisfies BreathingSoundId
 
-export const soundTracks = [
-  { id: 'off', title: 'Quiet', detail: 'No background sound' },
-  ...breathingArrangements,
+export function isBreathingSound(id: unknown): id is BreathingSoundId {
+  return breathingArrangements.some((arrangement) => arrangement.id === id)
+}
+
+export const quietSound = { id: 'off', title: 'Quiet', detail: 'No background sound' } as const
+
+export const ambientSounds = [
   { id: 'lofi', title: 'Soft lo-fi', detail: 'Warm keys and a slow beat' },
   { id: 'rain', title: 'Window rain', detail: 'A soft, steady rain' },
   { id: 'ocean', title: 'Slow tide', detail: 'Low, rolling waves' },
 ] as const
 
+export const soundTracks = [quietSound, ...breathingArrangements, ...ambientSounds] as const
 export type SoundId = (typeof soundTracks)[number]['id']

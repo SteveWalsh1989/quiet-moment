@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import AppIcon from './AppIcon.vue'
+import { computed, ref, useId } from 'vue'
 import SelectMenu from './SelectMenu.vue'
 import SettingsPopover from './SettingsPopover.vue'
 import {
@@ -11,8 +10,13 @@ import {
   roundSessionDuration,
 } from '../features/breathing/breathingTiming'
 import { grounding } from '../features/grounding/groundingPrompts'
-import { soundTracks } from '../features/audio/soundTracks'
-import type { SoundId } from '../features/audio/soundTracks'
+import {
+  ambientSounds,
+  breathingArrangements,
+  isBreathingSound,
+  quietSound,
+} from '../features/audio/soundTracks'
+import type { BreathingSoundId, SoundId } from '../features/audio/soundTracks'
 import { boundedNumber, preferenceLimits } from '../preferences'
 import type { Preferences } from '../preferences'
 
@@ -20,7 +24,6 @@ const props = defineProps<{
   isBreathing: boolean
   isGrounding: boolean
   isGuided: boolean
-  playing: boolean
   audioMessage: string
   voiceMessage: string
   voiceSupported: boolean
@@ -51,6 +54,34 @@ const volume = preferenceModel('volume')
 const selectedSound = computed(() =>
   preferences.value.soundEnabled ? preferences.value.sound : 'off',
 )
+const arrangementDescriptionId = useId()
+const arrangementOptions = breathingArrangements.map(({ id, title, detail }) => ({
+  id,
+  label: title,
+  detail,
+}))
+const breathingSound = computed({
+  get: () => preferences.value.breathingSound,
+  set: (id: BreathingSoundId) => {
+    if (isBreathingSound(selectedSound.value)) {
+      emit('pickSound', id)
+      return
+    }
+    updatePreferences({
+      breathingSound: id,
+      sound: isBreathingSound(preferences.value.sound) ? id : preferences.value.sound,
+    })
+  },
+})
+const soundOptions = computed(() => [
+  quietSound,
+  {
+    id: breathingSound.value,
+    title: 'Breathing lo-fi',
+    detail: arrangementOptions.find(({ id }) => id === breathingSound.value)?.label,
+  },
+  ...ambientSounds,
+])
 const voice = preferenceModel('voice')
 const voiceVolume = preferenceModel('voiceVolume')
 const rhythm = computed(() => getPaceRhythm(preferences.value))
@@ -246,27 +277,34 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
       <div v-else class="settings-body">
         <fieldset class="sound-list">
           <legend>Background sound</legend>
-          <label
-            v-for="sound in soundTracks"
-            :key="sound.id"
-            class="sound-option flex items-center"
+          <div
+            v-for="sound in soundOptions"
+            :key="isBreathingSound(sound.id) ? 'breathing' : sound.id"
+            class="sound-row"
           >
-            <input
-              type="radio"
-              name="background-sound"
-              :checked="selectedSound === sound.id"
-              @change="emit('pickSound', sound.id)"
+            <label class="sound-option flex items-center">
+              <input
+                type="radio"
+                name="background-sound"
+                :checked="selectedSound === sound.id"
+                @change="emit('pickSound', sound.id)"
+              />
+              <span>
+                <strong>{{ sound.title }}</strong>
+                <small :id="isBreathingSound(sound.id) ? arrangementDescriptionId : undefined">
+                  {{ sound.detail }}
+                </small>
+              </span>
+            </label>
+            <SelectMenu
+              v-if="isBreathingSound(sound.id)"
+              v-model="breathingSound"
+              compact
+              label="Breathing lo-fi arrangement"
+              :description-id="arrangementDescriptionId"
+              :options="arrangementOptions"
             />
-            <span
-              ><strong>{{ sound.title }}</strong
-              ><small>{{ sound.detail }}</small></span
-            >
-            <AppIcon
-              v-if="sound.id !== 'off' && selectedSound === sound.id && playing"
-              name="music"
-              :size="17"
-            />
-          </label>
+          </div>
         </fieldset>
         <p v-if="audioMessage" class="field-note" role="status">{{ audioMessage }}</p>
         <label class="volume-label">

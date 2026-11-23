@@ -11,6 +11,7 @@ import { useBreathingSession } from './features/breathing/useBreathingSession'
 import { useMotionPreference } from './features/breathing/useMotionPreference'
 import GroundingPlayer from './features/grounding/GroundingPlayer.vue'
 import DistractionPlayer from './features/distraction/DistractionPlayer.vue'
+import { isBreathingSound } from './features/audio/soundTracks'
 import type { SoundId } from './features/audio/soundTracks'
 import { useBackgroundAudio } from './features/audio/useBackgroundAudio'
 import { useSpokenCues } from './features/audio/useSpokenCues'
@@ -111,6 +112,7 @@ function returnToStart() {
 
 function pickSound(id: SoundId) {
   if (id !== 'off') preferences.sound = id
+  if (isBreathingSound(id)) preferences.breathingSound = id
   preferences.soundEnabled = id !== 'off'
   void audio.playSound(id)
 }
@@ -216,7 +218,6 @@ function previewVoice() {
                 :is-breathing="isBreathing"
                 :is-grounding="isGrounding"
                 :is-guided="isGuided"
-                :playing="playing"
                 :audio-message="audioMessage"
                 :voice-message="voiceMessage"
                 :voice-supported="voiceSupported"

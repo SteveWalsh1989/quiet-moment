@@ -120,6 +120,7 @@ test('saved preferences keep legacy motion choices and reject invalid timing', (
   assert.equal(saved.rest, 0)
   assert.equal(saved.countdown, false)
   assert.equal(saved.sound, 'breath-lofi')
+  assert.equal(saved.breathingSound, 'breath-lofi')
 })
 
 test('saved sound keeps the selected track and the enabled state independently', () => {
@@ -128,8 +129,8 @@ test('saved sound keeps the selected track and the enabled state independently',
     return { sound, soundEnabled }
   }
 
-  assert.deepEqual(soundSettings({}), { sound: 'breath-lofi', soundEnabled: true })
-  assert.deepEqual(soundSettings({ sound: 'off' }), { sound: 'breath-lofi', soundEnabled: false })
+  assert.deepEqual(soundSettings({}), { sound: 'breath-tape', soundEnabled: true })
+  assert.deepEqual(soundSettings({ sound: 'off' }), { sound: 'breath-tape', soundEnabled: false })
   assert.deepEqual(soundSettings({ sound: 'rain' }), { sound: 'rain', soundEnabled: true })
   assert.deepEqual(soundSettings({ sound: 'breath-lofi', soundEnabled: false }), {
     sound: 'breath-lofi',
@@ -144,7 +145,14 @@ test('saved sound keeps the selected track and the enabled state independently',
     soundEnabled: false,
   })
   assert.deepEqual(soundSettings({ sound: 'unknown', soundEnabled: true }), {
-    sound: 'breath-lofi',
+    sound: 'breath-tape',
     soundEnabled: true,
+  })
+  const rain = normalizePreferences({ sound: 'rain', breathingSound: 'breath-afterglow' })
+  assert.equal(rain.sound, 'rain')
+  assert.equal(rain.breathingSound, 'breath-afterglow')
+  assert.deepEqual(soundSettings({ sound: 'off', breathingSound: 'breath-afterglow' }), {
+    sound: 'breath-afterglow',
+    soundEnabled: false,
   })
 })

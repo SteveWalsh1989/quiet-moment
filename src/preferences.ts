@@ -2,8 +2,8 @@ import { paces } from './features/breathing/breathingTiming.ts'
 import type { PaceId } from './features/breathing/breathingTiming.ts'
 import { grounding } from './features/grounding/groundingPrompts.ts'
 import type { GroundingId } from './features/grounding/groundingPrompts.ts'
-import { defaultSound, soundTracks } from './features/audio/soundTracks.ts'
-import type { SoundId } from './features/audio/soundTracks.ts'
+import { defaultSound, isBreathingSound, soundTracks } from './features/audio/soundTracks.ts'
+import type { BreathingSoundId, SoundId } from './features/audio/soundTracks.ts'
 
 export type MotionPreference = 'system' | 'on' | 'off'
 export type ThemePreference = 'system' | 'light' | 'dark'
@@ -21,6 +21,7 @@ export interface Preferences {
   voice: boolean
   voiceVolume: number
   sound: Exclude<SoundId, 'off'>
+  breathingSound: BreathingSoundId
   soundEnabled: boolean
   volume: number
   motion: MotionPreference
@@ -41,6 +42,7 @@ export const defaultPreferences: Readonly<Preferences> = {
   voice: false,
   voiceVolume: 65,
   sound: defaultSound,
+  breathingSound: defaultSound,
   soundEnabled: true,
   volume: 30,
   motion: 'on',
@@ -76,6 +78,11 @@ export function normalizePreferences(input: unknown): Preferences {
   const pace = paces.find(({ id }) => id === saved.pace)?.id
   const savedSound = soundTracks.find(({ id }) => id === saved.sound)?.id
   const sound = savedSound === 'off' ? undefined : savedSound
+  const breathingSound = isBreathingSound(sound)
+    ? sound
+    : isBreathingSound(saved.breathingSound)
+      ? saved.breathingSound
+      : defaultPreferences.breathingSound
   const ground =
     typeof saved.ground === 'string' && Object.hasOwn(grounding, saved.ground)
       ? (saved.ground as GroundingId)
@@ -106,7 +113,8 @@ export function normalizePreferences(input: unknown): Preferences {
       defaultPreferences.voiceVolume,
       preferenceLimits.voiceVolume,
     ),
-    sound: sound ?? defaultPreferences.sound,
+    sound: sound ?? breathingSound,
+    breathingSound,
     soundEnabled:
       savedSound !== 'off' &&
       (typeof saved.soundEnabled === 'boolean'

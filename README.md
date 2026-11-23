@@ -51,7 +51,7 @@ The page adapts to the screen width automatically. On a phone, the exercise fill
 
 ## Set up your session
 
-- **Sound.** **Warm Keys** plays by default when you start a breathing session. Open **Sound & voice** in Settings to choose **Velvet Tape**, **Afterglow**, or another sound. All three breathing lo-fi arrangements pulse on each count, change chords at phase boundaries, and pause and resume with the countdown. The sound and Settings buttons sit at the top right of the player.
+- **Sound.** **Velvet Tape** plays by default when you start a breathing session. In Settings, open **Sound & voice** and use the chevron beside **Breathing lo-fi** to choose an arrangement. All three arrangements pulse on each count, change chords at phase boundaries, and pause and resume with the countdown. The sound and Settings buttons sit at the top right of the player.
 - **Spoken cues.** Open **Sound & voice** in Settings to enable spoken instructions in supported browsers.
 - **Animation and countdowns.** Open **Timing** to change the preparation countdown. **Display** has the countdown and animation controls. The circle still shows the breath cue if you hide the numbers. Animation is on by default. Choose **Follow system setting** or **Keep circle still** to change it.
 
