@@ -87,7 +87,7 @@ const prepOptions = [
 ]
 const durationOptions = [
   { id: 30, label: '30 seconds' },
-  { id: 60, label: '1 minute', detail: 'Quick reset' },
+  { id: 60, label: '1 minute', detail: 'Default duration' },
   { id: 120, label: '2 minutes' },
   { id: 300, label: '5 minutes' },
   { id: 'custom', label: 'Custom duration' },

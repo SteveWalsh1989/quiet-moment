@@ -1,7 +1,9 @@
+export const guidedResetLabel = 'Guided reset'
+
 export const exerciseViews = [
   {
     id: 'reset',
-    label: 'Quick reset',
+    label: guidedResetLabel,
     icon: 'reset',
     title: 'A moment to settle.',
     intro: 'Start with a gentle breath, then bring your attention back to the room.',

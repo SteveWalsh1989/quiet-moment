@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import AppIcon from '../../components/AppIcon.vue'
+import { guidedResetLabel } from '../../exerciseViews'
 import { breathingCues } from './breathingTiming'
 import type { BreathingPhase, BreathingRhythm } from './breathingTiming'
 import type { BreathingState } from './useBreathingSession'
@@ -40,7 +41,7 @@ const orbLabel = computed(() => {
   if (props.isBreathing) {
     return props.breathState === 'paused' ? 'Resume breathing' : 'Pause breathing'
   }
-  return props.isGuided ? 'Start quick reset' : 'Start breathing'
+  return props.isGuided ? `Start ${guidedResetLabel.toLowerCase()}` : 'Start breathing'
 })
 
 const orbCue = computed(() => breathingCues[props.phase?.name ?? 'prepare'].shortLabel)

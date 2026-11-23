@@ -15,13 +15,13 @@ Try it out on https://quiet-moment-lovat.vercel.app/
 - **Find mental health services in Ireland.** The HSE’s Your Mental Health information line can explain what services are available and how to access them. [Your Mental Health information line](https://www2.hse.ie/mental-health/services-support/your-mental-health-information-line/)
 - **Read about panic attacks and when to seek care.** [HSE guidance on panic attacks](https://www2.hse.ie/mental-health/issues/how-to-deal-with-panic-attacks/)
 
-## Start a quick reset
+## Start a guided reset
 
-1. Choose **Quick reset** and tap **Start** in the centre of the circle. With the default settings, there’s a short preparation countdown followed by about a minute of guided breathing.
+1. Choose **Guided reset** and tap **Start** in the centre of the circle. With the default settings, there’s a short preparation countdown followed by about a minute of guided breathing.
 2. Follow the **In**, **Out**, and **Hold** cues in the circle at a pace that feels comfortable. Tap the circle or **Pause** to take a break. Tap again to resume, or choose **Reset** to go back to the start.
 3. When breathing ends, the app opens a grounding exercise. You can also choose **Grounding** in the player header during the session.
 
-![Desktop Quick reset with Start in the centre of the circle and session settings alongside](docs/screenshots/desktop-quick-reset.jpg)
+![Desktop Guided reset with Start in the centre of the circle and session settings alongside](docs/screenshots/desktop-quick-reset.jpg)
 
 ## Choose an exercise
 

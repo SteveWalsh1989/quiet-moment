@@ -54,7 +54,7 @@
     @apply min-h-0;
   }
   .player-top {
-    @apply h-[49px] mx-[14px];
+    @apply min-h-[49px] mx-[14px] py-0.5;
   }
   .breath-copy {
     @apply min-h-[5rem] p-[10px_12px_0];
