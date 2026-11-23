@@ -18,48 +18,33 @@
   @apply gap-[4px];
 }
 
-.main-nav button,
-.sound-shortcut,
-.theme-trigger {
+.main-nav button {
   @apply inline-flex items-center justify-center gap-[7px] min-h-[42px] p-[0_12px] rounded-lg text-muted;
-  @apply whitespace-nowrap text-[length:0.875rem] font-[750];
+  @apply whitespace-nowrap text-sm font-[750];
 }
 
 .main-nav button:hover,
-.sound-shortcut:hover,
-.theme-trigger:hover,
-.theme-trigger[aria-expanded='true'] {
+.header-icon-button:hover {
   @apply bg-hover text-ink;
 }
 
-.main-nav button[aria-current] {
+.main-nav button[aria-current],
+.header-icon-button[aria-pressed='true'],
+.header-icon-button[aria-expanded='true'] {
   @apply bg-selected text-accent-ink;
 }
 
-.sound-shortcut {
-  @apply min-h-[44px] px-[8px];
-}
-
 .topbar-actions {
-  @apply gap-[8px];
+  @apply gap-2;
 }
 
-.theme-trigger {
-  @apply w-[44px] min-h-[44px] p-0;
-}
-
-.theme-popup {
-  @apply left-auto w-[min(208px,_calc(100vw_-_28px))];
-}
-
-.option-popup,
-.sound-error {
-  @apply absolute z-[5] p-[5px] border border-solid border-line rounded-[11px] bg-panel;
-  @apply shadow-[0_10px_28px_var(--popup-shadow)];
+.header-icon-button {
+  @apply grid h-11 w-11 place-items-center rounded-lg text-muted;
 }
 
 .sound-error {
-  @apply top-[calc(100%_+_7px)] right-0 w-[min(252px,_calc(100vw_-_36px))];
+  @apply absolute z-[4] top-[calc(100%_+_7px)] right-0 w-[min(252px,_calc(100vw_-_36px))];
+  @apply p-[10px] border border-solid border-line rounded-[11px] bg-panel shadow-[0_10px_28px_var(--popup-shadow)];
 }
 
 .popup-option {
@@ -67,7 +52,6 @@
 }
 
 .popup-option:hover,
-.popup-option[aria-pressed='true'],
 .popup-option[aria-selected='true'] {
   @apply bg-selected text-accent-ink;
 }
@@ -84,10 +68,6 @@
 .popup-option small,
 .sound-error {
   @apply text-muted text-[length:0.78rem];
-}
-
-.sound-error {
-  @apply z-[4] p-[10px];
 }
 
 .main-wrap {

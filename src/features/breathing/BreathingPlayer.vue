@@ -19,7 +19,6 @@ const emit = defineEmits<{
   pause: []
   resume: []
   stop: []
-  ground: []
 }>()
 
 const breathCue = computed(() => {
@@ -45,6 +44,14 @@ const orbLabel = computed(() => {
 })
 
 const orbCue = computed(() => breathingCues[props.phase?.name ?? 'prepare'].shortLabel)
+const isDirectionCue = computed(
+  () => props.phase?.name === 'inhale' || props.phase?.name === 'exhale',
+)
+const activeInstruction = computed(() =>
+  isDirectionCue.value
+    ? `${breathCue.value.title} ${breathCue.value.instruction.toLowerCase()}`
+    : breathCue.value.instruction,
+)
 
 const ringSegments = computed(() =>
   props.rhythm.steps.map((step) => {
@@ -81,8 +88,8 @@ function activateCircle() {
       :aria-live="isBreathing ? 'polite' : 'off'"
       aria-atomic="true"
     >
-      <h2 tabindex="-1">{{ breathCue.title }}</h2>
-      <p>{{ breathCue.instruction }}</p>
+      <h2 tabindex="-1">{{ isBreathCue ? activeInstruction : breathCue.title }}</h2>
+      <p v-if="!isBreathCue">{{ breathCue.instruction }}</p>
     </div>
     <div class="orb-area">
       <button
@@ -134,7 +141,15 @@ function activateCircle() {
           <span>Resume</span>
         </span>
         <span v-else class="orb-cue" aria-hidden="true">
-          <span class="text-[length:clamp(1.875rem,21cqi,5rem)] font-extrabold">{{ orbCue }}</span>
+          <span
+            class="font-extrabold tracking-tight"
+            :class="
+              isDirectionCue
+                ? 'text-[length:clamp(2rem,calc(31cqi_-_0.875rem),7.5rem)]'
+                : 'text-[length:clamp(1.875rem,21cqi,5rem)]'
+            "
+            >{{ orbCue }}</span
+          >
           <span v-if="countdown" class="orb-counter">{{ phase?.seconds }}</span>
         </span>
       </button>
@@ -154,14 +169,7 @@ function activateCircle() {
       <button type="button" class="on-dark-button" @click="emit('stop')">Reset</button>
     </div>
   </div>
-  <div class="player-bottom">
-    <template v-if="isGuided">
-      <span class="flow-position"><i class="active"></i> Breathing</span>
-      <span class="flow-separator" aria-hidden="true"></span>
-      <button type="button" class="flow-position flow-link" @click="emit('ground')">
-        <i></i> {{ isBreathing ? 'Skip to grounding' : 'Grounding' }}
-      </button>
-    </template>
-    <span v-else>Let the timing be a guide. Breathe at your own pace.</span>
+  <div v-if="!isGuided" class="player-bottom">
+    Let the timing be a guide. Breathe at your own pace.
   </div>
 </template>

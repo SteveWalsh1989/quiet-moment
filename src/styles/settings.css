@@ -22,15 +22,11 @@
 }
 
 .settings-close {
-  @apply text-muted;
+  @apply grid h-11 w-11 place-items-center rounded-lg text-muted;
 }
 
 .settings-close:hover {
   @apply text-ink bg-hover;
-}
-
-.player .settings-popover :focus-visible {
-  @apply outline-focus;
 }
 
 .settings-popover-content {
@@ -91,19 +87,7 @@
 }
 
 .select-menu-popup {
-  @apply inset-[calc(100%_+_6px)_0_auto] overflow-auto overscroll-contain;
-}
-
-.select-menu-inline {
-  @apply static max-h-[13rem] mt-[4px] shadow-none;
-}
-
-.select-menu-popup-above {
-  @apply inset-[auto_0_calc(100%_+_6px)];
-}
-
-.select-menu-popup.theme-popup {
-  @apply left-auto;
+  @apply mt-1 max-h-52 overflow-auto overscroll-contain rounded-[11px] border border-line bg-panel p-[5px];
 }
 
 .select-menu-option {

@@ -6,8 +6,6 @@ import type { IconName } from './iconPaths'
 const props = defineProps<{
   label: string
   options: readonly { id: T; label: string; detail?: string; icon?: IconName }[]
-  iconOnly?: boolean
-  inlineOptions?: boolean
   descriptionId?: string
   disabled?: boolean
 }>()
@@ -19,8 +17,6 @@ const trigger = ref<HTMLButtonElement | null>(null)
 const list = ref<HTMLElement | null>(null)
 const isOpen = ref(false)
 const active = ref(0)
-const opensAbove = ref(false)
-const maxHeight = ref(0)
 const selected = computed(() => props.options.findIndex((option) => option.id === value.value))
 let search = ''
 let lastKeyTime = 0
@@ -38,15 +34,7 @@ function highlight(index: number) {
 }
 
 function open(index = selected.value) {
-  const rect = trigger.value?.getBoundingClientRect()
-  if (!rect || props.disabled || !props.options.length) return
-  if (!props.inlineOptions) {
-    const above = rect.top
-    const below = window.innerHeight - rect.bottom
-    const preferred = Math.min(328, props.options.length * 55 + 12)
-    opensAbove.value = below < preferred && above > below
-    maxHeight.value = Math.min(preferred, Math.max(104, (opensAbove.value ? above : below) - 16))
-  }
+  if (props.disabled || !props.options.length) return
   isOpen.value = true
   highlight(index)
 }
@@ -143,21 +131,16 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
 
 <template>
   <div ref="root" class="select-menu">
-    <label :id="`${id}-label`" :for="id" :class="iconOnly ? 'sr-only' : 'settings-select-label'">
+    <label :id="`${id}-label`" :for="id" class="settings-select-label">
       {{ label }}
     </label>
-    <div class="relative" :class="{ 'mt-[7px]': !iconOnly }">
+    <div class="mt-[7px]">
       <button
         :id="id"
         ref="trigger"
         type="button"
         role="combobox"
-        :class="
-          iconOnly
-            ? 'theme-trigger'
-            : 'control settings-select-trigger flex items-center justify-between gap-3 text-left'
-        "
-        :title="iconOnly ? `${label} · ${options[selected]?.label}` : undefined"
+        class="control settings-select-trigger flex items-center justify-between gap-3 text-left"
         :disabled="disabled"
         :aria-labelledby="`${id}-label`"
         :aria-describedby="descriptionId"
@@ -168,24 +151,15 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
         @blur="close"
         @keydown="handleKey"
       >
-        <span :class="{ 'sr-only': iconOnly }">{{ options[selected]?.label }}</span>
-        <AppIcon
-          :name="iconOnly ? (options[selected]?.icon ?? 'monitor') : 'chevron'"
-          :size="iconOnly ? 19 : 16"
-        />
+        <span>{{ options[selected]?.label }}</span>
+        <AppIcon name="chevron" :size="16" />
       </button>
       <div
         v-show="isOpen"
         :id="listId"
         ref="list"
         role="listbox"
-        class="option-popup select-menu-popup"
-        :class="{
-          'select-menu-popup-above': opensAbove,
-          'select-menu-inline': inlineOptions,
-          'theme-popup': iconOnly,
-        }"
-        :style="inlineOptions ? undefined : { maxHeight: `${maxHeight}px` }"
+        class="select-menu-popup"
         :aria-labelledby="`${id}-label`"
       >
         <div

@@ -95,12 +95,6 @@
 }
 
 @media (max-width: 390px) {
-  .sound-shortcut span {
-    @apply sr-only;
-  }
-  .sound-shortcut {
-    @apply min-w-[44px];
-  }
   .main-nav {
     @apply gap-[2px];
   }
@@ -174,7 +168,7 @@
     @apply w-[clamp(22px,_1.65vw,_36px)] h-auto;
   }
 
-  .breath-copy h2 {
+  .breath-copy:not(.breath-copy-active) h2 {
     @apply text-[length:clamp(2.15rem,_2.35vw,_3.25rem)];
   }
 

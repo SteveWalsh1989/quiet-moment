@@ -88,12 +88,5 @@ function changeStep(index: number) {
       Back
     </button>
   </div>
-  <div class="player-bottom">
-    <template v-if="isGuided">
-      <span class="flow-position"><i></i> Breathing</span>
-      <span class="flow-separator" aria-hidden="true"></span>
-      <span class="flow-position"><i class="active"></i> Grounding</span>
-    </template>
-    <span v-else>Take your time. You can skip any prompt.</span>
-  </div>
+  <div v-if="!isGuided" class="player-bottom">Take your time. You can skip any prompt.</div>
 </template>

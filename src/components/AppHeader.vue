@@ -2,22 +2,13 @@
 import { exerciseViews } from '../exerciseViews'
 import type { ExerciseView } from '../exerciseViews'
 import AppIcon from './AppIcon.vue'
-import SelectMenu from './SelectMenu.vue'
-import type { ThemePreference } from '../preferences'
 
 defineProps<{ view: ExerciseView; playing: boolean; audioMessage: string }>()
-const theme = defineModel<ThemePreference>('theme', { required: true })
 const emit = defineEmits<{
   home: []
   navigate: [view: ExerciseView]
   toggleSound: []
 }>()
-const themes = [
-  { id: 'system', label: 'System', detail: 'Follow your device', icon: 'monitor' },
-  { id: 'light', label: 'Light', icon: 'sun' },
-  { id: 'dark', label: 'Dark', icon: 'moon' },
-] as const
-
 const markSource = globalThis.quietMomentOffline?.mark ?? './mark.svg'
 </script>
 
@@ -49,20 +40,19 @@ const markSource = globalThis.quietMomentOffline?.mark ?? './mark.svg'
         <div class="relative">
           <button
             type="button"
-            class="sound-shortcut"
+            class="header-icon-button"
             aria-label="Background sound"
             :aria-pressed="playing"
             :title="playing ? 'Mute background sound' : 'Play background sound'"
             @click="emit('toggleSound')"
           >
             <AppIcon :name="playing ? 'sound' : 'mute'" :size="18" />
-            <span>{{ playing ? 'Sound on' : 'Sound off' }}</span>
           </button>
           <p v-if="audioMessage" class="sound-error" role="status">
             {{ audioMessage }}
           </p>
         </div>
-        <SelectMenu v-model="theme" label="Appearance" :options="themes" icon-only />
+        <slot name="settings" />
       </div>
     </div>
   </header>

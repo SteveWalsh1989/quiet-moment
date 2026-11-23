@@ -43,6 +43,7 @@ const pace = preferenceModel('pace')
 const ground = preferenceModel('ground')
 const countdown = preferenceModel('countdown')
 const motion = preferenceModel('motion')
+const theme = preferenceModel('theme')
 const prep = preferenceModel('prep')
 const volume = preferenceModel('volume')
 const voice = preferenceModel('voice')
@@ -67,6 +68,11 @@ const motionOptions = [
   { id: 'system', label: 'Follow system setting' },
   { id: 'on', label: 'Always animate' },
   { id: 'off', label: 'Keep circle still' },
+] as const
+const themeOptions = [
+  { id: 'system', label: 'System', detail: 'Follow your device', icon: 'monitor' },
+  { id: 'light', label: 'Light', icon: 'sun' },
+  { id: 'dark', label: 'Dark', icon: 'moon' },
 ] as const
 const prepOptions = [
   { id: 0, label: 'Start immediately' },
@@ -146,7 +152,6 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           :options="paceOptions"
           :disabled="isBreathing"
           description-id="pace-detail"
-          inline-options
         />
         <p id="pace-detail" class="field-note">{{ selectedPace?.detail }}</p>
         <div v-if="preferences.pace === 'custom'" class="timing-fields">
@@ -179,7 +184,6 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           label="Breathing duration"
           :options="durationOptions"
           :disabled="isBreathing"
-          inline-options
         />
         <label v-if="storedDuration === 'custom'" class="extra-input"
           >Seconds (15–600)<input
@@ -202,21 +206,18 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           label="Preparation countdown"
           :options="prepOptions"
           :disabled="isBreathing"
-          inline-options
         />
       </div>
       <div class="settings-row">
-        <SelectMenu
-          v-model="ground"
-          label="Grounding exercise"
-          :options="groundingOptions"
-          inline-options
-        />
+        <SelectMenu v-model="ground" label="Grounding exercise" :options="groundingOptions" />
         <p v-if="isGuided && isGrounding" class="field-note">Changes apply to your next reset.</p>
       </div>
     </div>
 
     <div v-else-if="settingsTab === 'display'" class="settings-body">
+      <div class="settings-row">
+        <SelectMenu v-model="theme" label="Appearance" :options="themeOptions" />
+      </div>
       <div class="settings-row">
         <label class="switch-row">
           <span>Show countdowns</span>
@@ -227,12 +228,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </p>
       </div>
       <div class="settings-row">
-        <SelectMenu
-          v-model="motion"
-          label="Breathing animation"
-          :options="motionOptions"
-          inline-options
-        />
+        <SelectMenu v-model="motion" label="Breathing animation" :options="motionOptions" />
       </div>
     </div>
 

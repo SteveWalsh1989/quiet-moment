@@ -37,6 +37,7 @@ const current = computed(
 const isGuided = computed(() => view.value === 'reset')
 const isBreathing = computed(() => stage.value === 'breathe')
 const isGrounding = computed(() => stage.value === 'ground')
+const showGuidedStages = computed(() => isGuided.value && stage.value !== 'done')
 const motionEnabled = useMotionPreference(preferences)
 
 let lastSound = preferences.sound === 'off' ? 'lofi' : preferences.sound
@@ -137,14 +138,32 @@ function previewVoice() {
   <div class="site-shell" :class="{ 'breathing-session': isBreathing }">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <AppHeader
-      v-model:theme="preferences.theme"
       :view="view"
       :playing="playing"
       :audio-message="settingsOpen ? '' : audioMessage"
       @home="view === 'reset' ? returnToStart() : selectView('reset')"
       @navigate="selectView"
       @toggle-sound="toggleSound"
-    />
+    >
+      <template #settings>
+        <SettingsPopover v-model:open="settingsOpen">
+          <SessionSettings
+            :model-value="preferences"
+            :is-breathing="isBreathing"
+            :is-grounding="isGrounding"
+            :is-guided="isGuided"
+            :playing="playing"
+            :audio-message="audioMessage"
+            :voice-message="voiceMessage"
+            :voice-supported="voiceSupported"
+            @update:model-value="updatePreferences"
+            @pick-sound="pickSound"
+            @reset="resetSettings"
+            @preview-voice="previewVoice"
+          />
+        </SettingsPopover>
+      </template>
+    </AppHeader>
     <main id="main-content" class="main-wrap" tabindex="-1">
       <div class="intro-block">
         <h1>{{ current.title }}</h1>
@@ -159,11 +178,17 @@ function previewVoice() {
           :aria-label="current.label"
         >
           <div class="player-top flex items-center justify-between">
-            <div class="player-label inline-flex items-center">
+            <div
+              class="player-label inline-flex items-center"
+              :class="{ 'max-[460px]:sr-only': showGuidedStages }"
+            >
               <AppIcon :name="current.icon" :size="19" />
               <span>{{ isGuided ? 'Guided reset' : current.label }}</span>
             </div>
-            <div class="flex items-center">
+            <div
+              v-if="showGuidedStages || (isBreathing && preferences.countdown)"
+              class="ml-auto flex min-w-0 items-center gap-2"
+            >
               <span
                 v-if="isBreathing && preferences.countdown"
                 class="session-timer inline-flex items-center"
@@ -171,22 +196,29 @@ function previewVoice() {
               >
                 <AppIcon name="timer" :size="16" /> {{ formatTime(remaining) }}
               </span>
-              <SettingsPopover v-model:open="settingsOpen">
-                <SessionSettings
-                  :model-value="preferences"
-                  :is-breathing="isBreathing"
-                  :is-grounding="isGrounding"
-                  :is-guided="isGuided"
-                  :playing="playing"
-                  :audio-message="audioMessage"
-                  :voice-message="voiceMessage"
-                  :voice-supported="voiceSupported"
-                  @update:model-value="updatePreferences"
-                  @pick-sound="pickSound"
-                  @reset="resetSettings"
-                  @preview-voice="previewVoice"
-                />
-              </SettingsPopover>
+              <nav
+                v-if="showGuidedStages"
+                class="flex items-center gap-2 whitespace-nowrap text-sm text-player-muted max-[360px]:gap-1 max-[360px]:text-xs"
+                aria-label="Guided reset stages"
+              >
+                <span class="flow-position" :aria-current="isGrounding ? undefined : 'step'">
+                  <i aria-hidden="true"></i> Breathing
+                </span>
+                <span class="flow-separator" aria-hidden="true"></span>
+                <span v-if="isGrounding" class="flow-position" aria-current="step">
+                  <i aria-hidden="true"></i> Grounding
+                </span>
+                <button
+                  v-else
+                  type="button"
+                  class="flow-position flow-link"
+                  :aria-label="isBreathing ? 'Skip to grounding' : undefined"
+                  :title="isBreathing ? 'Skip to grounding' : undefined"
+                  @click="startGrounding"
+                >
+                  <i aria-hidden="true"></i> Grounding
+                </button>
+              </nav>
             </div>
           </div>
           <BreathingPlayer
@@ -202,7 +234,6 @@ function previewVoice() {
             @pause="breath.pause"
             @resume="breath.resume"
             @stop="returnToStart"
-            @ground="startGrounding"
           />
           <GroundingPlayer
             v-else-if="isGrounding"

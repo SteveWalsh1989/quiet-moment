@@ -86,12 +86,12 @@ onUnmounted(() => {
   <button
     ref="trigger"
     type="button"
-    class="settings-trigger"
-    aria-label="Session settings"
+    class="header-icon-button"
+    aria-label="Settings"
     aria-haspopup="dialog"
     :aria-expanded="isOpen"
     aria-controls="session-settings"
-    title="Session settings"
+    title="Settings"
     popovertarget="session-settings"
     @click="handleTrigger"
   >
@@ -109,7 +109,7 @@ onUnmounted(() => {
     @click.self="dismissFallback"
   >
     <div class="settings-popover-header flex items-center justify-between">
-      <h2 id="settings-heading">Session settings</h2>
+      <h2 id="settings-heading">Settings</h2>
       <button
         type="button"
         class="settings-close"
