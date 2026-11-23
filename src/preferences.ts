@@ -4,6 +4,8 @@ import { grounding } from './features/grounding/groundingPrompts.ts'
 import type { GroundingId } from './features/grounding/groundingPrompts.ts'
 import { defaultSound, isBreathingSound, soundTracks } from './features/audio/soundTracks.ts'
 import type { BreathingSoundId, SoundId } from './features/audio/soundTracks.ts'
+import { colorThemes } from './colorThemes.ts'
+import type { ColorTheme } from './colorThemes.ts'
 
 export type MotionPreference = 'system' | 'on' | 'off'
 export type ThemePreference = 'system' | 'light' | 'dark'
@@ -26,6 +28,7 @@ export interface Preferences {
   volume: number
   motion: MotionPreference
   theme: ThemePreference
+  colorTheme: ColorTheme
   countdown: boolean
 }
 
@@ -47,6 +50,7 @@ export const defaultPreferences: Readonly<Preferences> = {
   volume: 30,
   motion: 'on',
   theme: 'system',
+  colorTheme: 'purple',
   countdown: true,
 }
 
@@ -124,6 +128,8 @@ export function normalizePreferences(input: unknown): Preferences {
     motion,
     theme:
       saved.theme === 'light' || saved.theme === 'dark' ? saved.theme : defaultPreferences.theme,
+    colorTheme:
+      colorThemes.find(({ id }) => id === saved.colorTheme)?.id ?? defaultPreferences.colorTheme,
     countdown:
       typeof saved.countdown === 'boolean' ? saved.countdown : defaultPreferences.countdown,
   }

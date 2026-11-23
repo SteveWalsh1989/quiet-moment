@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useId } from 'vue'
+import AppIcon from './AppIcon.vue'
+import { colorThemes } from '../colorThemes'
 import SelectMenu from './SelectMenu.vue'
 import SettingsPopover from './SettingsPopover.vue'
 import {
@@ -49,6 +51,8 @@ const ground = preferenceModel('ground')
 const countdown = preferenceModel('countdown')
 const motion = preferenceModel('motion')
 const theme = preferenceModel('theme')
+const colorTheme = preferenceModel('colorTheme')
+const selectedColorTheme = computed(() => colorThemes.find(({ id }) => id === colorTheme.value))
 const prep = preferenceModel('prep')
 const volume = preferenceModel('volume')
 const selectedSound = computed(() =>
@@ -256,6 +260,38 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
 
       <div v-else-if="settingsTab === 'display'" class="settings-body">
         <SelectMenu v-model="theme" label="Appearance" :options="themeOptions" />
+        <fieldset class="palette-picker">
+          <legend class="settings-select-label w-full">
+            <span class="flex justify-between gap-2">
+              Color theme
+              <span class="font-semibold text-muted" aria-hidden="true">{{
+                selectedColorTheme?.label
+              }}</span>
+            </span>
+          </legend>
+          <div class="grid grid-cols-5 gap-1">
+            <label
+              v-for="palette in colorThemes"
+              :key="palette.id"
+              class="palette-option"
+              :title="palette.label"
+            >
+              <input
+                v-model="colorTheme"
+                class="sr-only"
+                type="radio"
+                name="color-theme"
+                :value="palette.id"
+              />
+              <span class="sr-only">{{ palette.label }}</span>
+              <span class="palette-swatch" :data-color-theme="palette.id" aria-hidden="true">
+                <span v-if="colorTheme === palette.id" class="palette-check">
+                  <AppIcon name="check" :size="13" />
+                </span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
         <div>
           <label class="switch-row">
             <span>Show countdowns</span>

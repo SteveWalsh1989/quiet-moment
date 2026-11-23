@@ -14,21 +14,28 @@ function placePanel() {
 
   const gutter = 12
   const gap = 8
-  const above = bounds.top - gap - gutter
-  const below = window.innerHeight - bounds.bottom - gap - gutter
+  const { clientWidth: width, clientHeight: height } = document.documentElement
+  const top = Math.max(gutter, bounds.bottom + gap)
+  const bottom = Math.max(gutter, height - bounds.top + gap)
+  const above = height - bottom - gutter
+  const below = height - top - gutter
   const opensAbove = below < 320 && above > below
   const available = opensAbove ? above : below
+  const fitsBesideTrigger = available >= 160
 
+  dialog.style.setProperty('--settings-right', `${Math.max(gutter, width - bounds.right)}px`)
   dialog.style.setProperty(
-    '--settings-right',
-    `${Math.max(gutter, window.innerWidth - bounds.right)}px`,
+    '--settings-top',
+    !fitsBesideTrigger ? `${gutter}px` : opensAbove ? 'auto' : `${top}px`,
   )
-  dialog.style.setProperty('--settings-top', opensAbove ? 'auto' : `${bounds.bottom + gap}px`)
   dialog.style.setProperty(
     '--settings-bottom',
-    opensAbove ? `${window.innerHeight - bounds.top + gap}px` : 'auto',
+    fitsBesideTrigger && opensAbove ? `${bottom}px` : 'auto',
   )
-  dialog.style.setProperty('--settings-height', `${Math.max(120, available)}px`)
+  dialog.style.setProperty(
+    '--settings-height',
+    `${fitsBesideTrigger ? available : height - 2 * gutter}px`,
+  )
 }
 
 function handlePopoverToggle(event: ToggleEvent) {

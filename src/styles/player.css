@@ -8,14 +8,14 @@
 }
 
 .player-label {
-  @apply gap-[9px] text-[#eee8fa] text-[length:0.91rem] font-[750];
+  @apply gap-[9px] text-on-player text-[length:0.91rem] font-[750];
 }
 .player-label svg {
-  @apply text-[#d8b8ef];
+  @apply text-player-highlight;
 }
 
 .session-timer {
-  @apply gap-[7px] text-[#e5dbf1] text-[length:0.88rem] tabular-nums;
+  @apply gap-[7px] text-player-muted text-[length:0.88rem] tabular-nums;
 }
 
 .player-icon-button {
@@ -61,16 +61,16 @@
 }
 
 .breath-ring-inhale {
-  @apply text-[#f1c6f7];
+  @apply text-breath-in;
 }
 
 .breath-ring-exhale {
-  @apply text-[#b7caff];
+  @apply text-breath-out;
 }
 
 .breath-ring-hold,
 .breath-ring-rest {
-  @apply text-[#d9c5fb];
+  @apply text-breath-hold;
 }
 
 .breath-ring-track {
@@ -78,26 +78,29 @@
 }
 
 .guide-ring-inner {
-  @apply inset-[9%] border border-solid border-[#d2c7f552];
+  @apply inset-[9%] border border-solid border-player-border;
 }
 
 .orb-body {
   @apply inset-[8%];
   scale: calc(0.55 + 0.45 * var(--expansion));
-  @apply border border-solid border-[#e9c2ed70];
-  @apply bg-[radial-gradient(circle_at_39%_30%,_#bba4eb8f,_#8499dc67_47%,_#7655a697_85%)];
-  @apply shadow-[0_5px_32px_#a796df38,_inset_0_0_24px_#d5b9ec2b];
+  @apply border border-solid border-player-border;
+  @apply bg-[radial-gradient(circle_at_39%_30%,_var(--orb-light),_var(--orb-mid)_47%,_var(--orb-edge)_85%)];
+  box-shadow:
+    0 5px 32px color-mix(in srgb, var(--orb-glow) 22%, transparent),
+    inset 0 0 24px color-mix(in srgb, var(--action) 17%, transparent);
 }
 
 .orb-core {
   @apply inset-[16%];
   scale: calc(0.55 + 0.45 * var(--expansion));
-  @apply bg-[radial-gradient(circle_at_39%_32%,_#efd2ee65,_transparent_67%)];
+  @apply bg-[radial-gradient(circle_at_39%_32%,_var(--orb-core),_transparent_67%)];
 }
 
 .orb-cue,
 .orb-start {
-  @apply relative text-[#fff0fc];
+  @apply relative text-on-player;
+  text-shadow: 0 1px 4px var(--player-edge);
 }
 .orb-start {
   @apply grid justify-items-center gap-[3px] text-[length:1.1rem] font-extrabold leading-[1.2];
@@ -115,7 +118,8 @@
 
 .breath-orb-ready:hover .orb-body,
 .breath-orb-ready:focus-visible .orb-body {
-  @apply border-[#e9c2edd9] shadow-[0_5px_36px_#a796df65];
+  border-color: color-mix(in srgb, var(--action) 85%, transparent);
+  box-shadow: 0 5px 36px color-mix(in srgb, var(--orb-glow) 40%, transparent);
 }
 
 .orb-cue {
@@ -141,11 +145,11 @@
 }
 
 .breath-copy p {
-  @apply m-[6px_0_0] text-[#e5d9f3] text-[length:0.98rem] leading-normal;
+  @apply m-[6px_0_0] text-player-muted text-[length:0.98rem] leading-normal;
 }
 
 .breath-copy-active h2 {
-  @apply row-start-2 text-[#f3dbf7] text-[length:clamp(1.05rem,_1.25vw,_1.4rem)] font-bold leading-[1.3] tracking-normal;
+  @apply row-start-2 text-on-player text-[length:clamp(1.05rem,_1.25vw,_1.4rem)] font-bold leading-[1.3] tracking-normal;
 }
 
 .player-actions {
@@ -159,19 +163,19 @@
 }
 
 .primary-button {
-  @apply text-[#352442] bg-action;
+  @apply text-action-ink bg-action;
 }
 
 .primary-button:hover {
-  @apply bg-[#f2ddf4];
+  background: color-mix(in srgb, var(--action), white 42%);
 }
 
 .primary-button:active {
-  @apply bg-[#dcb1e0];
+  background: color-mix(in srgb, var(--action), var(--player-glow) 13%);
 }
 
 .on-dark-button {
-  @apply text-[#ece5fa] bg-transparent;
+  @apply text-on-player bg-transparent;
 }
 
 .on-dark-button:hover:not(:disabled) {
@@ -192,7 +196,7 @@
 }
 
 .flow-position i {
-  @apply w-[7px] h-[7px] shrink-0 border border-solid border-[#bdb0d5] rounded-full;
+  @apply w-[7px] h-[7px] shrink-0 border border-solid border-player-muted rounded-full;
 }
 
 .flow-position[aria-current='step'] {
@@ -216,7 +220,7 @@
 }
 
 .step-line {
-  @apply min-h-[28px] gap-[9px] text-[#e1d4f6] text-[length:0.94rem] font-[750];
+  @apply min-h-[28px] gap-[9px] text-player-muted text-[length:0.94rem] font-[750];
 }
 
 .prompt-content h2 {
@@ -225,7 +229,7 @@
 }
 
 .prompt-content p {
-  @apply m-[12px_0_0] max-w-[47ch] text-[#ede6fa] leading-[1.6] text-[length:1.05rem];
+  @apply m-[12px_0_0] max-w-[47ch] text-on-player leading-[1.6] text-[length:1.05rem];
 }
 
 .examples {
@@ -241,22 +245,22 @@
 }
 
 .examples li {
-  @apply p-[7px_11px] border border-solid border-[#cdb6ee4d] rounded-[6px] text-[#eee6fc] text-[length:0.9rem];
+  @apply p-[7px_11px] border border-solid border-player-border rounded-[6px] text-on-player text-[length:0.9rem];
   @apply leading-[1.4];
 }
 
 .grounding-count {
-  @apply min-w-0 max-w-[29rem] mt-[20px] border border-solid border-[#ccb5ee52] rounded-xl p-[12px];
-  @apply bg-[#201a35a3] text-[#eee6fa] text-[length:0.88rem] font-bold;
+  @apply min-w-0 max-w-[29rem] mt-[20px] border border-solid border-player-border rounded-xl p-[12px];
+  @apply bg-player-edge text-on-player text-[length:0.88rem] font-bold;
 }
 
 .grounding-count-total {
-  @apply text-[#f1d9ff] tabular-nums font-extrabold;
+  @apply text-player-highlight tabular-nums font-extrabold;
 }
 
 .grounding-count-choice {
-  @apply relative grid min-h-[48px] place-items-center border border-solid border-[#bfa8de85] rounded-lg;
-  @apply bg-[#3a3150] text-[length:1.1rem] font-extrabold;
+  @apply relative grid min-h-[48px] place-items-center border border-solid border-player-highlight rounded-lg;
+  @apply bg-player-control text-[length:1.1rem] font-extrabold;
 }
 
 .grounding-count-choice > svg {
@@ -265,11 +269,11 @@
 
 .grounding-count-choice.is-counted,
 .grounding-count-choice:hover {
-  @apply bg-[#665280] text-white;
+  @apply bg-player-control-hover text-white;
 }
 
 input:checked + .grounding-count-choice {
-  @apply border-[#f1d1f4] bg-[#ebc9ef] text-[#30213f];
+  @apply border-action bg-action text-action-ink;
 }
 
 input:focus-visible + .grounding-count-choice {

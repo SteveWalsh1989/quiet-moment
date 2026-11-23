@@ -10,6 +10,12 @@
   font-display: swap;
 }
 
+@property --topbar {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #f9f7ff;
+}
+
 :root {
   color-scheme: light;
   @apply font-body text-ink bg-paper;
@@ -33,7 +39,20 @@
   --player-edge: #242039;
   --on-player: #f5f0ff;
   --player-muted: #cdc5e1;
+  --player-highlight: #d8b8ef;
+  --player-border: #cdb6ee4d;
+  --player-control: #3a3150;
+  --player-control-hover: #665280;
   --action: #e8c5ea;
+  --action-ink: #352442;
+  --breath-in: #f1c6f7;
+  --breath-out: #b7caff;
+  --breath-hold: #d9c5fb;
+  --orb-light: #bba4eb8f;
+  --orb-mid: #8499dc67;
+  --orb-edge: #7655a697;
+  --orb-core: #efd2ee65;
+  --orb-glow: #a796df;
 }
 
 :root[data-theme='dark'] {

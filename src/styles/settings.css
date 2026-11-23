@@ -53,6 +53,41 @@
   @apply outline-focus;
 }
 
+.palette-picker legend {
+  @apply mb-1;
+}
+
+.palette-option {
+  @apply relative grid h-11 w-full cursor-pointer place-items-center rounded-lg;
+}
+
+.palette-option:hover {
+  @apply bg-hover;
+}
+
+.palette-swatch {
+  @apply grid size-8 place-items-center rounded-full;
+  background: hsl(var(--palette-hue) var(--palette-saturation) 43%);
+}
+
+.palette-option input:focus-visible ~ .palette-swatch {
+  @apply outline outline-2 outline-focus outline-offset-[3px];
+}
+
+.palette-check {
+  @apply grid size-[18px] place-items-center rounded-full bg-white text-slate-900;
+}
+
+@media (forced-colors: active) {
+  .palette-swatch {
+    forced-color-adjust: none;
+  }
+
+  .palette-option input:focus-visible ~ .palette-swatch {
+    outline-color: Highlight;
+  }
+}
+
 .settings-select-label,
 .sound-list legend,
 .extra-input,

@@ -1,0 +1,119 @@
+[data-color-theme='purple'] {
+  --palette-hue: 267;
+  --palette-saturation: 38%;
+}
+
+[data-color-theme='indigo'] {
+  --palette-hue: 234;
+  --palette-saturation: 49%;
+  --palette-secondary-hue: 263;
+}
+
+[data-color-theme='ocean'] {
+  --palette-hue: 204;
+  --palette-saturation: 59%;
+  --palette-secondary-hue: 181;
+}
+
+[data-color-theme='teal'] {
+  --palette-hue: 174;
+  --palette-saturation: 53%;
+  --palette-secondary-hue: 199;
+}
+
+[data-color-theme='forest'] {
+  --palette-hue: 140;
+  --palette-saturation: 37%;
+  --palette-secondary-hue: 166;
+}
+
+[data-color-theme='olive'] {
+  --palette-hue: 74;
+  --palette-saturation: 45%;
+  --palette-secondary-hue: 102;
+}
+
+[data-color-theme='amber'] {
+  --palette-hue: 39;
+  --palette-saturation: 73%;
+  --palette-secondary-hue: 58;
+}
+
+[data-color-theme='clay'] {
+  --palette-hue: 15;
+  --palette-saturation: 55%;
+  --palette-secondary-hue: 33;
+}
+
+[data-color-theme='rose'] {
+  --palette-hue: 337;
+  --palette-saturation: 46%;
+  --palette-secondary-hue: 305;
+}
+
+[data-color-theme='slate'] {
+  --palette-hue: 214;
+  --palette-saturation: 14%;
+  --palette-secondary-hue: 193;
+}
+
+:root[data-color-theme]:not([data-color-theme='purple']) {
+  --surface-saturation: min(32%, var(--palette-saturation));
+  --paper: hsl(var(--palette-hue) var(--surface-saturation) 95%);
+  --topbar: hsl(var(--palette-hue) var(--palette-saturation) 98%);
+  --panel: hsl(var(--palette-hue) var(--surface-saturation) 98.5%);
+  --control: hsl(var(--palette-hue) var(--surface-saturation) 99.5%);
+  --ink: hsl(var(--palette-hue) var(--surface-saturation) 17%);
+  --muted: hsl(var(--palette-hue) var(--surface-saturation) 33%);
+  --line: hsl(var(--palette-hue) var(--surface-saturation) 86%);
+  --field-line: hsl(var(--palette-hue) var(--surface-saturation) 44%);
+  --hover: hsl(var(--palette-hue) var(--surface-saturation) 93%);
+  --selected: hsl(var(--palette-hue) var(--palette-saturation) 90%);
+  --selection: hsl(var(--palette-hue) var(--palette-saturation) 86%);
+  --accent-ink: hsl(var(--palette-hue) var(--palette-saturation) 25%);
+  --accent: hsl(var(--palette-hue) var(--palette-saturation) 30%);
+  --focus: hsl(var(--palette-hue) var(--palette-saturation) 34%);
+  --popup-shadow: hsl(var(--palette-hue) var(--surface-saturation) 15% / 0.15);
+
+  --player-glow: hsl(var(--palette-hue) var(--surface-saturation) 27%);
+  --player-mid: hsl(var(--palette-hue) var(--surface-saturation) 20%);
+  --player-edge: hsl(var(--palette-hue) var(--surface-saturation) 14%);
+  --on-player: hsl(var(--palette-hue) var(--palette-saturation) 98%);
+  --player-muted: hsl(var(--palette-hue) var(--palette-saturation) 84%);
+  --player-highlight: hsl(var(--palette-hue) var(--palette-saturation) 89%);
+  --player-border: hsl(var(--palette-hue) var(--palette-saturation) 86% / 0.32);
+  --player-control: hsl(var(--palette-hue) var(--surface-saturation) 27%);
+  --player-control-hover: hsl(var(--palette-hue) var(--surface-saturation) 37%);
+  --action: hsl(var(--palette-hue) var(--palette-saturation) 83%);
+  --action-ink: hsl(var(--palette-hue) var(--surface-saturation) 16%);
+
+  --breath-in: hsl(var(--palette-hue) var(--palette-saturation) 87%);
+  --breath-out: hsl(var(--palette-secondary-hue) var(--palette-saturation) 80%);
+  --breath-hold: hsl(var(--palette-hue) var(--palette-saturation) 80%);
+  --orb-light: hsl(var(--palette-hue) var(--palette-saturation) 59% / 0.56);
+  --orb-mid: hsl(var(--palette-secondary-hue) var(--palette-saturation) 47% / 0.4);
+  --orb-edge: hsl(var(--palette-hue) var(--palette-saturation) 38% / 0.59);
+  --orb-core: hsl(var(--palette-hue) var(--palette-saturation) 72% / 0.32);
+  --orb-glow: hsl(var(--palette-hue) var(--palette-saturation) 76%);
+}
+
+:root[data-theme='dark'][data-color-theme]:not([data-color-theme='purple']) {
+  --paper: hsl(var(--palette-hue) var(--surface-saturation) 10%);
+  --topbar: hsl(var(--palette-hue) var(--palette-saturation) 12%);
+  --panel: hsl(var(--palette-hue) var(--surface-saturation) 16%);
+  --control: hsl(var(--palette-hue) var(--surface-saturation) 20%);
+  --ink: hsl(var(--palette-hue) var(--palette-saturation) 95%);
+  --muted: hsl(var(--palette-hue) var(--surface-saturation) 78%);
+  --line: hsl(var(--palette-hue) var(--surface-saturation) 29%);
+  --field-line: hsl(var(--palette-hue) var(--surface-saturation) 57%);
+  --hover: hsl(var(--palette-hue) var(--surface-saturation) 24%);
+  --selected: hsl(var(--palette-hue) var(--surface-saturation) 28%);
+  --selection: hsl(var(--palette-hue) var(--surface-saturation) 35%);
+  --accent-ink: hsl(var(--palette-hue) var(--palette-saturation) 86%);
+  --accent: hsl(var(--palette-hue) var(--palette-saturation) 75%);
+  --focus: hsl(var(--palette-hue) var(--palette-saturation) 79%);
+  --popup-shadow: hsl(var(--palette-hue) var(--surface-saturation) 5% / 0.6);
+  --player-glow: hsl(var(--palette-hue) var(--surface-saturation) 23%);
+  --player-mid: hsl(var(--palette-hue) var(--surface-saturation) 17%);
+  --player-edge: hsl(var(--palette-hue) var(--surface-saturation) 11%);
+}

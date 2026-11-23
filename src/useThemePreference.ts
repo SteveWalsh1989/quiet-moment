@@ -10,12 +10,13 @@ export function useThemePreference(preferences: Readonly<Preferences>) {
       preferences.theme === 'system' ? (systemTheme.matches ? 'dark' : 'light') : preferences.theme
     const root = document.documentElement
     root.dataset.theme = theme
+    root.dataset.colorTheme = preferences.colorTheme
     if (themeColor) {
       themeColor.content = getComputedStyle(root).getPropertyValue('--topbar').trim()
     }
   }
 
-  watch(() => preferences.theme, applyTheme, { immediate: true })
+  watch([() => preferences.theme, () => preferences.colorTheme], applyTheme, { immediate: true })
   onMounted(() => systemTheme.addEventListener('change', applyTheme))
   onUnmounted(() => systemTheme.removeEventListener('change', applyTheme))
 }

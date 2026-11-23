@@ -18,7 +18,15 @@ const palette = [
   'player-edge',
   'on-player',
   'player-muted',
+  'player-highlight',
+  'player-border',
+  'player-control',
+  'player-control-hover',
   'action',
+  'action-ink',
+  'breath-in',
+  'breath-out',
+  'breath-hold',
 ]
 
 module.exports = {

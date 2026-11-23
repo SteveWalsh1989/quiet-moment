@@ -123,6 +123,15 @@ test('saved preferences keep legacy motion choices and reject invalid timing', (
   assert.equal(saved.breathingSound, 'breath-lofi')
 })
 
+test('saved color themes preserve appearance and fall back to purple', () => {
+  assert.equal(normalizePreferences({ theme: 'dark' }).colorTheme, 'purple')
+  assert.equal(normalizePreferences({ colorTheme: 'unknown' }).colorTheme, 'purple')
+  assert.equal(normalizePreferences({ colorTheme: null }).colorTheme, 'purple')
+  const { theme, colorTheme } = normalizePreferences({ theme: 'light', colorTheme: 'teal' })
+  assert.equal(theme, 'light')
+  assert.equal(colorTheme, 'teal')
+})
+
 test('saved sound keeps the selected track and the enabled state independently', () => {
   const soundSettings = (input) => {
     const { sound, soundEnabled } = normalizePreferences(input)
