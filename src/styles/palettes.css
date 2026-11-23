@@ -17,38 +17,38 @@
 
 [data-color-theme='teal'] {
   --palette-hue: 174;
-  --palette-saturation: 53%;
-  --palette-secondary-hue: 199;
+  --palette-saturation: 26%;
+  --palette-secondary-hue: 184;
 }
 
 [data-color-theme='forest'] {
   --palette-hue: 140;
-  --palette-saturation: 37%;
-  --palette-secondary-hue: 166;
+  --palette-saturation: 21%;
+  --palette-secondary-hue: 154;
 }
 
 [data-color-theme='olive'] {
   --palette-hue: 74;
-  --palette-saturation: 45%;
-  --palette-secondary-hue: 102;
+  --palette-saturation: 18%;
+  --palette-secondary-hue: 86;
 }
 
 [data-color-theme='amber'] {
   --palette-hue: 39;
-  --palette-saturation: 73%;
-  --palette-secondary-hue: 58;
+  --palette-saturation: 28%;
+  --palette-secondary-hue: 45;
 }
 
 [data-color-theme='clay'] {
   --palette-hue: 15;
-  --palette-saturation: 55%;
-  --palette-secondary-hue: 33;
+  --palette-saturation: 30%;
+  --palette-secondary-hue: 27;
 }
 
 [data-color-theme='rose'] {
   --palette-hue: 337;
-  --palette-saturation: 46%;
-  --palette-secondary-hue: 305;
+  --palette-saturation: 27%;
+  --palette-secondary-hue: 327;
 }
 
 [data-color-theme='slate'] {

@@ -10,7 +10,7 @@
   @apply gap-[11px] text-[length:1.05rem] font-extrabold tracking-[-0.035em] whitespace-nowrap;
 }
 
-.wordmark img {
+.wordmark > svg {
   @apply flex-none;
 }
 

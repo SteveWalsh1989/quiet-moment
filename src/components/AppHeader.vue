@@ -8,7 +8,6 @@ const emit = defineEmits<{
   home: []
   navigate: [view: ExerciseView]
 }>()
-const markSource = globalThis.quietMomentOffline?.mark ?? './mark.svg'
 </script>
 
 <template>
@@ -20,7 +19,17 @@ const markSource = globalThis.quietMomentOffline?.mark ?? './mark.svg'
         aria-label="Quiet Moment home"
         @click.prevent="emit('home')"
       >
-        <img :src="markSource" alt="" width="34" height="34" />
+        <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+          <rect width="40" height="40" rx="10" class="fill-player-mid" />
+          <circle cx="25.5" cy="13.5" r="2.1" class="fill-action" />
+          <path
+            d="M9 21c5.5 0 5.5-3.7 11-3.7s5.5 3.7 11 3.7M9 27c5.5 0 5.5-3.7 11-3.7s5.5 3.7 11 3.7"
+            fill="none"
+            class="stroke-action"
+            stroke-linecap="round"
+            stroke-width="1.7"
+          />
+        </svg>
         <span>Quiet Moment</span>
       </a>
       <nav class="main-nav flex items-center" aria-label="Exercises">
