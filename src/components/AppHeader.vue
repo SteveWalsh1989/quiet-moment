@@ -3,11 +3,10 @@ import { exerciseViews } from '../exerciseViews'
 import type { ExerciseView } from '../exerciseViews'
 import AppIcon from './AppIcon.vue'
 
-defineProps<{ view: ExerciseView; playing: boolean; audioMessage: string }>()
+defineProps<{ view: ExerciseView }>()
 const emit = defineEmits<{
   home: []
   navigate: [view: ExerciseView]
-  toggleSound: []
 }>()
 const markSource = globalThis.quietMomentOffline?.mark ?? './mark.svg'
 </script>
@@ -36,24 +35,6 @@ const markSource = globalThis.quietMomentOffline?.mark ?? './mark.svg'
           <span>{{ item.label }}</span>
         </button>
       </nav>
-      <div class="topbar-actions flex items-center">
-        <div class="relative">
-          <button
-            type="button"
-            class="header-icon-button"
-            aria-label="Background sound"
-            :aria-pressed="playing"
-            :title="playing ? 'Mute background sound' : 'Play background sound'"
-            @click="emit('toggleSound')"
-          >
-            <AppIcon :name="playing ? 'sound' : 'mute'" :size="18" />
-          </button>
-          <p v-if="audioMessage" class="sound-error" role="status">
-            {{ audioMessage }}
-          </p>
-        </div>
-        <slot name="settings" />
-      </div>
     </div>
   </header>
 </template>

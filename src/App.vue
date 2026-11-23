@@ -116,7 +116,7 @@ function pickSound(id: SoundId) {
 }
 
 function toggleSound() {
-  pickSound(playing.value ? 'off' : preferences.sound)
+  pickSound(preferences.soundEnabled ? 'off' : preferences.sound)
 }
 
 function updatePreferences(next: Preferences) {
@@ -140,30 +140,9 @@ function previewVoice() {
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <AppHeader
       :view="view"
-      :playing="playing"
-      :audio-message="settingsOpen ? '' : audioMessage"
       @home="view === 'reset' ? returnToStart() : selectView('reset')"
       @navigate="selectView"
-      @toggle-sound="toggleSound"
-    >
-      <template #settings>
-        <SessionSettings
-          v-model:open="settingsOpen"
-          :model-value="preferences"
-          :is-breathing="isBreathing"
-          :is-grounding="isGrounding"
-          :is-guided="isGuided"
-          :playing="playing"
-          :audio-message="audioMessage"
-          :voice-message="voiceMessage"
-          :voice-supported="voiceSupported"
-          @update:model-value="updatePreferences"
-          @pick-sound="pickSound"
-          @reset="resetSettings"
-          @preview-voice="previewVoice"
-        />
-      </template>
-    </AppHeader>
+    />
     <main id="main-content" class="main-wrap" tabindex="-1">
       <div class="intro-block">
         <h1>{{ current.title }}</h1>
@@ -180,31 +159,21 @@ function previewVoice() {
           <div class="player-top flex items-center justify-between">
             <div
               class="player-label inline-flex items-center"
-              :class="{ 'max-[460px]:sr-only': showGuidedStages }"
+              :class="{ 'max-[550px]:sr-only': showGuidedStages }"
             >
               <AppIcon :name="current.icon" :size="19" />
               <span>{{ isGuided ? 'Guided reset' : current.label }}</span>
             </div>
-            <div
-              v-if="showGuidedStages || (isBreathing && preferences.countdown)"
-              class="ml-auto flex min-w-0 items-center gap-2"
-            >
-              <span
-                v-if="isBreathing && preferences.countdown"
-                class="session-timer inline-flex items-center"
-                aria-label="Time remaining"
-              >
-                <AppIcon name="timer" :size="16" /> {{ formatTime(remaining) }}
-              </span>
+            <div class="ml-auto flex min-w-0 items-center gap-2 max-[395px]:gap-1">
               <nav
                 v-if="showGuidedStages"
-                class="flex items-center gap-2 whitespace-nowrap text-sm text-player-muted max-[360px]:gap-1 max-[360px]:text-xs"
+                class="flex items-center gap-2 whitespace-nowrap text-sm text-player-muted max-[395px]:gap-1 max-[395px]:text-xs max-[395px]:[&_i]:hidden"
                 aria-label="Guided reset stages"
               >
                 <span class="flow-position" :aria-current="isGrounding ? undefined : 'step'">
                   <i aria-hidden="true"></i> Breathing
                 </span>
-                <span class="flow-separator" aria-hidden="true"></span>
+                <span class="flow-separator max-[395px]:hidden" aria-hidden="true"></span>
                 <span v-if="isGrounding" class="flow-position" aria-current="step">
                   <i aria-hidden="true"></i> Grounding
                 </span>
@@ -219,6 +188,47 @@ function previewVoice() {
                   <i aria-hidden="true"></i> Grounding
                 </button>
               </nav>
+              <div class="flex shrink-0 items-center gap-1">
+                <span
+                  v-if="isBreathing && preferences.countdown"
+                  class="session-timer inline-flex items-center max-[340px]:[&>svg]:hidden"
+                  aria-label="Time remaining"
+                >
+                  <AppIcon name="timer" :size="16" /> {{ formatTime(remaining) }}
+                </span>
+                <div class="relative">
+                  <button
+                    type="button"
+                    class="player-icon-button"
+                    aria-label="Background sound"
+                    :aria-pressed="preferences.soundEnabled"
+                    :title="
+                      preferences.soundEnabled ? 'Mute background sound' : 'Enable background sound'
+                    "
+                    @click="toggleSound"
+                  >
+                    <AppIcon :name="preferences.soundEnabled ? 'sound' : 'mute'" :size="18" />
+                  </button>
+                  <p v-if="audioMessage && !settingsOpen" class="sound-error" role="status">
+                    {{ audioMessage }}
+                  </p>
+                </div>
+                <SessionSettings
+                  v-model:open="settingsOpen"
+                  :model-value="preferences"
+                  :is-breathing="isBreathing"
+                  :is-grounding="isGrounding"
+                  :is-guided="isGuided"
+                  :playing="playing"
+                  :audio-message="audioMessage"
+                  :voice-message="voiceMessage"
+                  :voice-supported="voiceSupported"
+                  @update:model-value="updatePreferences"
+                  @pick-sound="pickSound"
+                  @reset="resetSettings"
+                  @preview-voice="previewVoice"
+                />
+              </div>
             </div>
           </div>
           <BreathingPlayer

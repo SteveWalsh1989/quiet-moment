@@ -41,7 +41,7 @@ export const defaultPreferences: Readonly<Preferences> = {
   voice: false,
   voiceVolume: 65,
   sound: defaultSound,
-  soundEnabled: false,
+  soundEnabled: true,
   volume: 30,
   motion: 'on',
   theme: 'system',
@@ -108,7 +108,10 @@ export function normalizePreferences(input: unknown): Preferences {
     ),
     sound: sound ?? defaultPreferences.sound,
     soundEnabled:
-      sound !== undefined && (saved.soundEnabled === undefined || saved.soundEnabled === true),
+      savedSound !== 'off' &&
+      (typeof saved.soundEnabled === 'boolean'
+        ? saved.soundEnabled
+        : defaultPreferences.soundEnabled),
     volume: boundedNumber(saved.volume, defaultPreferences.volume, preferenceLimits.volume),
     motion,
     theme:

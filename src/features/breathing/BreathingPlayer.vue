@@ -145,7 +145,7 @@ function activateCircle() {
             class="font-extrabold tracking-tight"
             :class="
               isDirectionCue
-                ? 'text-[length:clamp(2rem,calc(31cqi_-_0.875rem),7.5rem)]'
+                ? 'text-[length:clamp(1.875rem,calc(27.5cqi_-_0.875rem),6.625rem)]'
                 : 'text-[length:clamp(1.875rem,21cqi,5rem)]'
             "
             >{{ orbCue }}</span

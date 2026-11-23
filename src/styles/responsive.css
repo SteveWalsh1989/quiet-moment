@@ -12,16 +12,13 @@
 
 @media (max-width: 760px) {
   .topbar-inner {
-    @apply grid grid-cols-[minmax(0,_1fr)_auto] min-h-0 p-[5px_clamp(10px,_3.8vw,_18px)_0] gap-[4px_8px];
+    @apply grid grid-cols-1 min-h-0 p-[5px_clamp(10px,_3.8vw,_18px)_0] gap-1;
   }
   .wordmark {
     @apply min-h-[44px] justify-self-start gap-[7px] text-[length:clamp(0.88rem,_4vw,_1.05rem)];
   }
   .wordmark img {
     @apply w-[30px] h-[30px];
-  }
-  .topbar-actions {
-    @apply [grid-area:1_/_2];
   }
   .main-nav {
     @apply grid col-span-full grid-cols-4;

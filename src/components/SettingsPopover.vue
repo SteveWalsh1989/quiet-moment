@@ -86,7 +86,7 @@ onUnmounted(() => {
   <button
     ref="trigger"
     type="button"
-    class="header-icon-button"
+    class="player-icon-button"
     aria-label="Settings"
     aria-haspopup="dialog"
     :aria-expanded="isOpen"

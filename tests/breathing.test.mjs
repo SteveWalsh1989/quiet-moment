@@ -128,6 +128,7 @@ test('saved sound keeps the selected track and the enabled state independently',
     return { sound, soundEnabled }
   }
 
+  assert.deepEqual(soundSettings({}), { sound: 'breath-lofi', soundEnabled: true })
   assert.deepEqual(soundSettings({ sound: 'off' }), { sound: 'breath-lofi', soundEnabled: false })
   assert.deepEqual(soundSettings({ sound: 'rain' }), { sound: 'rain', soundEnabled: true })
   assert.deepEqual(soundSettings({ sound: 'breath-lofi', soundEnabled: false }), {
@@ -138,8 +139,12 @@ test('saved sound keeps the selected track and the enabled state independently',
     sound: 'ocean',
     soundEnabled: true,
   })
+  assert.deepEqual(soundSettings({ sound: 'breath-afterglow', soundEnabled: false }), {
+    sound: 'breath-afterglow',
+    soundEnabled: false,
+  })
   assert.deepEqual(soundSettings({ sound: 'unknown', soundEnabled: true }), {
     sound: 'breath-lofi',
-    soundEnabled: false,
+    soundEnabled: true,
   })
 })

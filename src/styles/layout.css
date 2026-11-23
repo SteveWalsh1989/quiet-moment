@@ -23,28 +23,12 @@
   @apply whitespace-nowrap text-sm font-[750];
 }
 
-.main-nav button:hover,
-.header-icon-button:hover {
+.main-nav button:hover {
   @apply bg-hover text-ink;
 }
 
-.main-nav button[aria-current],
-.header-icon-button[aria-pressed='true'],
-.header-icon-button[aria-expanded='true'] {
+.main-nav button[aria-current] {
   @apply bg-selected text-accent-ink;
-}
-
-.topbar-actions {
-  @apply gap-2;
-}
-
-.header-icon-button {
-  @apply grid h-11 w-11 place-items-center rounded-lg text-muted;
-}
-
-.sound-error {
-  @apply absolute z-[4] top-[calc(100%_+_7px)] right-0 w-[min(252px,_calc(100vw_-_36px))];
-  @apply p-[10px] border border-solid border-line rounded-[11px] bg-panel shadow-[0_10px_28px_var(--popup-shadow)];
 }
 
 .popup-option {
@@ -65,8 +49,7 @@
   @apply text-[length:0.88rem] font-extrabold;
 }
 
-.popup-option small,
-.sound-error {
+.popup-option small {
   @apply text-muted text-[length:0.78rem];
 }
 

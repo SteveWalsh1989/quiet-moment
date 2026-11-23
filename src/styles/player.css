@@ -18,6 +18,25 @@
   @apply gap-[7px] text-[#e5dbf1] text-[length:0.88rem] tabular-nums;
 }
 
+.player-icon-button {
+  @apply grid h-11 w-11 shrink-0 place-items-center rounded-lg text-player-muted;
+}
+
+.player-icon-button:hover {
+  @apply bg-white/10 text-on-player;
+}
+
+.player-icon-button[aria-pressed='true'],
+.player-icon-button[aria-expanded='true'] {
+  @apply bg-action text-[#2e2140];
+}
+
+.sound-error {
+  @apply absolute z-[4] top-[calc(100%_+_7px)] right-0 w-[min(252px,_calc(100vw_-_86px))];
+  @apply p-[10px] border border-solid border-line rounded-[11px] bg-panel text-muted text-[length:0.78rem];
+  @apply shadow-[0_10px_28px_var(--popup-shadow)];
+}
+
 .breathing-stage {
   @apply flex flex-col;
 }

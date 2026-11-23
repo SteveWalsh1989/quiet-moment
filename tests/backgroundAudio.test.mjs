@@ -8,55 +8,58 @@ import { getRhythm } from '../src/features/breathing/breathingTiming.ts'
 import { useBreathingSession } from '../src/features/breathing/useBreathingSession.ts'
 import { defaultPreferences } from '../src/preferences.ts'
 
-const arrangement = breathingArrangements[0]
-
-test('rendered music accents every count and changes harmony at each phase boundary', () => {
+test('synced arrangements follow Quiet, with Warm Keys enabled by default', () => {
   assert.deepEqual(
-    soundTracks.slice(0, 2).map(({ id }) => id),
-    ['off', 'breath-lofi'],
+    soundTracks.slice(0, 4).map(({ id }) => id),
+    ['off', 'breath-lofi', 'breath-tape', 'breath-afterglow'],
   )
-  assert.equal(defaultPreferences.sound, arrangement.id)
-  assert.equal(defaultPreferences.soundEnabled, false)
-
-  for (const timing of [
-    { inhale: 4, exhale: 6 },
-    { inhale: 4, hold: 4, exhale: 4 },
-  ]) {
-    const plan = { ...getRhythm(timing), prep: 3 }
-    const { samples, sampleRate } = renderBreathingMusic(plan, arrangement)
-    assert.equal(samples.length, sampleRate * (plan.prep + plan.cycleDuration))
-    assert.equal(samples[0], 0)
-    assert.equal(samples.at(-1), 0)
-    const rms = (start, duration = 0.1) => {
-      const from = Math.round(start * sampleRate)
-      const part = samples.subarray(from, from + Math.round(duration * sampleRate))
-      return Math.sqrt(part.reduce((sum, value) => sum + value * value, 0) / part.length)
-    }
-    for (let second = 0; second < plan.prep + plan.cycleDuration; second++) {
-      assert.ok(rms(second + 0.09) > rms(second + 0.85), 'each count has a soft accent')
-    }
-    for (const step of plan.steps) {
-      const at = (plan.prep + step.start) * sampleRate
-      assert.equal(samples[at], 0, 'a new phrase is rendered at each phase boundary')
-      assert.ok(rms(plan.prep + step.start + 0.09) > 0.015)
-    }
-    assert.ok(samples.every((value) => Number.isFinite(value) && Math.abs(value) < 0.8))
-  }
-
-  const startOfSecondPhase = 4 * 22050
-  const withHold = renderBreathingMusic(
-    { ...getRhythm({ inhale: 4, hold: 4, exhale: 4 }), prep: 0 },
-    arrangement,
-  )
-  const withExhale = renderBreathingMusic(
-    { ...getRhythm({ inhale: 4, exhale: 6 }), prep: 0 },
-    arrangement,
-  )
-  assert.notDeepEqual(
-    withHold.samples.slice(startOfSecondPhase, startOfSecondPhase + 1024),
-    withExhale.samples.slice(startOfSecondPhase, startOfSecondPhase + 1024),
-  )
+  assert.equal(defaultPreferences.sound, 'breath-lofi')
+  assert.equal(defaultPreferences.soundEnabled, true)
 })
+
+for (const arrangement of breathingArrangements) {
+  test(`${arrangement.title} accents every count and changes harmony at each phase boundary`, () => {
+    for (const timing of [
+      { inhale: 4, exhale: 6 },
+      { inhale: 4, hold: 4, exhale: 4 },
+      { inhale: 2, hold: 1, exhale: 2, rest: 1 },
+    ]) {
+      const plan = { ...getRhythm(timing), prep: 3 }
+      const { samples, sampleRate } = renderBreathingMusic(plan, arrangement)
+      assert.equal(samples.length, sampleRate * (plan.prep + plan.cycleDuration))
+      assert.equal(samples[0], 0)
+      assert.equal(samples.at(-1), 0)
+      const rms = (start, duration = 0.1) => {
+        const from = Math.round(start * sampleRate)
+        const part = samples.subarray(from, from + Math.round(duration * sampleRate))
+        return Math.sqrt(part.reduce((sum, value) => sum + value * value, 0) / part.length)
+      }
+      for (let second = 0; second < plan.prep + plan.cycleDuration; second++) {
+        assert.ok(rms(second + 0.09) > rms(second + 0.85), 'each count has a soft accent')
+      }
+      for (const step of plan.steps) {
+        const at = (plan.prep + step.start) * sampleRate
+        assert.equal(samples[at], 0, 'a new phrase is rendered at each phase boundary')
+        assert.ok(rms(plan.prep + step.start + 0.09) > 0.015)
+      }
+      assert.ok(samples.every((value) => Number.isFinite(value) && Math.abs(value) < 0.8))
+    }
+
+    const startOfSecondPhase = 4 * 22050
+    const withHold = renderBreathingMusic(
+      { ...getRhythm({ inhale: 4, hold: 4, exhale: 4 }), prep: 0 },
+      arrangement,
+    )
+    const withExhale = renderBreathingMusic(
+      { ...getRhythm({ inhale: 4, exhale: 6 }), prep: 0 },
+      arrangement,
+    )
+    assert.notDeepEqual(
+      withHold.samples.slice(startOfSecondPhase, startOfSecondPhase + 1024),
+      withExhale.samples.slice(startOfSecondPhase, startOfSecondPhase + 1024),
+    )
+  })
+}
 
 test('the breathing clock follows the music and resumes at the same offset', async (testContext) => {
   let time = 0
@@ -173,7 +176,7 @@ test('the breathing clock follows the music and resumes at the same offset', asy
     delete globalThis.quietMomentOffline
   })
 
-  await audio.playSound('breath-lofi')
+  await audio.playSound(defaultPreferences.sound)
   assert.equal(sources.length, 0, 'music is silent before breathing starts')
   breath.start()
   assert.deepEqual(sources[0].started, { when: 10, offset: 0 })
@@ -203,6 +206,10 @@ test('the breathing clock follows the music and resumes at the same offset', asy
   nextFrame()
   assert.equal(breath.phase.value.name, 'inhale')
   assert.equal(breath.phase.value.cycle, 1)
+
+  await audio.playSound('breath-tape')
+  assert.deepEqual(sources.at(-1).started, { when: 42.5, offset: 0 })
+  assert.notEqual(sources.at(-1).buffer, sources[1].buffer)
 
   await audio.playSound('rain')
   assert.equal(regularTracks.at(-1).source, 'rain')
