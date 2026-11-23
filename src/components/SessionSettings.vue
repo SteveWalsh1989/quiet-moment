@@ -187,7 +187,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
     <div class="settings">
       <div v-if="settingsTab === 'timing'" class="settings-body">
         <p v-if="isBreathing" class="field-note">Timing changes are available after the session.</p>
-        <div class="settings-row">
+        <div>
           <SelectMenu
             v-model="pace"
             label="Breathing pace"
@@ -220,7 +220,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
             Keep holds comfortable. You can pause the session at any time.
           </p>
         </div>
-        <div class="settings-row">
+        <div>
           <SelectMenu
             v-model="storedDuration"
             label="Breathing duration"
@@ -242,25 +242,21 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
             Ends after a full cycle at {{ formatTime(practiceTime) }}.
           </p>
         </div>
-        <div class="settings-row">
-          <SelectMenu
-            v-model="prep"
-            label="Preparation countdown"
-            :options="prepOptions"
-            :disabled="isBreathing"
-          />
-        </div>
-        <div class="settings-row">
+        <SelectMenu
+          v-model="prep"
+          label="Preparation countdown"
+          :options="prepOptions"
+          :disabled="isBreathing"
+        />
+        <div>
           <SelectMenu v-model="ground" label="Grounding exercise" :options="groundingOptions" />
           <p v-if="isGuided && isGrounding" class="field-note">Changes apply to your next reset.</p>
         </div>
       </div>
 
       <div v-else-if="settingsTab === 'display'" class="settings-body">
-        <div class="settings-row">
-          <SelectMenu v-model="theme" label="Appearance" :options="themeOptions" />
-        </div>
-        <div class="settings-row">
+        <SelectMenu v-model="theme" label="Appearance" :options="themeOptions" />
+        <div>
           <label class="switch-row">
             <span>Show countdowns</span>
             <input v-model="countdown" type="checkbox" aria-describedby="countdown-detail" />
@@ -269,9 +265,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
             Show seconds in the circle and time remaining at the top of the player.
           </p>
         </div>
-        <div class="settings-row">
-          <SelectMenu v-model="motion" label="Breathing animation" :options="motionOptions" />
-        </div>
+        <SelectMenu v-model="motion" label="Breathing animation" :options="motionOptions" />
       </div>
 
       <div v-else class="settings-body">

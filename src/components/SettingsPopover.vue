@@ -95,7 +95,7 @@ onUnmounted(() => {
     popovertarget="session-settings"
     @click="handleTrigger"
   >
-    <AppIcon name="settings" :size="21" />
+    <AppIcon name="settings" />
   </button>
   <dialog
     id="session-settings"
@@ -118,7 +118,7 @@ onUnmounted(() => {
         autofocus
         @click="closeSettings"
       >
-        <AppIcon name="close" :size="19" />
+        <AppIcon name="close" :size="18" />
       </button>
     </div>
     <div class="settings-popover-content">

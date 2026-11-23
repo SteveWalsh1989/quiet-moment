@@ -206,7 +206,7 @@ function previewVoice() {
                   "
                   @click="toggleSound"
                 >
-                  <AppIcon :name="preferences.soundEnabled ? 'sound' : 'mute'" :size="18" />
+                  <AppIcon :name="preferences.soundEnabled ? 'sound' : 'mute'" />
                 </button>
                 <p v-if="audioMessage && !settingsOpen" class="sound-error" role="status">
                   {{ audioMessage }}

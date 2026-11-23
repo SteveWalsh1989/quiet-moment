@@ -158,7 +158,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', closeOutside))
         @keydown="handleKey"
       >
         <span v-if="!compact">{{ options[selected]?.label }}</span>
-        <AppIcon name="chevron" :size="compact ? 18 : 16" />
+        <AppIcon name="chevron" :size="18" />
       </button>
       <div
         v-show="isOpen"
