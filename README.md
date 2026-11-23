@@ -51,7 +51,7 @@ The page adapts to the screen width automatically. On a phone, the exercise fill
 
 ## Set up your session
 
-- **Sound.** Tap the sound icon in the header to play or mute background audio. Open **Sound & voice** in Settings to choose rain, slow tide, or **Breathing lo-fi**. Breathing lo-fi follows your rhythm and pauses and resumes with the countdown.
+- **Sound.** Tap the sound icon in the header to enable or mute background audio. **Breathing lo-fi · Warm Keys** is the first sound choice. It plays a soft pulse on each count, changes chords at each breathing phase, and pauses and resumes with the countdown. Open **Sound & voice** in Settings to choose other sounds.
 - **Spoken cues.** Open **Sound & voice** in Settings to enable spoken instructions in supported browsers.
 - **Animation and countdowns.** Open **Timing** to change the preparation countdown. **Display** has the countdown and animation controls. The circle still shows the breath cue if you hide the numbers. Animation is on by default. Choose **Follow system setting** or **Keep circle still** to change it.
 

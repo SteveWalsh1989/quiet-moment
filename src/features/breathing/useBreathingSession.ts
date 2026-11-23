@@ -1,6 +1,6 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 import type { Preferences } from '../../preferences'
-import { getPaceRhythm, getPhase, roundSessionDuration } from './breathingTiming'
+import { getPaceRhythm, getPhase, roundSessionDuration } from './breathingTiming.ts'
 import type { BreathingPhaseName, BreathingPlan } from './breathingTiming'
 
 export type BreathingState = 'ready' | 'running' | 'paused' | 'complete'
@@ -10,6 +10,7 @@ export function useBreathingSession(
   onComplete: () => void,
   onCue: (phase: BreathingPhaseName) => void,
   onQuiet: () => void,
+  readMusicElapsed: () => number | null,
 ) {
   const state = ref<BreathingState>('ready')
   const elapsed = ref(0)
@@ -23,10 +24,22 @@ export function useBreathingSession(
   let startTime = 0
   let lastCue = ''
 
-  function update(timestamp: number) {
+  function readElapsed() {
+    if (state.value !== 'running') return elapsed.value
+
+    const now = performance.now()
+    const musicElapsed = readMusicElapsed()
+    if (musicElapsed !== null) {
+      startTime = now - musicElapsed * 1000
+      return musicElapsed
+    }
+    return Math.max(0, (now - startTime) / 1000)
+  }
+
+  function update() {
     const activePlan = plan.value
     if (state.value !== 'running' || !activePlan) return
-    elapsed.value = Math.max(0, (timestamp - startTime) / 1000)
+    elapsed.value = readElapsed()
     if (elapsed.value >= activePlan.total) {
       state.value = 'complete'
       onQuiet()
@@ -56,13 +69,14 @@ export function useBreathingSession(
     onQuiet()
     elapsed.value = 0
     lastCue = ''
-    state.value = 'running'
     startTime = performance.now()
-    update(startTime)
+    state.value = 'running'
+    update()
   }
 
   function pause() {
     if (state.value !== 'running') return
+    elapsed.value = readElapsed()
     state.value = 'paused'
     cancelAnimationFrame(frame)
     onQuiet()
@@ -70,10 +84,10 @@ export function useBreathingSession(
 
   function resume() {
     if (state.value !== 'paused') return
-    state.value = 'running'
     lastCue = ''
     startTime = performance.now() - elapsed.value * 1000
-    update(performance.now())
+    state.value = 'running'
+    update()
   }
 
   function stop() {
@@ -94,5 +108,5 @@ export function useBreathingSession(
     document.removeEventListener('visibilitychange', pauseWhenHidden)
   })
 
-  return { state, phase, rhythm, remaining, start, pause, resume, stop }
+  return { state, plan, phase, rhythm, remaining, readElapsed, start, pause, resume, stop }
 }

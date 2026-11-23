@@ -2,7 +2,7 @@ import { paces } from './features/breathing/breathingTiming.ts'
 import type { PaceId } from './features/breathing/breathingTiming.ts'
 import { grounding } from './features/grounding/groundingPrompts.ts'
 import type { GroundingId } from './features/grounding/groundingPrompts.ts'
-import { soundTracks } from './features/audio/soundTracks.ts'
+import { defaultSound, soundTracks } from './features/audio/soundTracks.ts'
 import type { SoundId } from './features/audio/soundTracks.ts'
 
 export type MotionPreference = 'system' | 'on' | 'off'
@@ -20,7 +20,8 @@ export interface Preferences {
   ground: GroundingId
   voice: boolean
   voiceVolume: number
-  sound: SoundId
+  sound: Exclude<SoundId, 'off'>
+  soundEnabled: boolean
   volume: number
   motion: MotionPreference
   theme: ThemePreference
@@ -39,7 +40,8 @@ export const defaultPreferences: Readonly<Preferences> = {
   ground: 'full',
   voice: false,
   voiceVolume: 65,
-  sound: 'off',
+  sound: defaultSound,
+  soundEnabled: false,
   volume: 30,
   motion: 'on',
   theme: 'system',
@@ -72,7 +74,8 @@ export function normalizePreferences(input: unknown): Preferences {
   if (!input || typeof input !== 'object') return { ...defaultPreferences }
   const saved = input as Record<string, unknown>
   const pace = paces.find(({ id }) => id === saved.pace)?.id
-  const sound = soundTracks.find(({ id }) => id === saved.sound)?.id
+  const savedSound = soundTracks.find(({ id }) => id === saved.sound)?.id
+  const sound = savedSound === 'off' ? undefined : savedSound
   const ground =
     typeof saved.ground === 'string' && Object.hasOwn(grounding, saved.ground)
       ? (saved.ground as GroundingId)
@@ -104,6 +107,8 @@ export function normalizePreferences(input: unknown): Preferences {
       preferenceLimits.voiceVolume,
     ),
     sound: sound ?? defaultPreferences.sound,
+    soundEnabled:
+      sound !== undefined && (saved.soundEnabled === undefined || saved.soundEnabled === true),
     volume: boundedNumber(saved.volume, defaultPreferences.volume, preferenceLimits.volume),
     motion,
     theme:

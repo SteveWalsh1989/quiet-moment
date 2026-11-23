@@ -121,3 +121,25 @@ test('saved preferences keep legacy motion choices and reject invalid timing', (
   assert.equal(saved.countdown, false)
   assert.equal(saved.sound, 'breath-lofi')
 })
+
+test('saved sound keeps the selected track and the enabled state independently', () => {
+  const soundSettings = (input) => {
+    const { sound, soundEnabled } = normalizePreferences(input)
+    return { sound, soundEnabled }
+  }
+
+  assert.deepEqual(soundSettings({ sound: 'off' }), { sound: 'breath-lofi', soundEnabled: false })
+  assert.deepEqual(soundSettings({ sound: 'rain' }), { sound: 'rain', soundEnabled: true })
+  assert.deepEqual(soundSettings({ sound: 'breath-lofi', soundEnabled: false }), {
+    sound: 'breath-lofi',
+    soundEnabled: false,
+  })
+  assert.deepEqual(soundSettings({ sound: 'ocean', soundEnabled: true }), {
+    sound: 'ocean',
+    soundEnabled: true,
+  })
+  assert.deepEqual(soundSettings({ sound: 'unknown', soundEnabled: true }), {
+    sound: 'breath-lofi',
+    soundEnabled: false,
+  })
+})

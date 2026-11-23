@@ -109,7 +109,8 @@ onUnmounted(() => {
     @click.self="dismissFallback"
   >
     <div class="settings-popover-header flex items-center justify-between">
-      <h2 id="settings-heading">Settings</h2>
+      <h2 id="settings-heading" class="sr-only">Settings</h2>
+      <slot name="tabs" />
       <button
         type="button"
         class="settings-close"

@@ -3,7 +3,6 @@ import { computed, nextTick, reactive, ref, watch } from 'vue'
 import AppHeader from './components/AppHeader.vue'
 import AppIcon from './components/AppIcon.vue'
 import SessionSettings from './components/SessionSettings.vue'
-import SettingsPopover from './components/SettingsPopover.vue'
 import { exerciseViews } from './exerciseViews'
 import type { ExerciseView } from './exerciseViews'
 import BreathingPlayer from './features/breathing/BreathingPlayer.vue'
@@ -40,23 +39,27 @@ const isGrounding = computed(() => stage.value === 'ground')
 const showGuidedStages = computed(() => isGuided.value && stage.value !== 'done')
 const motionEnabled = useMotionPreference(preferences)
 
-let lastSound = preferences.sound === 'off' ? 'lofi' : preferences.sound
 const audio = useBackgroundAudio(preferences)
 const { playing, audioMessage } = audio
 const voice = useSpokenCues(preferences)
 const { voiceMessage, voiceSupported } = voice
-const breath = useBreathingSession(preferences, finishBreathing, voice.cuePhase, voice.stopVoice)
+const breath = useBreathingSession(
+  preferences,
+  finishBreathing,
+  voice.cuePhase,
+  voice.stopVoice,
+  audio.readBreathingElapsed,
+)
 const { state: breathState, phase, rhythm, remaining } = breath
 
 watch(
-  () =>
-    (breathState.value === 'running' || breathState.value === 'paused') &&
-    phase.value?.name !== 'prepare'
-      ? (phase.value?.expansion ?? null)
-      : null,
-  audio.setBreathExpansion,
+  [breathState, breath.plan],
+  ([state, plan]) =>
+    audio.setBreathingSession(
+      state === 'running' && plan ? { plan, readElapsed: breath.readElapsed } : null,
+    ),
+  { flush: 'sync' },
 )
-watch(() => breathState.value === 'paused', audio.setBreathingPaused, { flush: 'sync' })
 
 function focusExercise() {
   void nextTick(() => {
@@ -78,7 +81,7 @@ function selectView(id: ExerciseView) {
 
 function startBreathing() {
   stage.value = 'breathe'
-  if (preferences.sound !== 'off' && !playing.value) void audio.playSound()
+  if (preferences.soundEnabled && !playing.value) void audio.playSound(preferences.sound)
   breath.start()
   focusExercise()
 }
@@ -107,14 +110,13 @@ function returnToStart() {
 }
 
 function pickSound(id: SoundId) {
-  preferences.sound = id
-  if (id !== 'off') lastSound = id
+  if (id !== 'off') preferences.sound = id
+  preferences.soundEnabled = id !== 'off'
   void audio.playSound(id)
 }
 
 function toggleSound() {
-  if (playing.value) pickSound('off')
-  else pickSound(preferences.sound === 'off' ? lastSound : preferences.sound)
+  pickSound(playing.value ? 'off' : preferences.sound)
 }
 
 function updatePreferences(next: Preferences) {
@@ -125,7 +127,6 @@ function updatePreferences(next: Preferences) {
 
 function resetSettings() {
   Object.assign(preferences, { ...defaultPreferences, theme: preferences.theme })
-  lastSound = 'lofi'
   void audio.playSound('off')
 }
 
@@ -146,22 +147,21 @@ function previewVoice() {
       @toggle-sound="toggleSound"
     >
       <template #settings>
-        <SettingsPopover v-model:open="settingsOpen">
-          <SessionSettings
-            :model-value="preferences"
-            :is-breathing="isBreathing"
-            :is-grounding="isGrounding"
-            :is-guided="isGuided"
-            :playing="playing"
-            :audio-message="audioMessage"
-            :voice-message="voiceMessage"
-            :voice-supported="voiceSupported"
-            @update:model-value="updatePreferences"
-            @pick-sound="pickSound"
-            @reset="resetSettings"
-            @preview-voice="previewVoice"
-          />
-        </SettingsPopover>
+        <SessionSettings
+          v-model:open="settingsOpen"
+          :model-value="preferences"
+          :is-breathing="isBreathing"
+          :is-grounding="isGrounding"
+          :is-guided="isGuided"
+          :playing="playing"
+          :audio-message="audioMessage"
+          :voice-message="voiceMessage"
+          :voice-supported="voiceSupported"
+          @update:model-value="updatePreferences"
+          @pick-sound="pickSound"
+          @reset="resetSettings"
+          @preview-voice="previewVoice"
+        />
       </template>
     </AppHeader>
     <main id="main-content" class="main-wrap" tabindex="-1">

@@ -14,15 +14,11 @@
 }
 
 .settings-popover-header {
-  @apply flex-none gap-[12px] p-[8px_10px_8px_18px] border-b border-solid border-b-line;
-}
-
-.settings-popover-header h2 {
-  @apply text-[length:1.1rem] font-extrabold tracking-[-0.02em];
+  @apply flex-none gap-1 border-b border-line p-2;
 }
 
 .settings-close {
-  @apply grid h-11 w-11 place-items-center rounded-lg text-muted;
+  @apply grid h-11 w-11 shrink-0 place-items-center rounded-lg text-muted;
 }
 
 .settings-close:hover {
@@ -34,12 +30,11 @@
 }
 
 .settings-tabs {
-  @apply flex-wrap gap-[0_12px] border-b border-solid border-b-line;
+  @apply items-center gap-0.5 whitespace-nowrap;
 }
 
 .settings-tabs button {
-  @apply min-h-[44px] px-[4px] border-b-2 border-solid border-b-transparent text-muted text-[length:0.875rem];
-  @apply font-[750];
+  @apply min-h-11 rounded-md px-1.5 text-xs font-[750] text-muted min-[380px]:px-2 min-[380px]:text-sm;
 }
 
 .settings-tabs button:hover {
@@ -47,7 +42,7 @@
 }
 
 .settings-tabs button[aria-pressed='true'] {
-  @apply border-b-accent text-accent-ink;
+  @apply bg-selected text-accent-ink;
 }
 
 .settings-body {
