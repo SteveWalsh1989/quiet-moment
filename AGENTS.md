@@ -13,7 +13,7 @@ Use Vue 3 Composition API with `<script setup lang="ts">` and the existing Tailw
 
 The breathing clock drives the countdown, circle, and Breathing lo-fi envelope. Keep those cues on the same clock. Pause must hold the phase and the synced track’s playback position, and resume must continue from those positions. Regular background tracks are independent of the breathing clock.
 
-Follow the system’s Reduce Motion setting by default. A user can explicitly enable animation in the player. Preserve the labelled, keyboard-operable centre button and the separate Pause and Reset controls during a session.
+Breathing animation is on by default. Respect the saved animation preference, including Reduce Motion when the user selects Follow system setting. Preserve the labelled, keyboard-operable centre button and the separate Pause and Reset controls during a session.
 
 Keep stored settings backward compatible through `normalizePreferences`. Keep audio and speech opt-in and offline-capable. Leave analytics limited to the production entry point and preserve its URL filtering.
 

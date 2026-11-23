@@ -53,7 +53,7 @@ The page adapts to the screen width automatically. On a phone, the exercise fill
 
 - **Sound.** Tap **Sound off** in the header to play Soft lo-fi on first use. The chevron opens the sound choices, including rain, slow tide, and **Breathing lo-fi**. Breathing lo-fi follows your rhythm and pauses and resumes with the countdown.
 - **Spoken cues.** Open **Sound & voice** in Session settings to enable spoken instructions in supported browsers.
-- **Animation and countdowns.** Open **Timing** to change the preparation countdown. **Display** has the countdown and animation controls. The circle still shows the breath cue if you hide the numbers. Animation follows your system preference until you choose a setting in the app.
+- **Animation and countdowns.** Open **Timing** to change the preparation countdown. **Display** has the countdown and animation controls. The circle still shows the breath cue if you hide the numbers. Animation is on by default. Choose **Follow system setting** or **Keep circle still** to change it.
 
 ## Open it locally or offline
 

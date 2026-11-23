@@ -73,6 +73,7 @@
 .breath-orb {
   width: clamp(156px, 43vw, 206px);
   aspect-ratio: 1;
+  container-type: inline-size;
   position: relative;
   display: grid;
   place-items: center;
@@ -179,12 +180,8 @@
 }
 
 .orb-cue-label {
-  font-size: clamp(1.25rem, 2.2vw, 2.15rem);
+  font-size: clamp(1.875rem, 21cqi, 5rem);
   font-weight: 800;
-}
-
-.orb-cue-with-count .orb-cue-label {
-  font-size: clamp(0.9rem, 1.5vw, 1.45rem);
 }
 
 .orb-counter {

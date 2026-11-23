@@ -41,7 +41,7 @@ export const defaultPreferences: Readonly<Preferences> = {
   voiceVolume: 65,
   sound: 'off',
   volume: 30,
-  motion: 'system',
+  motion: 'on',
   theme: 'system',
   countdown: true,
 }
@@ -81,9 +81,11 @@ export function normalizePreferences(input: unknown): Preferences {
   const motion =
     saved.motion === false || saved.motion === 'off'
       ? 'off'
-      : saved.motion === 'on'
-        ? 'on'
-        : 'system'
+      : saved.motion === true || saved.motion === 'system'
+        ? 'system'
+        : saved.motion === 'on'
+          ? 'on'
+          : defaultPreferences.motion
 
   return {
     pace: pace ?? defaultPreferences.pace,

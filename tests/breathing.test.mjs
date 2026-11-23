@@ -93,6 +93,10 @@ test('all paces run the selected steps in order and skip omitted holds', () => {
 
 test('saved preferences keep legacy motion choices and reject invalid timing', () => {
   assert.deepEqual(normalizePreferences(null), defaultPreferences)
+  assert.equal(normalizePreferences({}).motion, 'on')
+  assert.equal(normalizePreferences({ motion: 'unknown' }).motion, 'on')
+  assert.equal(normalizePreferences({ motion: 'system' }).motion, 'system')
+  assert.equal(normalizePreferences({ motion: 'off' }).motion, 'off')
   assert.equal(normalizePreferences({ motion: true }).motion, 'system')
   assert.equal(normalizePreferences({ motion: false }).motion, 'off')
   assert.equal(normalizePreferences({ motion: 'on' }).motion, 'on')
