@@ -1,5 +1,9 @@
-.grounding-session .intro-block h1 {
-  @apply text-[length:clamp(2rem,_4vw,_3.2rem)];
+.prompt-session .intro-block {
+  @apply sr-only;
+}
+
+.prompt-session .workbench {
+  @apply mt-[clamp(20px,_7svh,_88px)];
 }
 
 @media (max-width: 1000px) {
@@ -48,12 +52,11 @@
   .intro-block p {
     @apply mt-[6px] text-[length:0.93rem] leading-normal;
   }
-  .breathing-session .intro-block,
-  .grounding-session .intro-block {
+  .breathing-session .intro-block {
     @apply sr-only;
   }
   .breathing-session .workbench,
-  .grounding-session .workbench {
+  .prompt-session .workbench {
     @apply mt-[12px];
   }
   .player {
@@ -89,9 +92,6 @@
   .prompt-content h2 {
     @apply text-[length:clamp(1.9rem,_7vw,_2.37rem)];
   }
-  .examples {
-    @apply mt-[19px];
-  }
   .prompt-actions {
     @apply [margin-inline:clamp(12px,_4vw,_24px)] [padding-block:18px_14px];
   }
@@ -102,6 +102,13 @@
     @apply gap-[2px];
   }
 }
+
+@media (min-width: 960px) {
+  .prompt-session .player {
+    @apply min-h-[clamp(36rem,_60svh,_41rem)];
+  }
+}
+
 @media (min-width: 1280px) {
   .site-shell {
     --page-width: 112rem;
@@ -115,6 +122,10 @@
 
   .topbar-inner {
     @apply max-w-none [padding-inline:0];
+  }
+
+  .prompt-session .main-wrap {
+    --page-width: 86rem;
   }
 
   .intro-block h1 {
@@ -138,6 +149,10 @@
 
   .workbench {
     @apply flex flex-1;
+  }
+
+  .prompt-session .workbench {
+    @apply flex-none;
   }
 
   .player {

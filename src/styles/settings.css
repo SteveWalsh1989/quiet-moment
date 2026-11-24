@@ -1,32 +1,61 @@
-.settings-popover {
-  @apply fixed inset-[var(--settings-top,_auto)_var(--settings-right,_12px)_var(--settings-bottom,_auto)_auto];
-  @apply w-[min(25rem,_calc(100%_-_var(--settings-right,_12px)_-_12px))] max-w-none;
-  @apply max-h-[min(42rem,_var(--settings-height,_75dvh))] m-0 p-0 overflow-hidden text-ink border border-solid;
+.player-popover {
+  @apply fixed inset-[var(--popover-top,_auto)_var(--popover-right,_12px)_var(--popover-bottom,_auto)_auto];
+  @apply w-[min(25rem,_calc(100%_-_var(--popover-right,_12px)_-_12px))] max-w-none;
+  @apply max-h-[min(42rem,_var(--popover-height,_75dvh))] m-0 p-0 overflow-hidden text-ink border border-solid;
   @apply border-line rounded-[15px] bg-panel shadow-[0_18px_50px_var(--popup-shadow)];
 }
 
-.settings-popover:is([open], :popover-open) {
+.player-popover:is([open], :popover-open) {
   @apply flex flex-col;
 }
 
-.settings-popover::backdrop {
+.player-popover:is([open], .player-popover-dim)::backdrop {
   @apply bg-[#1612213d];
 }
 
-.settings-popover-header {
+.player-popover-header {
   @apply flex-none gap-1 border-b border-line p-2;
 }
 
-.settings-close {
+.player-popover-close {
   @apply grid h-11 w-11 shrink-0 place-items-center rounded-lg text-muted;
 }
 
-.settings-close:hover {
+.player-popover-close:hover {
   @apply text-ink bg-hover;
 }
 
-.settings-popover-content {
+.player-popover-content {
   @apply min-h-0 p-[0_16px_10px] overflow-auto overscroll-contain;
+}
+
+.player-popover-footer {
+  @apply flex-none border-t border-line px-4 pb-2.5 pt-3;
+}
+
+.player-popover-cancel,
+.player-popover-action {
+  @apply min-h-11 rounded-lg px-3 py-2 text-sm font-bold;
+}
+
+.player-popover-cancel {
+  @apply text-muted;
+}
+
+.player-popover-cancel:hover {
+  @apply bg-hover text-ink;
+}
+
+.player-popover-action {
+  @apply bg-selected text-accent-ink;
+}
+
+.player-popover-action:hover:not(:disabled) {
+  @apply bg-hover text-ink;
+}
+
+.player-popover-action:disabled {
+  @apply opacity-60;
 }
 
 .settings-tabs {
@@ -49,7 +78,7 @@
   @apply grid gap-4 pt-4;
 }
 
-.settings-popover :focus-visible {
+.player-popover :focus-visible {
   @apply outline-focus;
 }
 

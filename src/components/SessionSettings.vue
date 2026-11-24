@@ -4,7 +4,7 @@ import AppIcon from './AppIcon.vue'
 import { colorThemes } from '../colorThemes'
 import SelectMenu from './SelectMenu.vue'
 import SettingsCheckbox from './SettingsCheckbox.vue'
-import SettingsPopover from './SettingsPopover.vue'
+import PlayerPopover from './PlayerPopover.vue'
 import {
   formatTime,
   getPaceRhythm,
@@ -163,8 +163,17 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
 </script>
 
 <template>
-  <SettingsPopover v-model:open="isOpen">
-    <template #tabs>
+  <PlayerPopover
+    v-model:open="isOpen"
+    label="Settings"
+    close-label="Close settings"
+    trigger-class="player-icon-button"
+    dim-backdrop
+  >
+    <template #trigger>
+      <AppIcon name="settings" />
+    </template>
+    <template #header>
       <div class="settings-tabs flex" role="group" aria-label="Settings sections">
         <button
           type="button"
@@ -384,5 +393,5 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         </button>
       </div>
     </div>
-  </SettingsPopover>
+  </PlayerPopover>
 </template>

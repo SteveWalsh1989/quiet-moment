@@ -38,6 +38,7 @@ const current = computed(
 const isGuided = computed(() => view.value === 'reset')
 const isBreathing = computed(() => stage.value === 'breathe')
 const isGrounding = computed(() => stage.value === 'ground')
+const isDistraction = computed(() => stage.value === 'focus')
 const isGroundingComplete = computed(
   () => stage.value === 'done' && (isGuided.value || view.value === 'ground'),
 )
@@ -70,7 +71,7 @@ function focusExercise() {
   void nextTick(() => {
     if (settingsOpen.value) return
     player.value?.querySelector<HTMLElement>('h2[tabindex="-1"]')?.focus({
-      preventScroll: !isGrounding.value && !isGroundingComplete.value,
+      preventScroll: !isGrounding.value && !isGroundingComplete.value && !isDistraction.value,
     })
   })
 }
@@ -151,7 +152,7 @@ function previewVoice() {
     class="site-shell"
     :class="{
       'breathing-session': isBreathing,
-      'grounding-session': isGrounding || isGroundingComplete,
+      'prompt-session': isGrounding || isGroundingComplete || isDistraction,
     }"
   >
     <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -263,7 +264,7 @@ function previewVoice() {
             @complete="finishExercise"
             @select-guide="selectGroundingGuide"
           />
-          <DistractionPlayer v-else-if="stage === 'focus'" v-model:index="attentionIndex" />
+          <DistractionPlayer v-else-if="isDistraction" v-model:index="attentionIndex" />
           <template v-else>
             <div class="prompt-content completion">
               <div class="step-line flex items-center">

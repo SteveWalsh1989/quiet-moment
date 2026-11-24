@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, useId } from 'vue'
 import AppIcon from './AppIcon.vue'
 
+defineProps<{
+  label: string
+  closeLabel: string
+  triggerClass: string
+  dimBackdrop?: boolean
+}>()
 const isOpen = defineModel<boolean>('open', { required: true })
+const panelId = useId()
+const headingId = `${panelId}-heading`
 const trigger = ref<HTMLButtonElement | null>(null)
 const panel = ref<HTMLDialogElement | null>(null)
 const supportsPopover = 'showPopover' in HTMLElement.prototype
@@ -23,17 +31,17 @@ function placePanel() {
   const available = opensAbove ? above : below
   const fitsBesideTrigger = available >= 160
 
-  dialog.style.setProperty('--settings-right', `${Math.max(gutter, width - bounds.right)}px`)
+  dialog.style.setProperty('--popover-right', `${Math.max(gutter, width - bounds.right)}px`)
   dialog.style.setProperty(
-    '--settings-top',
+    '--popover-top',
     !fitsBesideTrigger ? `${gutter}px` : opensAbove ? 'auto' : `${top}px`,
   )
   dialog.style.setProperty(
-    '--settings-bottom',
+    '--popover-bottom',
     fitsBesideTrigger && opensAbove ? `${bottom}px` : 'auto',
   )
   dialog.style.setProperty(
-    '--settings-height',
+    '--popover-height',
     `${fitsBesideTrigger ? available : height - 2 * gutter}px`,
   )
 }
@@ -56,7 +64,7 @@ function handleTrigger() {
   }
 }
 
-function closeSettings() {
+function closePopover() {
   if (supportsPopover) panel.value?.hidePopover()
   else panel.value?.close()
   trigger.value?.focus({ preventScroll: true })
@@ -71,7 +79,7 @@ function dismissFallback(event: MouseEvent) {
     event.clientY < top ||
     event.clientY > bottom
   ) {
-    closeSettings()
+    closePopover()
   }
 }
 
@@ -93,43 +101,49 @@ onUnmounted(() => {
   <button
     ref="trigger"
     type="button"
-    class="player-icon-button"
-    aria-label="Settings"
+    :class="triggerClass"
+    :aria-label="label"
     aria-haspopup="dialog"
     :aria-expanded="isOpen"
-    aria-controls="session-settings"
-    title="Settings"
-    popovertarget="session-settings"
+    :aria-controls="panelId"
+    :title="label"
+    :popovertarget="panelId"
     @click="handleTrigger"
   >
-    <AppIcon name="settings" />
+    <slot name="trigger" />
   </button>
   <dialog
-    id="session-settings"
+    :id="panelId"
     ref="panel"
-    class="settings-popover"
+    class="player-popover"
+    :class="{ 'player-popover-dim': dimBackdrop }"
     :popover="supportsPopover ? 'auto' : undefined"
-    aria-labelledby="settings-heading"
+    :aria-labelledby="headingId"
     @beforetoggle="placePanel"
     @toggle="handlePopoverToggle"
     @close="isOpen = false"
     @click.self="dismissFallback"
   >
-    <div class="settings-popover-header flex items-center justify-between">
-      <h2 id="settings-heading" class="sr-only">Settings</h2>
-      <slot name="tabs" />
+    <div class="player-popover-header flex items-center justify-between">
+      <h2 :id="headingId" :class="$slots.header ? 'sr-only' : 'pl-2 font-extrabold'">
+        {{ label }}
+      </h2>
+      <slot name="header" />
       <button
         type="button"
-        class="settings-close"
-        aria-label="Close settings"
+        class="player-popover-close"
+        :aria-label="closeLabel"
         autofocus
-        @click="closeSettings"
+        @click="closePopover"
       >
         <AppIcon name="close" :size="18" />
       </button>
     </div>
-    <div class="settings-popover-content">
+    <div class="player-popover-content">
       <slot />
+    </div>
+    <div v-if="$slots.footer" class="player-popover-footer">
+      <slot name="footer" :close="closePopover" />
     </div>
   </dialog>
 </template>
