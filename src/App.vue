@@ -148,13 +148,7 @@ function previewVoice() {
 </script>
 
 <template>
-  <div
-    class="site-shell"
-    :class="{
-      'breathing-session': isBreathing,
-      'prompt-session': isGrounding || isGroundingComplete || isDistraction,
-    }"
-  >
+  <div class="site-shell">
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <AppHeader
       :view="view"
@@ -303,19 +297,19 @@ function previewVoice() {
           </template>
         </section>
       </div>
-      <footer class="site-footer flex items-start">
-        <AppIcon name="info" :size="19" />
-        <p>
-          Quiet Moment is a self-help tool for moments of anxiety. It’s not a medical device or a
-          substitute for professional care.
-          <a
-            href="https://www2.hse.ie/mental-health/issues/how-to-deal-with-panic-attacks/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >HSE guidance on panic attacks</a
-          >
-        </p>
-      </footer>
     </main>
+    <footer class="site-footer flex items-start">
+      <AppIcon name="info" :size="19" />
+      <p>
+        Quiet Moment is a self-help tool for moments of anxiety. It’s not a medical device or a
+        substitute for professional care.
+        <a
+          href="https://www2.hse.ie/mental-health/issues/how-to-deal-with-panic-attacks/"
+          target="_blank"
+          rel="noopener noreferrer"
+          >HSE guidance on panic attacks</a
+        >
+      </p>
+    </footer>
   </div>
 </template>

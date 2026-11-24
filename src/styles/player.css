@@ -1,5 +1,5 @@
 .player {
-  @apply min-w-0 min-h-[521px] relative flex flex-col items-stretch rounded-[15px] text-on-player;
+  @apply relative flex min-h-[min(32rem,_58svh)] min-w-0 flex-1 flex-col items-stretch rounded-[15px] text-on-player;
   @apply bg-[radial-gradient(_ellipse_at_50%_37%,_var(--player-glow)_0%,_var(--player-mid)_45%,_var(--player-edge)_100%_)];
 }
 
@@ -34,7 +34,7 @@
 }
 
 .breathing-stage {
-  @apply flex flex-col;
+  @apply flex flex-1 flex-col justify-center;
 }
 
 .orb-area {
@@ -233,7 +233,7 @@
 }
 
 .prompt-player {
-  @apply my-auto w-full px-[clamp(16px,_5vw,_76px)] py-[clamp(18px,_4vh,_48px)];
+  @apply grid w-full flex-1 grid-rows-[auto_minmax(min-content,_1fr)_auto] px-[clamp(16px,_5vw,_76px)] py-[clamp(18px,_4vh,_48px)];
 }
 
 .prompt-player-toolbar {
@@ -430,7 +430,7 @@ input:checked + .grounding-exercise-indicator::after {
   }
 
   .prompt-player-stage {
-    @apply grid min-h-[clamp(14rem,_29svh,_19rem)] items-center gap-x-[clamp(36px,_5vw,_88px)];
+    @apply grid min-h-[clamp(12rem,_26svh,_19rem)] items-center gap-x-[clamp(36px,_5vw,_88px)];
   }
 
   .prompt-player-stage:has(.prompt-player-support) {

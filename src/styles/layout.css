@@ -1,9 +1,21 @@
+.site-shell {
+  --page-width: 86rem;
+  --page-gutter: clamp(24px, 4.25vw, 84px);
+  @apply flex min-h-[100svh] flex-col;
+}
+
+.topbar-inner,
+.main-wrap,
+.site-footer {
+  @apply mx-auto w-[min(var(--page-width),_calc(100%_-_2_*_var(--page-gutter)))];
+}
+
 .topbar {
   @apply border-b border-solid border-b-line bg-topbar;
 }
 
 .topbar-inner {
-  @apply max-w-[1312px] min-h-[70px] m-[0_auto] gap-[22px] p-[0_36px];
+  @apply min-h-[70px] gap-[22px];
 }
 
 .wordmark {
@@ -54,23 +66,27 @@
 }
 
 .main-wrap {
-  @apply w-[min(1176px,_calc(100%_-_72px))] m-[0_auto];
+  @apply flex flex-1 flex-col;
+}
+
+.workbench {
+  @apply flex flex-1;
 }
 
 .intro-block {
-  @apply p-[36px_0_29px];
+  @apply pt-[clamp(24px,_3.2vh,_36px)] pb-[clamp(18px,_2.6vh,_28px)];
 }
 
 .intro-block h1 {
-  @apply m-0 font-display font-medium text-[length:4.05rem] leading-[1.08] tracking-[-0.038em] text-balance;
+  @apply m-0 font-display font-medium text-[length:clamp(2.35rem,_4vw,_3.6rem)] leading-[1.08] tracking-[-0.038em] text-balance;
 }
 
 .intro-block p {
-  @apply m-[11px_0_0] text-muted text-[length:1.02rem] leading-[1.65];
+  @apply mt-2 text-muted text-[length:1.02rem] leading-[1.55];
 }
 
 .site-footer {
-  @apply gap-[9px] m-[20px_0_24px] text-muted text-[length:0.86rem] leading-[1.6];
+  @apply my-[20px] flex-none gap-[9px] text-muted text-[length:0.86rem] leading-[1.6];
 }
 
 .site-footer > svg {
