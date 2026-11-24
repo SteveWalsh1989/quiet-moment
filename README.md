@@ -21,33 +21,35 @@ Try it out on https://quiet-moment-lovat.vercel.app/
 2. Follow the **In**, **Out**, and **Hold** cues in the circle at a pace that feels comfortable. Tap the circle or **Pause** to take a break. Tap again to resume, or choose **Reset** to go back to the start.
 3. When breathing ends, the app opens a grounding exercise. You can also choose **Grounding** in the player header during the session.
 
-![Desktop Guided reset with Start in the centre of the circle and session settings alongside](docs/screenshots/desktop-quick-reset.jpg)
+![Guided reset in Purple on desktop, ready to start with Breathing and Grounding shown in the player header](docs/screenshots/desktop-quick-reset.jpg)
 
 ## Choose an exercise
 
 ### Breathing
 
-Choose **Breathing** for a session on its own. The cue shows when to breathe in through your nose and out through your mouth. The centre grows and shrinks with the breath. The outer ring fills clockwise once per cycle, with a notch at each cue change. Open the settings gear in the page header and choose a pace under **Timing** to see its inhale, exhale, and hold times, or set your own. Set either custom hold to zero to skip it.
+Choose **Breathing** for a session on its own. The cue shows when to breathe in through your nose and out through your mouth. The centre grows and shrinks with the breath. The outer ring fills clockwise once per cycle, with a notch at each cue change. Open the settings gear in the player header and choose a pace under **Timing** to see its inhale, exhale, and hold times, or set your own. Set either custom hold to zero to skip it.
 
-![Desktop Breathing mode showing an inhale cue, a countdown in the circle, and Pause and Reset](docs/screenshots/desktop-breathing.jpg)
+![Breathing in Ocean blue on desktop, showing an inhale countdown and Pause and Reset controls](docs/screenshots/desktop-breathing.jpg)
 
 ### Grounding
 
-Work through the senses one at a time. Tap a number to record how many things you’ve noticed. Tapping **3**, for example, marks the first three and shows **3 / 5 noticed**. Choose **Next prompt** when you’re ready or **Skip prompt** to move on earlier.
+Work through the senses one at a time. If you want to keep count, tap **Count one** for each thing you notice. Use **Undo** to remove the last count. Choose **Next** whenever you’re ready, or **Back** to return to the previous prompt with its count intact. Choose **Finish** on the last prompt.
 
-![Desktop Grounding mode showing the first sensory prompt and three of five items marked](docs/screenshots/desktop-grounding.jpg)
+Use **Change exercise** to pick the full 5-4-3-2-1 exercise, the quick 3-2-1 version, or **Orient to the room**, which uses prompts without counting.
+
+![Grounding in Slate on desktop, with the sight prompt and three of five items marked](docs/screenshots/desktop-grounding.jpg)
 
 ### Distraction
 
-Try a small task, such as finding round objects nearby. Each prompt includes examples, and **Another prompt** lets you move on at your own pace.
+Try a small task, such as finding round objects nearby. Each prompt includes examples. Choose **Next** to continue at your own pace or **Start over** after the last prompt.
 
-![Desktop Distraction mode showing a prompt to find round objects and three examples](docs/screenshots/desktop-distraction.jpg)
+![Distraction in Teal on desktop, showing the round-object prompt and three examples](docs/screenshots/desktop-distraction.jpg)
 
 ## Use Quiet Moment on a phone
 
-The page adapts to the screen width automatically. On a phone, the exercise fills a single column. The gear opens **Settings** from the page header.
+The page adapts to the screen width automatically. On a phone, the exercise fills a single column. Open **Settings** with the gear in the player header.
 
-<img src="docs/screenshots/mobile-breathing.jpg" alt="Phone layout showing a breathing cue, countdown, large Pause and Reset buttons, and session controls" width="390" />
+<img src="docs/screenshots/mobile-breathing.jpg" alt="Breathing on a phone in Teal with Light appearance, showing an exhale countdown and Pause and Reset controls" width="390" />
 
 ## Set up your session
 
@@ -74,4 +76,4 @@ Quiet Moment uses Vue 3, TypeScript, Vite, and Tailwind CSS. Run `pnpm run check
 
 ## Appearance
 
-Open **Settings → Display → Appearance** to choose System, Light, or Dark. System follows your device. Your choice is remembered in the browser.
+Open **Settings → Display → Appearance** to choose System, Light, or Dark. System follows your device. Use **Color theme** in the same panel to choose a palette. The desktop screenshots feature Purple, Ocean blue, Slate, and Teal. The phone screenshot shows Teal in Light appearance. Quiet Moment remembers both choices in your browser.
