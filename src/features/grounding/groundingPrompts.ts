@@ -1,55 +1,58 @@
 const senses = {
   eye: {
+    label: 'Sight',
     verb: 'see',
-    title: 'Look around you.',
-    examples: ['A shadow on the wall', 'The edge of your desk', 'A fold in your sleeve'],
+    example: 'Maybe a shadow on the wall or a fold in your sleeve.',
   },
   hand: {
+    label: 'Touch',
     verb: 'feel',
-    title: 'Notice what you can feel.',
-    examples: [
-      'Your feet inside your shoes',
-      'The chair beneath you',
-      'The texture of your sleeve',
-    ],
+    example: 'Maybe the chair beneath you or the texture of your sleeve.',
   },
   hear: {
+    label: 'Sound',
     verb: 'hear',
-    title: 'Listen to your surroundings.',
-    examples: ['A fan or radiator', 'Traffic in the distance', 'The rustle of your clothes'],
+    example: 'Maybe the hum of a fan or traffic in the distance.',
   },
   scent: {
+    label: 'Smell',
     verb: 'smell',
-    title: 'Notice a scent nearby.',
-    examples: ['Tea or coffee', 'The fabric of your jumper', 'The air by a window'],
+    example: 'Maybe tea, coffee or the fabric of your jumper.',
+    note: 'If nothing comes to mind, you can move on.',
   },
   taste: {
+    label: 'Taste',
     verb: 'taste',
-    title: 'Notice a taste.',
-    examples: ['A sip of water', 'The last thing you ate', 'A taste you can remember'],
+    example: 'Maybe a sip of water or the taste of the last thing you ate.',
+    note: 'If nothing comes to mind, you can move on.',
   },
 }
+
+const countWords = { 1: 'one', 2: 'two', 3: 'three', 4: 'four', 5: 'five' }
 
 export interface GroundingStep {
   icon: keyof typeof senses
-  count?: number
+  label: string
   title: string
-  prompt: string
-  examples: readonly string[]
+  example: string
+  count?: number
+  note?: string
 }
 
-function sense(icon: GroundingStep['icon'], count: number): GroundingStep {
+function sense(icon: GroundingStep['icon'], count: keyof typeof countWords): GroundingStep {
+  const { verb, ...content } = senses[icon]
   return {
     icon,
     count,
-    ...senses[icon],
-    prompt: `Name ${count} ${count === 1 ? 'thing' : 'things'} you can ${senses[icon].verb}.`,
+    ...content,
+    title: `Notice ${countWords[count]} ${count === 1 ? 'thing' : 'things'} you can ${verb}.`,
   }
 }
 
 export const grounding = {
   full: {
     label: '5-4-3-2-1 senses',
+    detail: 'A prompt for each of the five senses',
     steps: [
       sense('eye', 5),
       sense('hand', 4),
@@ -60,31 +63,33 @@ export const grounding = {
   },
   quick: {
     label: 'Quick 3-2-1 senses',
+    detail: 'Three short prompts for sight, sound and touch',
     steps: [sense('eye', 3), sense('hear', 2), sense('hand', 1)],
   },
   room: {
     label: 'Orient to the room',
+    detail: 'Notice your surroundings without counting',
     steps: [
       {
         icon: 'hand',
+        label: senses.hand.label,
         title: 'Feel what supports you.',
-        prompt: 'Notice where your body meets the seat or floor.',
-        examples: ['The chair under you', 'Both feet on the floor'],
+        example: 'Notice where your feet meet the floor or how the chair supports you.',
       },
       {
         icon: 'eye',
+        label: senses.eye.label,
         title: 'Find one ordinary object.',
-        prompt: 'Look at its shape, colour or texture for a moment.',
-        examples: ['A mug with a curved handle', 'The straight edge of a window'],
+        example: 'Notice a detail, like the curve of a mug handle.',
       },
       {
         icon: 'hear',
+        label: senses.hear.label,
         title: 'Listen near and far.',
-        prompt: 'Pick out one sound close by and one farther away.',
-        examples: ['The hum of a fan', 'A car passing outside'],
+        example: 'Maybe the hum of a fan nearby or a car passing outside.',
       },
     ],
   },
-} satisfies Record<string, { label: string; steps: GroundingStep[] }>
+} satisfies Record<string, { label: string; detail: string; steps: GroundingStep[] }>
 
 export type GroundingId = keyof typeof grounding

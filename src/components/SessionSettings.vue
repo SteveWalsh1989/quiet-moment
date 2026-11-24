@@ -3,6 +3,7 @@ import { computed, ref, useId } from 'vue'
 import AppIcon from './AppIcon.vue'
 import { colorThemes } from '../colorThemes'
 import SelectMenu from './SelectMenu.vue'
+import SettingsCheckbox from './SettingsCheckbox.vue'
 import SettingsPopover from './SettingsPopover.vue'
 import {
   formatTime,
@@ -25,7 +26,6 @@ import type { Preferences } from '../preferences'
 const props = defineProps<{
   isBreathing: boolean
   isGrounding: boolean
-  isGuided: boolean
   audioMessage: string
   voiceMessage: string
   voiceSupported: boolean
@@ -103,6 +103,7 @@ const paceOptions = paces.map((item) => ({
 const groundingOptions = Object.entries(grounding).map(([id, item]) => ({
   id: id as Preferences['ground'],
   label: item.label,
+  detail: item.detail,
 }))
 const motionOptions = [
   { id: 'system', label: 'Follow system setting' },
@@ -252,10 +253,12 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           :options="prepOptions"
           :disabled="isBreathing"
         />
-        <div>
-          <SelectMenu v-model="ground" label="Grounding exercise" :options="groundingOptions" />
-          <p v-if="isGuided && isGrounding" class="field-note">Changes apply to your next reset.</p>
-        </div>
+        <SelectMenu
+          v-if="!isGrounding"
+          v-model="ground"
+          label="Grounding exercise"
+          :options="groundingOptions"
+        />
       </div>
 
       <div v-else-if="settingsTab === 'display'" class="settings-body">
@@ -293,10 +296,11 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           </div>
         </fieldset>
         <div>
-          <label class="switch-row">
-            <span>Show countdowns</span>
-            <input v-model="countdown" type="checkbox" aria-describedby="countdown-detail" />
-          </label>
+          <SettingsCheckbox
+            v-model="countdown"
+            label="Show countdowns"
+            description-id="countdown-detail"
+          />
           <p id="countdown-detail" class="field-note">
             Show seconds in the circle and time remaining at the top of the player.
           </p>
@@ -350,11 +354,13 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           />
         </label>
         <div class="voice-settings">
-          <label class="switch-row"
-            ><span>Spoken breathing cues</span
-            ><input v-model="voice" type="checkbox" :disabled="!voiceSupported"
-          /></label>
-          <p class="field-note">
+          <SettingsCheckbox
+            v-model="voice"
+            label="Spoken breathing cues"
+            description-id="voice-detail"
+            :disabled="!voiceSupported"
+          />
+          <p id="voice-detail" class="field-note">
             Hear when to breathe in through your nose and out through your mouth.
           </p>
           <template v-if="preferences.voice">

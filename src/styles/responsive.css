@@ -1,3 +1,7 @@
+.grounding-session .intro-block h1 {
+  @apply text-[length:clamp(2rem,_4vw,_3.2rem)];
+}
+
 @media (max-width: 1000px) {
   .topbar-inner {
     @apply px-[25px] gap-[12px];
@@ -44,10 +48,12 @@
   .intro-block p {
     @apply mt-[6px] text-[length:0.93rem] leading-normal;
   }
-  .breathing-session .intro-block {
+  .breathing-session .intro-block,
+  .grounding-session .intro-block {
     @apply sr-only;
   }
-  .breathing-session .workbench {
+  .breathing-session .workbench,
+  .grounding-session .workbench {
     @apply mt-[12px];
   }
   .player {
@@ -94,9 +100,6 @@
 @media (max-width: 390px) {
   .main-nav {
     @apply gap-[2px];
-  }
-  .grounding-count {
-    @apply px-[8px];
   }
 }
 @media (min-width: 1280px) {

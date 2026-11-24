@@ -24,6 +24,9 @@ export const iconPaths = {
   timer: 'M10 2h4m3 4 1-1m-6 4v4l2 1m6-1a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z',
   info: 'M12 11v5m0-8h.01m9 4a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',
   check: 'm5 12 4 4L19 6',
+  plus: 'M12 5v14M5 12h14',
+  'arrow-left': 'M19 12H5m7-7-7 7 7 7',
+  'arrow-right': 'M5 12h14m-7-7 7 7-7 7',
   chevron: 'm6 9 6 6 6-6',
 }
 

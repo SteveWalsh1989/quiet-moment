@@ -10,6 +10,7 @@ import { formatTime } from './features/breathing/breathingTiming'
 import { useBreathingSession } from './features/breathing/useBreathingSession'
 import { useMotionPreference } from './features/breathing/useMotionPreference'
 import GroundingPlayer from './features/grounding/GroundingPlayer.vue'
+import type { GroundingId } from './features/grounding/groundingPrompts'
 import DistractionPlayer from './features/distraction/DistractionPlayer.vue'
 import { isBreathingSound } from './features/audio/soundTracks'
 import type { SoundId } from './features/audio/soundTracks'
@@ -37,6 +38,9 @@ const current = computed(
 const isGuided = computed(() => view.value === 'reset')
 const isBreathing = computed(() => stage.value === 'breathe')
 const isGrounding = computed(() => stage.value === 'ground')
+const isGroundingComplete = computed(
+  () => stage.value === 'done' && (isGuided.value || view.value === 'ground'),
+)
 const showGuidedStages = computed(() => isGuided.value && stage.value !== 'done')
 const motionEnabled = useMotionPreference(preferences)
 
@@ -65,7 +69,9 @@ watch(
 function focusExercise() {
   void nextTick(() => {
     if (settingsOpen.value) return
-    player.value?.querySelector<HTMLElement>('h2[tabindex="-1"]')?.focus({ preventScroll: true })
+    player.value?.querySelector<HTMLElement>('h2[tabindex="-1"]')?.focus({
+      preventScroll: !isGrounding.value && !isGroundingComplete.value,
+    })
   })
 }
 
@@ -99,6 +105,11 @@ function startGrounding() {
   focusExercise()
 }
 
+function selectGroundingGuide(nextGuide: GroundingId) {
+  preferences.ground = nextGuide
+  startGrounding()
+}
+
 function finishExercise() {
   stage.value = 'done'
   focusExercise()
@@ -122,9 +133,7 @@ function toggleSound() {
 }
 
 function updatePreferences(next: Preferences) {
-  const groundChanged = next.ground !== preferences.ground
   Object.assign(preferences, next)
-  if (groundChanged && view.value === 'ground' && isGrounding.value) startGrounding()
 }
 
 function resetSettings() {
@@ -138,7 +147,13 @@ function previewVoice() {
 </script>
 
 <template>
-  <div class="site-shell" :class="{ 'breathing-session': isBreathing }">
+  <div
+    class="site-shell"
+    :class="{
+      'breathing-session': isBreathing,
+      'grounding-session': isGrounding || isGroundingComplete,
+    }"
+  >
     <a class="skip-link" href="#main-content">Skip to main content</a>
     <AppHeader
       :view="view"
@@ -155,7 +170,7 @@ function previewVoice() {
         <section
           ref="player"
           class="player"
-          :class="{ 'no-motion': !motionEnabled }"
+          :class="{ 'no-motion': !motionEnabled, 'grounding-finish': isGroundingComplete }"
           :aria-label="current.label"
         >
           <div class="player-top flex items-center justify-between gap-2">
@@ -217,7 +232,6 @@ function previewVoice() {
                 :model-value="preferences"
                 :is-breathing="isBreathing"
                 :is-grounding="isGrounding"
-                :is-guided="isGuided"
                 :audio-message="audioMessage"
                 :voice-message="voiceMessage"
                 :voice-supported="voiceSupported"
@@ -246,8 +260,8 @@ function previewVoice() {
             v-else-if="isGrounding"
             :key="guide"
             :guide="guide"
-            :is-guided="isGuided"
             @complete="finishExercise"
+            @select-guide="selectGroundingGuide"
           />
           <DistractionPlayer v-else-if="stage === 'focus'" v-model:index="attentionIndex" />
           <template v-else>
@@ -256,7 +270,10 @@ function previewVoice() {
                 <AppIcon name="check" :size="20" /><span>Session complete</span>
               </div>
               <h2 tabindex="-1">Take your time.</h2>
-              <p>Stay here for another moment, or choose another exercise whenever you’re ready.</p>
+              <p v-if="isGroundingComplete">Stay here for a moment if you’d like.</p>
+              <p v-else>
+                Stay here for another moment, or choose another exercise whenever you’re ready.
+              </p>
             </div>
             <div class="prompt-actions flex flex-wrap items-center">
               <button
