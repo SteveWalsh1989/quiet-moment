@@ -6,7 +6,7 @@ import { breathingArrangements, soundTracks } from '../src/features/audio/soundT
 import { useBackgroundAudio } from '../src/features/audio/useBackgroundAudio.ts'
 import { getRhythm } from '../src/features/breathing/breathingTiming.ts'
 import { useBreathingSession } from '../src/features/breathing/useBreathingSession.ts'
-import { defaultPreferences } from '../src/preferences.ts'
+import { defaultPreferences } from '../src/features/settings/sessionPreferences.ts'
 
 test('Velvet Tape is the default synced arrangement', () => {
   assert.deepEqual(

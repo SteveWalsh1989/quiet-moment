@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import AppIcon from '../../components/AppIcon.vue'
-import { guidedResetLabel } from '../../exerciseViews'
+import AppIcon from '../../components/ui/AppIcon.vue'
+import { guidedResetLabel } from '../../app/exerciseViews'
 import { breathingCues } from './breathingTiming'
 import type { BreathingPhase, BreathingRhythm } from './breathingTiming'
 import type { BreathingState } from './useBreathingSession'
@@ -82,9 +82,9 @@ function activateCircle() {
 </script>
 
 <template>
-  <div class="breathing-stage">
+  <div class="breathing-stage flex flex-1 flex-col justify-center">
     <div
-      class="breath-copy text-center"
+      class="breath-copy grid min-h-[7.25rem] grid-rows-[1fr_auto] items-end px-4 pt-4 text-center"
       :class="{ 'breath-copy-active': isBreathCue }"
       :aria-live="isBreathing ? 'polite' : 'off'"
       aria-atomic="true"
@@ -92,10 +92,10 @@ function activateCircle() {
       <h2 tabindex="-1">{{ isBreathCue ? activeInstruction : breathCue.title }}</h2>
       <p v-if="!isBreathCue">{{ breathCue.instruction }}</p>
     </div>
-    <div class="orb-area">
+    <div class="orb-area grid place-items-center pt-5">
       <button
         type="button"
-        class="breath-orb [container-type:inline-size]"
+        class="breath-orb relative isolate grid aspect-square w-[clamp(156px,_43vw,_206px)] place-items-center rounded-full [container-type:inline-size]"
         :class="{
           'breath-orb-ready': !isBreathing,
           'breath-orb-preparing': phase?.name === 'prepare',
@@ -155,7 +155,10 @@ function activateCircle() {
         </span>
       </button>
     </div>
-    <div v-if="isBreathing" class="player-actions flex flex-wrap items-center justify-center">
+    <div
+      v-if="isBreathing"
+      class="player-actions m-[21px_16px_20px] flex flex-wrap items-center justify-center gap-2"
+    >
       <button
         v-if="breathState === 'paused'"
         type="button"
@@ -174,3 +177,184 @@ function activateCircle() {
     Let the timing be a guide. Breathe at your own pace.
   </div>
 </template>
+
+<style scoped>
+.breath-orb:focus-visible {
+  @apply outline-offset-[4px];
+}
+
+.guide-ring,
+.orb-body,
+.orb-core {
+  @apply absolute inset-0 rounded-full pointer-events-none;
+}
+
+.breath-ring {
+  @apply absolute inset-0 w-full fill-none stroke-current stroke-[4] pointer-events-none;
+}
+
+.breath-ring-inhale {
+  @apply text-breath-in;
+}
+
+.breath-ring-exhale {
+  @apply text-breath-out;
+}
+
+.breath-ring-hold,
+.breath-ring-rest {
+  @apply text-breath-hold;
+}
+
+.breath-ring-track {
+  @apply opacity-[0.32];
+}
+
+.guide-ring-inner {
+  @apply inset-[9%] border border-solid border-player-border;
+}
+
+.orb-body {
+  @apply inset-[8%];
+  scale: calc(0.55 + 0.45 * var(--expansion));
+  @apply border border-solid border-player-border;
+  @apply bg-[radial-gradient(circle_at_39%_30%,_var(--orb-light),_var(--orb-mid)_47%,_var(--orb-edge)_85%)];
+  box-shadow:
+    0 5px 32px color-mix(in srgb, var(--orb-glow) 22%, transparent),
+    inset 0 0 24px color-mix(in srgb, var(--action) 17%, transparent);
+}
+
+.orb-core {
+  @apply inset-[16%];
+  scale: calc(0.55 + 0.45 * var(--expansion));
+  @apply bg-[radial-gradient(circle_at_39%_32%,_var(--orb-core),_transparent_67%)];
+}
+
+.orb-cue,
+.orb-start {
+  @apply relative text-on-player;
+  text-shadow: 0 1px 4px var(--player-edge);
+}
+.orb-start {
+  @apply grid justify-items-center gap-[3px] text-[length:1.1rem] font-extrabold leading-[1.2];
+}
+
+.breath-orb-ready .orb-body,
+.breath-orb-ready .orb-core {
+  scale: 0.9;
+}
+
+.breath-orb-preparing .orb-body,
+.breath-orb-preparing .orb-core {
+  transition: scale 600ms ease-out;
+}
+
+.breath-orb-ready:hover .orb-body,
+.breath-orb-ready:focus-visible .orb-body {
+  border-color: color-mix(in srgb, var(--action) 85%, transparent);
+  box-shadow: 0 5px 36px color-mix(in srgb, var(--orb-glow) 40%, transparent);
+}
+
+.orb-cue {
+  @apply grid gap-[4px] justify-items-center leading-none;
+}
+
+.orb-counter {
+  @apply text-[length:1.75rem] font-[650] leading-none tabular-nums;
+}
+
+.no-motion .orb-body,
+.no-motion .orb-core {
+  scale: 0.83;
+  @apply transition-none;
+}
+
+.breath-copy h2 {
+  @apply m-0 text-[length:clamp(1.5rem,_5vw,_2.15rem)] font-extrabold tracking-[-0.03em] leading-[1.1];
+}
+
+.breath-copy p {
+  @apply m-[6px_0_0] text-player-muted text-[length:0.98rem] leading-normal;
+}
+
+.breath-copy-active h2 {
+  @apply row-start-2 text-on-player text-[length:clamp(1.05rem,_1.25vw,_1.4rem)] font-bold leading-[1.3] tracking-normal;
+}
+
+.player-bottom {
+  @apply min-h-[53px] m-[auto_24px_0] p-[8px_0] border-t border-solid border-t-[#ffffff26] flex flex-wrap;
+  @apply justify-center items-center gap-[12px] text-player-muted text-[length:0.86rem] font-[650] text-center;
+}
+
+@media (max-width: 760px) {
+  .breath-copy {
+    @apply min-h-[5rem] p-[10px_12px_0];
+  }
+  .orb-area {
+    @apply [padding-block:14px_16px];
+  }
+  .breath-orb {
+    @apply w-[clamp(140px,_45vw,_206px)];
+  }
+  .player-bottom {
+    @apply min-h-[49px] [padding-block:0] mx-[12px] gap-[0_8px] text-[length:0.78rem];
+  }
+  .player-bottom button {
+    @apply min-h-[44px];
+  }
+  .player-actions {
+    @apply grid w-[min(290px,_calc(100%_-_28px))] self-center grid-cols-2 m-[0_0_12px];
+  }
+  .player-actions .on-dark-button {
+    @apply border border-solid border-player-border;
+  }
+}
+
+@media (min-width: 1280px) {
+  .player-bottom {
+    @apply [margin-inline:clamp(24px,_2vw,_40px)];
+  }
+}
+
+@media (min-width: 1280px) and (min-height: 800px) {
+  .breathing-stage {
+    @apply grid grid-rows-[auto_auto_minmax(5.5rem,_auto)] content-center justify-stretch;
+  }
+
+  .orb-area {
+    @apply pt-[clamp(20px,_1.8svh,_30px)];
+  }
+
+  .breath-orb {
+    @apply w-[clamp(13rem,_min(27vw,_52svh_-_13rem),_33rem)];
+  }
+
+  .orb-counter {
+    @apply text-[length:clamp(1.75rem,_3vw,_3.75rem)];
+  }
+
+  .orb-start {
+    @apply gap-[7px] text-[length:clamp(1.1rem,_1.3vw,_1.55rem)];
+  }
+
+  .orb-start svg {
+    @apply w-[clamp(22px,_1.65vw,_36px)] h-auto;
+  }
+
+  .breath-copy:not(.breath-copy-active) h2 {
+    @apply text-[length:clamp(2.15rem,_2.35vw,_3.25rem)];
+  }
+
+  .breath-copy p {
+    @apply text-[length:clamp(1.05rem,_1.25vw,_1.4rem)];
+  }
+
+  .player-actions {
+    @apply [margin-block:clamp(21px,_2.3svh,_36px)_16px];
+  }
+
+  .player-actions button {
+    @apply min-h-[50px] text-[length:1rem];
+  }
+}
+</style>

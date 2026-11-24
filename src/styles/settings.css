@@ -58,69 +58,11 @@
   @apply opacity-60;
 }
 
-.settings-tabs {
-  @apply items-center gap-0.5 whitespace-nowrap;
-}
-
-.settings-tabs button {
-  @apply min-h-11 rounded-md px-1.5 text-xs font-[750] text-muted min-[380px]:px-2 min-[380px]:text-sm;
-}
-
-.settings-tabs button:hover {
-  @apply text-accent-ink;
-}
-
-.settings-tabs button[aria-pressed='true'] {
-  @apply bg-selected text-accent-ink;
-}
-
-.settings-body {
-  @apply grid gap-4 pt-4;
-}
-
 .player-popover :focus-visible {
   @apply outline-focus;
 }
 
-.palette-picker legend {
-  @apply mb-1;
-}
-
-.palette-option {
-  @apply relative grid h-11 w-full cursor-pointer place-items-center rounded-lg;
-}
-
-.palette-option:hover {
-  @apply bg-hover;
-}
-
-.palette-swatch {
-  @apply grid size-8 place-items-center rounded-full;
-  background: hsl(var(--palette-hue) var(--palette-saturation) 43%);
-}
-
-.palette-option input:focus-visible ~ .palette-swatch {
-  @apply outline outline-2 outline-focus outline-offset-[3px];
-}
-
-.palette-check {
-  @apply grid size-[18px] place-items-center rounded-full bg-white text-slate-900;
-}
-
-@media (forced-colors: active) {
-  .palette-swatch {
-    forced-color-adjust: none;
-  }
-
-  .palette-option input:focus-visible ~ .palette-swatch {
-    outline-color: Highlight;
-  }
-}
-
-.settings-select-label,
-.sound-list legend,
-.extra-input,
-.volume-label {
+.settings-select-label {
   @apply block text-ink text-[length:0.89rem] font-extrabold;
 }
 
@@ -180,93 +122,12 @@
   }
 }
 
-input.control {
-  @apply block mt-[4px] pr-[8px] appearance-auto;
-}
-
 .control:hover:not(:disabled) {
   @apply border-accent;
 }
 
 .control:disabled {
   @apply opacity-[0.65];
-}
-
-.field-note {
-  @apply m-[6px_0_0] text-muted text-[length:0.82rem] leading-[1.52];
-}
-
-.pace-steps {
-  @apply gap-[4px] m-[8px_0_0] p-0 list-none;
-}
-
-.pace-steps li {
-  @apply p-[3px_7px] border border-solid border-line rounded-[5px] text-muted text-[length:0.76rem];
-  @apply whitespace-nowrap;
-}
-
-.pace-steps span {
-  @apply text-ink font-[750];
-}
-
-.timing-fields {
-  @apply grid grid-cols-2 gap-[9px] mt-[9px] text-[length:0.78rem] font-[720];
-}
-
-.extra-input {
-  @apply mt-[10px];
-}
-
-.settings-footer {
-  @apply mt-4;
-}
-
-.settings-checkbox {
-  @apply relative flex min-h-11 cursor-pointer items-center justify-between gap-3 rounded-lg py-1.5 pr-1.5 text-[length:0.88rem] font-[720];
-}
-
-.settings-checkbox:hover:not(:has(input:disabled)) .settings-checkbox-mark {
-  @apply border-accent;
-}
-
-.settings-checkbox:has(input:focus-visible) {
-  @apply outline outline-2 outline-focus outline-offset-2;
-}
-
-.settings-checkbox:has(input:disabled) {
-  @apply cursor-default opacity-60;
-}
-
-.settings-checkbox-mark {
-  @apply grid size-6 shrink-0 place-items-center rounded-md border border-field-line bg-control text-paper;
-}
-
-.settings-checkbox-mark svg {
-  @apply scale-75 opacity-0;
-}
-
-.settings-checkbox input:checked ~ .settings-checkbox-mark {
-  @apply border-accent bg-accent;
-}
-
-.settings-checkbox input:checked ~ .settings-checkbox-mark svg {
-  @apply scale-100 opacity-100;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .settings-checkbox-mark {
-    @apply transition-colors duration-150 ease-out;
-  }
-
-  .settings-checkbox-mark svg {
-    @apply transition-[opacity,transform] duration-150 ease-out;
-  }
-}
-
-@media (forced-colors: active) {
-  .settings-checkbox input:checked ~ .settings-checkbox-mark {
-    border-color: Highlight;
-  }
 }
 
 input[type='checkbox'],
@@ -282,65 +143,4 @@ input[type='radio'] {
 
 input[type='range'] {
   @apply w-full min-h-[25px];
-}
-
-.text-button {
-  @apply min-h-[44px] text-accent-ink text-[length:0.84rem] font-extrabold underline underline-offset-[3px];
-}
-
-.text-button:disabled {
-  @apply opacity-[0.58];
-}
-
-.sound-list {
-  @apply m-0 p-0 border-0;
-}
-
-.sound-list legend {
-  @apply mb-[6px];
-}
-
-.sound-row {
-  @apply grid grid-cols-[minmax(0,1fr)_auto] items-center;
-}
-
-.sound-option {
-  @apply gap-[9px] min-h-[50px] p-[5px_3px] cursor-pointer;
-}
-
-.sound-option:hover {
-  @apply bg-hover;
-}
-
-.sound-option > span {
-  @apply flex-1;
-}
-
-.sound-option strong,
-.sound-option small {
-  @apply block;
-}
-
-.sound-option strong {
-  @apply text-[length:0.89rem] font-[780];
-}
-
-.sound-option small {
-  @apply text-[length:0.78rem] text-muted;
-}
-
-.volume-label span span {
-  @apply text-muted tabular-nums;
-}
-
-.voice-settings {
-  @apply pt-2 border-t border-solid border-t-line;
-}
-
-.voice-settings .volume-label {
-  @apply mt-3;
-}
-
-.voice-settings .field-note {
-  @apply mt-[1px];
 }

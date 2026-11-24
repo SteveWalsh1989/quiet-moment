@@ -1,5 +1,5 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import type { Preferences } from '../../preferences'
+import type { Preferences } from '../settings/sessionPreferences'
 
 export function useMotionPreference(preferences: Readonly<Preferences>) {
   const systemMotion = window.matchMedia('(prefers-reduced-motion: reduce)')

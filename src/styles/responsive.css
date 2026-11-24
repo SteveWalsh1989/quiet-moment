@@ -48,27 +48,6 @@
   .prompt-player {
     @apply py-5;
   }
-  .breath-copy {
-    @apply min-h-[5rem] p-[10px_12px_0];
-  }
-  .orb-area {
-    @apply [padding-block:14px_16px];
-  }
-  .breath-orb {
-    @apply w-[clamp(140px,_45vw,_206px)];
-  }
-  .player-bottom {
-    @apply min-h-[49px] [padding-block:0] mx-[12px] gap-[0_8px] text-[length:0.78rem];
-  }
-  .player-bottom button {
-    @apply min-h-[44px];
-  }
-  .player-actions {
-    @apply grid w-[min(290px,_calc(100%_-_28px))] self-center grid-cols-2 m-[0_0_12px];
-  }
-  .player-actions .on-dark-button {
-    @apply border border-solid border-player-border;
-  }
   .prompt-content {
     @apply m-[22px_clamp(12px,_4vw,_24px)_0];
   }
@@ -101,51 +80,16 @@
 }
 
 @media (min-width: 1280px) {
-  .player-top,
-  .player-bottom {
+  .player-top {
     @apply [margin-inline:clamp(24px,_2vw,_40px)];
   }
 }
 
 @media (min-width: 1280px) and (min-height: 800px) {
-  .breathing-stage {
-    @apply grid grid-rows-[auto_auto_minmax(5.5rem,_auto)] content-center justify-stretch;
-  }
-
-  .orb-area {
-    @apply pt-[clamp(20px,_1.8svh,_30px)];
-  }
-
-  .breath-orb {
-    @apply w-[clamp(13rem,_min(27vw,_52svh_-_13rem),_33rem)];
-  }
-
-  .orb-counter {
-    @apply text-[length:clamp(1.75rem,_3vw,_3.75rem)];
-  }
-
-  .orb-start {
-    @apply gap-[7px] text-[length:clamp(1.1rem,_1.3vw,_1.55rem)];
-  }
-
-  .orb-start svg {
-    @apply w-[clamp(22px,_1.65vw,_36px)] h-auto;
-  }
-
-  .breath-copy:not(.breath-copy-active) h2 {
-    @apply text-[length:clamp(2.15rem,_2.35vw,_3.25rem)];
-  }
-
-  .breath-copy p,
   .prompt-content p {
     @apply text-[length:clamp(1.05rem,_1.25vw,_1.4rem)];
   }
 
-  .player-actions {
-    @apply [margin-block:clamp(21px,_2.3svh,_36px)_16px];
-  }
-
-  .player-actions button,
   .prompt-actions button {
     @apply min-h-[50px] text-[length:1rem];
   }

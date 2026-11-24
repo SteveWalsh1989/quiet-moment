@@ -1,5 +1,5 @@
 import { onUnmounted, ref, watch } from 'vue'
-import type { Preferences } from '../../preferences'
+import type { Preferences } from '../settings/sessionPreferences'
 import { breathingCues } from '../breathing/breathingTiming'
 import type { BreathingPhaseName } from '../breathing/breathingTiming'
 

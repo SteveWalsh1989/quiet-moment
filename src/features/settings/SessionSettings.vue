@@ -1,27 +1,27 @@
 <script setup lang="ts">
 import { computed, ref, useId } from 'vue'
-import AppIcon from './AppIcon.vue'
-import { colorThemes } from '../colorThemes'
-import SelectMenu from './SelectMenu.vue'
+import AppIcon from '../../components/ui/AppIcon.vue'
+import { colorThemes } from './appearance/colorThemes'
+import SelectMenu from '../../components/ui/SelectMenu.vue'
 import SettingsCheckbox from './SettingsCheckbox.vue'
-import PlayerPopover from './PlayerPopover.vue'
+import PlayerPopover from '../../components/player/PlayerPopover.vue'
 import {
   formatTime,
   getPaceRhythm,
   getRhythm,
   paces,
   roundSessionDuration,
-} from '../features/breathing/breathingTiming'
-import { grounding } from '../features/grounding/groundingPrompts'
+} from '../breathing/breathingTiming'
+import { grounding } from '../grounding/groundingPrompts'
 import {
   ambientSounds,
   breathingArrangements,
   isBreathingSound,
   quietSound,
-} from '../features/audio/soundTracks'
-import type { BreathingSoundId, SoundId } from '../features/audio/soundTracks'
-import { boundedNumber, preferenceLimits } from '../preferences'
-import type { Preferences } from '../preferences'
+} from '../audio/soundTracks'
+import type { BreathingSoundId, SoundId } from '../audio/soundTracks'
+import { boundedNumber, preferenceLimits } from './sessionPreferences'
+import type { Preferences } from './sessionPreferences'
 
 const props = defineProps<{
   isBreathing: boolean
@@ -174,7 +174,11 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
       <AppIcon name="settings" />
     </template>
     <template #header>
-      <div class="settings-tabs flex" role="group" aria-label="Settings sections">
+      <div
+        class="settings-tabs flex items-center gap-0.5 whitespace-nowrap"
+        role="group"
+        aria-label="Settings sections"
+      >
         <button
           type="button"
           :aria-pressed="settingsTab === 'timing'"
@@ -199,7 +203,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
       </div>
     </template>
     <div class="settings">
-      <div v-if="settingsTab === 'timing'" class="settings-body">
+      <div v-if="settingsTab === 'timing'" class="grid gap-4 pt-4">
         <p v-if="isBreathing" class="field-note">Timing changes are available after the session.</p>
         <div>
           <SelectMenu
@@ -210,7 +214,10 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
             description-id="pace-detail"
           />
           <p id="pace-detail" class="field-note">{{ selectedPace?.detail }}</p>
-          <div v-if="preferences.pace === 'custom'" class="timing-fields">
+          <div
+            v-if="preferences.pace === 'custom'"
+            class="mt-[9px] grid grid-cols-2 gap-[9px] text-[length:0.78rem] font-[720]"
+          >
             <label v-for="field in customTimingFields" :key="field.id">
               {{ field.label }} (seconds)
               <input
@@ -225,7 +232,11 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
               />
             </label>
           </div>
-          <ol class="pace-steps flex flex-wrap" role="list" aria-label="One breath cycle">
+          <ol
+            class="pace-steps mt-2 flex list-none flex-wrap gap-1 p-0"
+            role="list"
+            aria-label="One breath cycle"
+          >
             <li v-for="step in rhythm.steps" :key="step.name">
               <span>{{ step.label }}</span> {{ step.duration }}s
             </li>
@@ -270,10 +281,10 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         />
       </div>
 
-      <div v-else-if="settingsTab === 'display'" class="settings-body">
+      <div v-else-if="settingsTab === 'display'" class="grid gap-4 pt-4">
         <SelectMenu v-model="theme" label="Appearance" :options="themeOptions" />
-        <fieldset class="palette-picker">
-          <legend class="settings-select-label w-full">
+        <fieldset>
+          <legend class="settings-select-label mb-1 w-full">
             <span class="flex justify-between gap-2">
               Color theme
               <span class="font-semibold text-muted" aria-hidden="true">{{
@@ -285,7 +296,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
             <label
               v-for="palette in colorThemes"
               :key="palette.id"
-              class="palette-option"
+              class="palette-option relative grid h-11 w-full cursor-pointer place-items-center rounded-lg hover:bg-hover"
               :title="palette.label"
             >
               <input
@@ -296,8 +307,15 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
                 :value="palette.id"
               />
               <span class="sr-only">{{ palette.label }}</span>
-              <span class="palette-swatch" :data-color-theme="palette.id" aria-hidden="true">
-                <span v-if="colorTheme === palette.id" class="palette-check">
+              <span
+                class="palette-swatch grid size-8 place-items-center rounded-full"
+                :data-color-theme="palette.id"
+                aria-hidden="true"
+              >
+                <span
+                  v-if="colorTheme === palette.id"
+                  class="grid size-[18px] place-items-center rounded-full bg-white text-slate-900"
+                >
                   <AppIcon name="check" :size="13" />
                 </span>
               </span>
@@ -317,13 +335,13 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
         <SelectMenu v-model="motion" label="Breathing animation" :options="motionOptions" />
       </div>
 
-      <div v-else class="settings-body">
+      <div v-else class="grid gap-4 pt-4">
         <fieldset class="sound-list">
           <legend>Background sound</legend>
           <div
             v-for="sound in soundOptions"
             :key="isBreathingSound(sound.id) ? 'breathing' : sound.id"
-            class="sound-row"
+            class="grid grid-cols-[minmax(0,1fr)_auto] items-center"
           >
             <label class="sound-option flex items-center">
               <input
@@ -387,7 +405,7 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
           </p>
         </div>
       </div>
-      <div class="settings-footer">
+      <div class="mt-4">
         <button type="button" class="text-button" :disabled="settingsLocked" @click="emit('reset')">
           Restore session defaults
         </button>
@@ -395,3 +413,119 @@ function updateNumber(field: (typeof customTimingFields)[number]['id'] | 'durati
     </div>
   </PlayerPopover>
 </template>
+
+<style scoped>
+.settings-tabs button {
+  @apply min-h-11 rounded-md px-1.5 text-xs font-[750] text-muted min-[380px]:px-2 min-[380px]:text-sm;
+}
+
+.settings-tabs button:hover {
+  @apply text-accent-ink;
+}
+
+.settings-tabs button[aria-pressed='true'] {
+  @apply bg-selected text-accent-ink;
+}
+
+.palette-swatch {
+  background: hsl(var(--palette-hue) var(--palette-saturation) 43%);
+}
+
+.palette-option input:focus-visible ~ .palette-swatch {
+  @apply outline outline-2 outline-focus outline-offset-[3px];
+}
+
+@media (forced-colors: active) {
+  .palette-swatch {
+    forced-color-adjust: none;
+  }
+
+  .palette-option input:focus-visible ~ .palette-swatch {
+    outline-color: Highlight;
+  }
+}
+
+.sound-list legend,
+.extra-input,
+.volume-label {
+  @apply block text-ink text-[length:0.89rem] font-extrabold;
+}
+
+input.control {
+  @apply block mt-[4px] pr-[8px] appearance-auto;
+}
+
+.field-note {
+  @apply m-[6px_0_0] text-muted text-[length:0.82rem] leading-[1.52];
+}
+
+.pace-steps li {
+  @apply p-[3px_7px] border border-solid border-line rounded-[5px] text-muted text-[length:0.76rem];
+  @apply whitespace-nowrap;
+}
+
+.pace-steps span {
+  @apply text-ink font-[750];
+}
+
+.extra-input {
+  @apply mt-[10px];
+}
+
+.text-button {
+  @apply min-h-[44px] text-accent-ink text-[length:0.84rem] font-extrabold underline underline-offset-[3px];
+}
+
+.text-button:disabled {
+  @apply opacity-[0.58];
+}
+
+.sound-list {
+  @apply m-0 p-0 border-0;
+}
+
+.sound-list legend {
+  @apply mb-[6px];
+}
+
+.sound-option {
+  @apply gap-[9px] min-h-[50px] p-[5px_3px] cursor-pointer;
+}
+
+.sound-option:hover {
+  @apply bg-hover;
+}
+
+.sound-option > span {
+  @apply flex-1;
+}
+
+.sound-option strong,
+.sound-option small {
+  @apply block;
+}
+
+.sound-option strong {
+  @apply text-[length:0.89rem] font-[780];
+}
+
+.sound-option small {
+  @apply text-[length:0.78rem] text-muted;
+}
+
+.volume-label span span {
+  @apply text-muted tabular-nums;
+}
+
+.voice-settings {
+  @apply pt-2 border-t border-solid border-t-line;
+}
+
+.voice-settings .volume-label {
+  @apply mt-3;
+}
+
+.voice-settings .field-note {
+  @apply mt-[1px];
+}
+</style>

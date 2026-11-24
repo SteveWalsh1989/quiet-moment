@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import AppIcon from './AppIcon.vue'
-import type { IconName } from './iconPaths'
+import AppIcon from '../ui/AppIcon.vue'
+import type { IconName } from '../ui/iconPaths'
 
 const props = defineProps<{
   icon: IconName

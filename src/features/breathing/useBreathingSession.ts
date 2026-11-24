@@ -1,5 +1,5 @@
 import { computed, onMounted, onUnmounted, ref } from 'vue'
-import type { Preferences } from '../../preferences'
+import type { Preferences } from '../settings/sessionPreferences'
 import { getPaceRhythm, getPhase, roundSessionDuration } from './breathingTiming.ts'
 import type { BreathingPhaseName, BreathingPlan } from './breathingTiming'
 

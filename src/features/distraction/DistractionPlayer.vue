@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import PromptPlayer from '../../components/PromptPlayer.vue'
+import PromptPlayer from '../../components/player/PromptPlayer.vue'
 import { distractionPrompts } from './distractionPrompts'
 
 const index = defineModel<number>('index', { required: true })
@@ -26,12 +26,12 @@ function changePrompt(direction: number) {
   >
     <p>{{ prompt.prompt }}</p>
     <template #support>
-      <div class="distraction-examples">
-        <h3>For example</h3>
-        <ul>
+      <div class="grid gap-2 min-[960px]:gap-y-4">
+        <h3 class="text-sm font-bold text-player-muted">For example</h3>
+        <ul class="list-disc space-y-1 pl-5 text-on-player marker:text-player-highlight">
           <li v-for="example in prompt.examples" :key="example">{{ example }}</li>
         </ul>
-        <p>Stay with a prompt as long as you like.</p>
+        <p class="mt-1 text-sm text-player-muted">Stay with a prompt as long as you like.</p>
       </div>
     </template>
   </PromptPlayer>

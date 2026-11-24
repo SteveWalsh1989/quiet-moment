@@ -33,129 +33,6 @@
   @apply shadow-[0_10px_28px_var(--popup-shadow)];
 }
 
-.breathing-stage {
-  @apply flex flex-1 flex-col justify-center;
-}
-
-.orb-area {
-  @apply grid place-items-center p-[20px_0_0];
-}
-
-.breath-orb {
-  @apply w-[clamp(156px,_43vw,_206px)] aspect-square;
-  @apply relative grid place-items-center isolate rounded-full;
-}
-
-.breath-orb:focus-visible {
-  @apply outline-offset-[4px];
-}
-
-.guide-ring,
-.orb-body,
-.orb-core {
-  @apply absolute inset-0 rounded-full pointer-events-none;
-}
-
-.breath-ring {
-  @apply absolute inset-0 w-full fill-none stroke-current stroke-[4] pointer-events-none;
-}
-
-.breath-ring-inhale {
-  @apply text-breath-in;
-}
-
-.breath-ring-exhale {
-  @apply text-breath-out;
-}
-
-.breath-ring-hold,
-.breath-ring-rest {
-  @apply text-breath-hold;
-}
-
-.breath-ring-track {
-  @apply opacity-[0.32];
-}
-
-.guide-ring-inner {
-  @apply inset-[9%] border border-solid border-player-border;
-}
-
-.orb-body {
-  @apply inset-[8%];
-  scale: calc(0.55 + 0.45 * var(--expansion));
-  @apply border border-solid border-player-border;
-  @apply bg-[radial-gradient(circle_at_39%_30%,_var(--orb-light),_var(--orb-mid)_47%,_var(--orb-edge)_85%)];
-  box-shadow:
-    0 5px 32px color-mix(in srgb, var(--orb-glow) 22%, transparent),
-    inset 0 0 24px color-mix(in srgb, var(--action) 17%, transparent);
-}
-
-.orb-core {
-  @apply inset-[16%];
-  scale: calc(0.55 + 0.45 * var(--expansion));
-  @apply bg-[radial-gradient(circle_at_39%_32%,_var(--orb-core),_transparent_67%)];
-}
-
-.orb-cue,
-.orb-start {
-  @apply relative text-on-player;
-  text-shadow: 0 1px 4px var(--player-edge);
-}
-.orb-start {
-  @apply grid justify-items-center gap-[3px] text-[length:1.1rem] font-extrabold leading-[1.2];
-}
-
-.breath-orb-ready .orb-body,
-.breath-orb-ready .orb-core {
-  scale: 0.9;
-}
-
-.breath-orb-preparing .orb-body,
-.breath-orb-preparing .orb-core {
-  transition: scale 600ms ease-out;
-}
-
-.breath-orb-ready:hover .orb-body,
-.breath-orb-ready:focus-visible .orb-body {
-  border-color: color-mix(in srgb, var(--action) 85%, transparent);
-  box-shadow: 0 5px 36px color-mix(in srgb, var(--orb-glow) 40%, transparent);
-}
-
-.orb-cue {
-  @apply grid gap-[4px] justify-items-center leading-none;
-}
-
-.orb-counter {
-  @apply text-[length:1.75rem] font-[650] leading-none tabular-nums;
-}
-
-.no-motion .orb-body,
-.no-motion .orb-core {
-  scale: 0.83;
-  @apply transition-none;
-}
-
-.breath-copy {
-  @apply grid grid-rows-[1fr_auto] items-end min-h-[7.25rem] p-[16px_16px_0];
-}
-
-.breath-copy h2 {
-  @apply m-0 text-[length:clamp(1.5rem,_5vw,_2.15rem)] font-extrabold tracking-[-0.03em] leading-[1.1];
-}
-
-.breath-copy p {
-  @apply m-[6px_0_0] text-player-muted text-[length:0.98rem] leading-normal;
-}
-
-.breath-copy-active h2 {
-  @apply row-start-2 text-on-player text-[length:clamp(1.05rem,_1.25vw,_1.4rem)] font-bold leading-[1.3] tracking-normal;
-}
-
-.player-actions {
-  @apply gap-[8px] m-[21px_16px_20px];
-}
-
 .primary-button,
 .on-dark-button {
   @apply inline-flex min-h-[46px] items-center justify-center gap-[8px] rounded-lg p-[8px_18px];
@@ -184,11 +61,6 @@
 
 .on-dark-button:disabled {
   @apply opacity-[0.67];
-}
-
-.player-bottom {
-  @apply min-h-[53px] m-[auto_24px_0] p-[8px_0] border-t border-solid border-t-[#ffffff26] flex flex-wrap;
-  @apply justify-center items-center gap-[12px] text-player-muted text-[length:0.86rem] font-[650] text-center;
 }
 
 .flow-position {
@@ -256,66 +128,8 @@
   @apply mt-5 min-w-0;
 }
 
-.distraction-examples {
-  @apply grid gap-2;
-}
-
-.distraction-examples h3 {
-  @apply text-sm font-bold text-player-muted;
-}
-
-.distraction-examples ul {
-  @apply space-y-1 pl-5 text-on-player [list-style-type:disc];
-}
-
-.distraction-examples li::marker {
-  @apply text-player-highlight;
-}
-
-.distraction-examples p {
-  @apply mt-1 text-sm text-player-muted;
-}
-
-.grounding-count {
-  @apply grid gap-y-3;
-}
-
-.grounding-count-progress {
-  @apply flex flex-wrap items-center gap-x-2 gap-y-2 sm:gap-x-4;
-}
-
-.grounding-count-markers {
-  @apply flex gap-1.5;
-}
-
-.grounding-count-hint,
-.grounding-count-total {
-  @apply text-sm font-semibold text-player-muted;
-}
-
-.grounding-count-total {
-  @apply tabular-nums;
-}
-
-.grounding-count-marker {
-  @apply grid size-6 place-items-center rounded-full border border-player-border bg-player-edge text-action-ink;
-}
-
-.grounding-count-marker.is-counted {
-  @apply border-action bg-action;
-}
-
-.grounding-count-marker svg {
-  @apply scale-75 opacity-0;
-}
-
-.grounding-count-marker.is-counted svg {
-  @apply scale-100 opacity-100;
-}
-
 .prompt-back,
-.grounding-secondary,
-.grounding-count-button {
+.grounding-secondary {
   @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-bold;
 }
 
@@ -330,17 +144,7 @@
   @apply bg-white/10 text-on-player;
 }
 
-.grounding-count-button {
-  @apply border bg-player-control px-3.5 text-on-player;
-  border-color: color-mix(in srgb, var(--player-highlight) 60%, var(--player-edge));
-}
-
-.grounding-count-button:hover:not(:disabled, [aria-disabled='true']) {
-  @apply bg-player-control-hover;
-}
-
-.grounding-secondary[aria-disabled='true'],
-.grounding-count-button:is(:disabled, [aria-disabled='true']) {
+.grounding-secondary[aria-disabled='true'] {
   @apply cursor-default opacity-60;
 }
 
@@ -362,57 +166,6 @@
 
 .grounding-picker-trigger[aria-expanded='true'] svg {
   @apply rotate-180;
-}
-
-.grounding-exercise-option {
-  @apply relative flex min-h-[54px] cursor-pointer items-center gap-3 rounded-lg border border-transparent px-3 py-2;
-}
-
-.grounding-exercise-option:hover {
-  @apply bg-hover;
-}
-
-.grounding-exercise-option:has(input:checked) {
-  @apply border-field-line bg-selected;
-}
-
-.grounding-exercise-option:has(input:focus-visible) {
-  @apply outline outline-2 outline-focus outline-offset-[-2px];
-}
-
-.grounding-exercise-indicator {
-  @apply grid size-5 shrink-0 place-items-center rounded-full border border-field-line;
-}
-
-.grounding-exercise-indicator::after {
-  @apply size-2.5 scale-50 rounded-full bg-accent opacity-0 content-[''];
-}
-
-input:checked + .grounding-exercise-indicator::after {
-  @apply scale-100 opacity-100;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .grounding-count-marker,
-  .grounding-exercise-option {
-    @apply transition-colors duration-150 ease-out;
-  }
-
-  .grounding-count-marker svg,
-  .grounding-exercise-indicator::after {
-    @apply transition-[opacity,transform] duration-150 ease-out;
-  }
-}
-
-@media (forced-colors: active) {
-  .grounding-exercise-option:has(input:checked) {
-    border-color: Highlight;
-  }
-
-  .grounding-exercise-indicator::after {
-    forced-color-adjust: none;
-    background: Highlight;
-  }
 }
 
 .grounding-finish .prompt-content,
@@ -449,24 +202,6 @@ input:checked + .grounding-exercise-indicator::after {
     @apply my-0 border-l border-player-border py-1.5 pl-[clamp(24px,_3vw,_48px)];
   }
 
-  .grounding-count,
-  .distraction-examples {
-    @apply gap-y-4;
-  }
-
-  .grounding-count-progress {
-    @apply grid gap-y-2.5;
-  }
-
-  .grounding-count-markers {
-    @apply gap-2;
-  }
-
-  .grounding-count-marker {
-    @apply size-8;
-  }
-
-  .grounding-count-button,
   .prompt-back,
   .prompt-next {
     @apply min-h-[52px] px-4 text-base;

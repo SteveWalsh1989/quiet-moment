@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { exerciseViews } from '../exerciseViews'
-import type { ExerciseView } from '../exerciseViews'
-import AppIcon from './AppIcon.vue'
+import { exerciseViews } from './exerciseViews'
+import type { ExerciseView } from './exerciseViews'
+import AppIcon from '../components/ui/AppIcon.vue'
 
 defineProps<{ view: ExerciseView }>()
 const emit = defineEmits<{

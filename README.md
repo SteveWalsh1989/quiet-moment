@@ -76,3 +76,8 @@ Open [localhost:5173](http://localhost:5173/). To make your own offline copy, ru
 ### For contributors
 
 Quiet Moment uses Vue 3, TypeScript, Vite, and Tailwind CSS. Run `pnpm run check` for linting, formatting, type checks, tests, and a production build. The [contributor guide](AGENTS.md) maps the code and documents the behavior that tests and changes should preserve.
+
+- `src/app/` owns the app shell, header, and exercise navigation.
+- `src/features/` groups the exercises, audio, and session settings by feature. Appearance preferences live with settings.
+- `src/components/player/` holds UI shared by exercise players. `src/components/ui/` holds reusable controls and icons.
+- Feature layouts use Tailwind utilities in the templates. Scoped styles handle component-specific states and animations, and `src/styles/` holds shared layout, controls, and theme tokens.

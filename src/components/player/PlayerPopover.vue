@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, useId } from 'vue'
-import AppIcon from './AppIcon.vue'
+import AppIcon from '../ui/AppIcon.vue'
 
 defineProps<{
   label: string

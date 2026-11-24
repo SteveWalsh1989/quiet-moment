@@ -1,5 +1,5 @@
 import { onMounted, onUnmounted, watch } from 'vue'
-import type { Preferences } from './preferences'
+import type { Preferences } from '../sessionPreferences'
 
 export function useThemePreference(preferences: Readonly<Preferences>) {
   const systemTheme = window.matchMedia('(prefers-color-scheme: dark)')

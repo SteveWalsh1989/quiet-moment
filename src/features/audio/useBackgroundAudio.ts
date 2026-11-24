@@ -1,5 +1,5 @@
 import { onUnmounted, ref, watch } from 'vue'
-import type { Preferences } from '../../preferences'
+import type { Preferences } from '../settings/sessionPreferences'
 import { createBreathingMusic } from './breathingMusic.ts'
 import type { MusicSession } from './breathingMusic'
 import { breathingArrangements, isBreathingSound } from './soundTracks.ts'

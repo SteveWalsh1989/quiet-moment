@@ -1,4 +1,4 @@
-import type { Preferences } from '../../preferences'
+import type { Preferences } from '../settings/sessionPreferences'
 
 export const paces = [
   {

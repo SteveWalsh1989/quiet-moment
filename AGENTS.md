@@ -2,14 +2,15 @@
 
 Use Vue 3 Composition API with `<script setup lang="ts">` and the existing Tailwind utilities. Use one owner for each piece of state and typed props and events between views. Use Tailwind utilities for UI styling. Keep shared component classes in `src/styles/` and compose them from Tailwind utilities.
 
-| If you are changing                                | Start here                                                               |
-| -------------------------------------------------- | ------------------------------------------------------------------------ |
-| Exercise navigation, session transitions, or focus | `src/App.vue`                                                            |
-| Breathing controls or circle                       | `src/features/breathing/BreathingPlayer.vue`                             |
-| Countdown, phase transitions, or pause/resume      | `src/features/breathing/breathingTiming.ts` and `useBreathingSession.ts` |
-| Sound choices or playback, or the optional voice   | `src/features/audio/`                                                    |
-| Grounding or distraction prompts                   | `src/features/grounding/` and `src/features/distraction/`                |
-| Session form fields or persisted values            | `src/components/SessionSettings.vue` and `src/preferences.ts`            |
+| If you are changing                                | Start here                                                                                    |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Exercise navigation, session transitions, or focus | `src/app/App.vue`                                                                             |
+| Breathing controls or circle                       | `src/features/breathing/BreathingPlayer.vue`                                                  |
+| Countdown, phase transitions, or pause/resume      | `src/features/breathing/breathingTiming.ts` and `useBreathingSession.ts`                      |
+| Sound choices or playback, or the optional voice   | `src/features/audio/`                                                                         |
+| Grounding or distraction prompts                   | `src/features/grounding/` and `src/features/distraction/`                                     |
+| Session form fields or persisted values            | `src/features/settings/SessionSettings.vue` and `src/features/settings/sessionPreferences.ts` |
+| Appearance modes or colour themes                  | `src/features/settings/appearance/`                                                           |
 
 The breathing clock drives the countdown, circle, and Breathing lo-fi envelope. Keep those cues on the same clock. Pause must hold the phase and the synced track’s playback position, and resume must continue from those positions. Regular background tracks are independent of the breathing clock.
 

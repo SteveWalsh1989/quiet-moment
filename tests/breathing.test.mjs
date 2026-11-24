@@ -6,7 +6,10 @@ import {
   getRhythm,
   roundSessionDuration,
 } from '../src/features/breathing/breathingTiming.ts'
-import { defaultPreferences, normalizePreferences } from '../src/preferences.ts'
+import {
+  defaultPreferences,
+  normalizePreferences,
+} from '../src/features/settings/sessionPreferences.ts'
 
 const plan = { prep: 3, ...getRhythm({ inhale: 4, exhale: 6 }) }
 
